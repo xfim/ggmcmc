@@ -6,4 +6,4 @@ To install or update, run:
 
   install.packages(c("ggmcmc"))
 
-Find out an example at http://xavier-fim.net/packages/ggmcmc and track the development at http://github.com/xfim/ggmcmc.
+Find out an example at http://xavier-fim.net/packages/ggmcmc and track development at http://github.com/xfim/ggmcmc.
