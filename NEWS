@@ -1,0 +1,16 @@
+Version 0.2
+------------------------------
+
+MINOR CHANGES
+
+* opts() is replaced by theme() as it is deprecated in ggplot-0.9.2.
+
+* theme_text() is replaced by element_text() as it is deprecated in ggplot-0.9.2.
+
+* opts(title="") is replaced by labs(title="") as it is deprecated in ggplot-0.9.2.
+
+
+Version 0.1
+------------------------------
+
+Initial version
