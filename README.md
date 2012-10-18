@@ -4,6 +4,6 @@ ggmcmc is a tool for assessing and diagnosing convergence of Markov Chain Monte 
 
 To install or update, run:
 
-    install.packages(c("ggmcmc"))
+    install.packages("ggmcmc", dependencies=TRUE)
 
 Find out an example at http://xavier-fim.net/packages/ggmcmc and track development at http://github.com/xfim/ggmcmc.
