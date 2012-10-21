@@ -1,6 +1,6 @@
 #' Traceplot of the chains
 #'
-#' @param D data frame whith the simulations
+#' @param D data frame with the simulations
 #' @return a ggplot object
 #' @export
 #' @examples
