@@ -1,6 +1,9 @@
 #' Manage the output from a coda object to be plotted by ggmcmc and convert it in an object that ggplot understands
 #'
-#' @param S either mcmc.list object with samples from JAGS, mcmc object with samples from MCMCpack. ggmcmc guesses what is the original object and tries to import it accordingly.
+#' @param S either mcmc.list object with samples from JAGS, mcmc object with samples from MCMCpack, stanfit object with samples from rstan. ggmcmc guesses what is the original object and tries to import it accordingly.
+#' @param burnin Logical or numerical value. When logical and true, the number of samples in the burnin period will be taken into account, if it can be guessed by the extracting process. Otherwise, iterations will start counting from 1. Defaults to false. If a numerical vector is given, the user then supplies the length of the burnin period. Not yet implemented.
+#' @param inc_warmup logical. When dealing with stanfit objects from rstan, logical value whether the warmup samples are included. Defaults to false.
+#' @param stan_include_lp. Logical to include "lp__" parameter. Defaults to false.
 #' @param parallel logical value for using parallel computing when managing the data frame in other functions
 #' @export
 #' @return D data frame with the data arranged and ready to be used by the rest of the ggmcmc functions. The dataframe has four columns, namely: Iteration, Parameter, value and Chain, and four attributes: nChains, nParameters, nIterations, parallel.
@@ -9,7 +12,22 @@
 #' # a coda object called S
 #' data(samples)
 #' D <- ggs(S)        # S is a coda object
-ggs <- function(S, parallel=TRUE) {
+ggs <- function(S, burnin=FALSE, inc_warmup=FALSE, stan_include_lp=FALSE, parallel=TRUE) {
+  #
+  # Manage stanfit obcjets
+  # Manage stan output first because it is firstly converted into an mcmc.list
+  #
+  if (class(S)=="stanfit") { 
+    S <- rstan::extract(S, inc_warmup=inc_warmup)
+    S <- do.call(mcmc.list, alply(S, 2, coda::mcmc))
+    # Exclude, by default, lp parameter
+    if (!stan_include_lp) {
+      S <- S[,1:dim(S[[1]])[2]] # delete the last column, the last parameter, which is lp__
+    }
+  }
+  #
+  # Manage mcmc.list and mcmc objects
+  #
   if (class(S)=="mcmc.list" | class(S)=="mcmc") {  # JAGS typical output or MCMCpack
     lS <- length(S)
     D <- NULL

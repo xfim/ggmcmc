@@ -14,7 +14,10 @@ Depends:
     reshape,
     ggplot2
 Suggests:
-    foreach
+    foreach,
+    coda,
+    rjags,
+    rstan
 License: GPL-2
 URL: http://xavier-fim.net/packages/ggmcmc
 Encoding: UTF-8
