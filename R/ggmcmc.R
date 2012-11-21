@@ -105,7 +105,7 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", param.page=5, width=7, height=10
   n.family.members <- apply(ifelse(table(D$Parameter, Parameter.family) > 0, 1, 0), 2, sum)
   for (f in unique(Parameter.family)) {
     if (n.family.members[f] > 1) {
-      print(ggs_caterpillar(D[Parameter.family==f,]) + labs(title=f))
+      print(ggs_caterpillar(D, family=f) + labs(title=f))
     }
   }
 

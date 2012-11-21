@@ -2,18 +2,22 @@
 #'
 #'
 #' @param D data frame whith the simulations
+#' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
 #' @param partial percentage of the chain to compare to, by default the last 10 percent.
 #' @return a ggplot object
 #' @export
 #' @examples
 #' data(samples)
 #' ggs_compare_partial(ggs(S, parallel=FALSE))
-ggs_compare_partial <- function(D, partial=0.1) {
+ggs_compare_partial <- function(D, family=NA, partial=0.1) {
   # Check that partial is a percentage
   if (partial <= 0 | partial >=1 | !is.numeric(partial)) {
     stop("partial must be a numerical argument and a value greater than zero or less than one")
   }
-
+  # Manage subsetting a family of parameters
+  if (!is.na(family)) {
+    D <- get_family(D, family=family)
+  }
   # Get the maximum number of samples
   n.samples <- max(D$Iteration)
   # Add more rows to the original dataframe according to the desired size of the

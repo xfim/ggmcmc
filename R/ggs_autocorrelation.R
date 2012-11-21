@@ -22,13 +22,18 @@ ac <- function(x, nLags) {
 #' Plot an autocorrelation matrix
 #'
 #' @param D data frame whith the simulations
+#' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
 #' @param nLags integer indicating the number of lags of the autocorrelation plot
 #' @return a ggplot object
 #' @export
 #' @examples
 #' data(samples)
 #' ggs_autocorrelation(ggs(S, parallel=FALSE))
-ggs_autocorrelation <- function(D, nLags=50) {
+ggs_autocorrelation <- function(D, family=NA, nLags=50) {
+  # Manage subsetting a family of parameters
+  if (!is.na(family)) {
+    D <- get_family(D, family=family)
+  }
   # I'm sure that this can be done directly through ddply, but have fight with
   # it for too many time, so it is somewhat dirty
   # Pass nLags as a variable of the dataframe, instead of a single number coming
