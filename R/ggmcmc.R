@@ -4,6 +4,7 @@
 #'
 #' @param D data frame whith the simulations, previously arranged using \code{\link{ggs}}
 #' @param file name of the file to create with the plots. By default, use "ggmcmc-output.pdf"
+#' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
 #' @param param.page numerical, number of parameters to plot for each page. Defaults to 5.
 #' @param width width of the pdf display, in inches. Defaults to 7.
 #' @param height of the pdf display, in inches. Defaults to 10.
@@ -12,7 +13,12 @@
 #' @examples
 #' data(samples)
 #' ggmcmc(ggs(S, parallel=FALSE))  # Directly from a coda object
-ggmcmc <- function(D, file="ggmcmc-output.pdf", param.page=5, width=7, height=10, ...) {
+ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, param.page=5, width=7, height=10, ...) {
+  # Manage subsetting a family of parameters
+  if (!is.na(family)) {
+    D <- get_family(D, family=family)
+  }
+
   # Get the number of parameters
   n.param <- length(unique(D$Parameter))
 
@@ -72,6 +78,39 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", param.page=5, width=7, height=10
 
     cat("Plotting density plots\n")
     for (p in 1:n.pages) print(ggs_density(D[D$page==p,]))
+    cat("Plotting autocorrelation plots\n")
+    print(ggs_autocorrelation(D))
+
+  } else {
+    # Arrange manually the plots to fit in the pages
+    # Create a new variable that sets each parameter in a specified page number
+    # Preserve the attributes of the original object
+    old.atrib <- attributes(D)
+    n.pages <- ceiling(n.param / param.page)
+    parameters <- unique(D$Parameter)
+    D.parameters <- data.frame(Parameter=parameters, 
+      page=as.numeric(as.character(gl(n.pages, param.page, length=length(parameters)))))
+    new.atrib <- old.atrib
+    D <- merge(D, D.parameters)
+    # In case merge has changed the order of the columns of the dataframe,
+    # arrange it
+    D <- D[,c(old.atrib$names, "page")]
+    new.atrib$names <- c(old.atrib$names, "page")
+    attributes(D) <- new.atrib
+
+    # Loop for every page and print only the parameters in that page
+    # The following lines would be ideal, but they don't work yet
+    #ddply(D, .variables="page", .fun=function(x) {
+    #  print(ggs_density(x))
+    #}, .parallel=TRUE)
+    #ddply(D, .(page), .fun=ggs_histogram(D))
+
+    # So just do it manually
+    cat("Plotting histograms\n")
+    for (p in 1:n.pages) print(ggs_histogram(D[D$page==p,]))
+
+    cat("Plotting density plots\n")
+    for (p in 1:n.pages) print(ggs_density(D[D$page==p,]))
 
     cat("Plotting traceplots\n")
     for (p in 1:n.pages) print(ggs_traceplot(D[D$page==p,]))
@@ -91,6 +130,12 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", param.page=5, width=7, height=10
   ##
   cat("Plotting crosscorrelation plot\n")
   print(ggs_crosscorrelation(D))
+
+  cat("Plotting Potential Scale Reduction Factors\n")
+  print(ggs_Rhat(D))
+
+  cat("Plotting Geweke Diagnostic\n")
+  print(ggs_geweke(D))
 
   ##
   ## Print caterpillar plots for each of the repeated parameters
