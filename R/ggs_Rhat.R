@@ -42,7 +42,6 @@ ggs_Rhat <- function(D, family=NA) {
     .parallel=attributes(D)$parallel)
   BW <- ddply(BW, .(Parameter), transform, Rhat=sqrt(wa/W),
     .parallel=attributes(D)$parallel)
-  print(str(BW))
   # Plot
   f <- ggplot(BW, aes(x=Rhat, y=Parameter)) + geom_point() +
     ggtitle("Potential Scale Reduction Factor")
