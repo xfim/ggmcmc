@@ -48,7 +48,6 @@ ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5) {
   Z <- data.frame(Parameter=M$Parameter, Chain=M$Chain, 
     z= (M$first - M$last) /
       sqrt( (SDE0F$first/N$first) + (SDE0F$last/N$last) ) )
-  print(Z)
   # Plot
   f <- ggplot(Z, aes(x=z, y=Parameter, colour=as.factor(Chain))) + 
     geom_point() +
