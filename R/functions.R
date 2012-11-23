@@ -21,3 +21,12 @@ get_family <- function(D, family=NA) {
   return(D=D.sub)
 }
 
+#' Spectral Density Estimate at Zero Frequency
+#'
+#' @param x a time series
+#' @return
+sde0f <- function(x) {
+  m.ar <- ar(x)
+  v0 <- m.ar$var.pred / (1-sum(m.ar$ar))^2
+  return(v0)
+}
