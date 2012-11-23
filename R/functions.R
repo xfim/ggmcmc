@@ -30,3 +30,15 @@ sde0f <- function(x) {
   v0 <- m.ar$var.pred / (1-sum(m.ar$ar))^2
   return(v0)
 }
+
+#' Functions to manage the change in the labels of the Iterations when there
+# are present burnin, thinning and burnin+thinning parameters
+bt_format <- function() {
+  function(x) return( attributes(D)$nBurnin + (((x-1) * attributes(D)$nThin) + attributes(D)$nThin))
+}
+b_format <- function() {
+  function(x) return(x + attributes(D)$nBurnin)
+}
+t_format <- function() {
+  function(x) return( ((x-1) * attributes(D)$nThin) + attributes(D)$nThin)
+}

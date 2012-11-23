@@ -14,13 +14,6 @@ ggs_traceplot <- function(D, family=NA, original.burnin=TRUE, original.thin=TRUE
   if (!is.na(family)) {
     D <- get_family(D, family=family)
   }
-  # Manage burnin
-  if (original.thin) {
-    D$Iteration <- ((D$Iteration-1) * attributes(D)$nThin) + 1
-  }
-  if (original.burnin) {
-    D$Iteration <- D$Iteration + attributes(D)$nBurnin
-  }
   # Plot
   if (attributes(D)$nChains <= 1) {
     f <- ggplot(D, aes(x=Iteration, y=value)) 
@@ -30,5 +23,16 @@ ggs_traceplot <- function(D, family=NA, original.burnin=TRUE, original.thin=TRUE
   f <- f + geom_line(alpha=0.7) + 
     facet_wrap(~ Parameter, ncol=1, scales="free") + 
     scale_colour_discrete(name="Chain")
+  # Manage changing the scales using different sets of burnin and thinning
+  # Duplicated code chunk in ggs_running()
+  if (original.burnin & !original.thin) {
+    f <- f + scale_x_continuous(labels=ggmcmc::b_format())
+  } else if (!original.burnin & original.thin) {
+    f <- f + scale_x_continuous(labels=ggmcmc::t_format())
+  } else if (original.burnin & original.thin) {
+    f <- f + scale_x_continuous(labels=ggmcmc::bt_format())
+  } else {
+    f <- f
+  }
   return(f)
 }
