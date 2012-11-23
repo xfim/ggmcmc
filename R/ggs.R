@@ -56,7 +56,7 @@ ggs <- function(S, burnin=FALSE, inc_warmup=FALSE, stan_include_auxiliar=FALSE, 
       # Process a single chain
       D <- cbind(ggs_chain(s), Chain=1)
       # Get information from mcpar (burnin period, thinning)
-      nBurnin <- (attributes(s)$mcpar[1])-1
+      nBurnin <- (attributes(s)$mcpar[1])-(1*attributes(s)$mcpar[3])
       nThin <- attributes(s)$mcpar[3]
     } else {
       # Process multiple chains
@@ -66,7 +66,7 @@ ggs <- function(S, burnin=FALSE, inc_warmup=FALSE, stan_include_auxiliar=FALSE, 
       }
       # Get information from mcpar (burnin period, thinning). Taking the last
       # chain is fine. All chains are assumed to have the same structure.
-      nBurnin <- attributes(s)$mcpar[1]-1
+      nBurnin <- (attributes(s)$mcpar[1])-(1*attributes(s)$mcpar[3])
       nThin <- attributes(s)$mcpar[3]
     }
     # Set several attributes to the object, to avoid computations afterwards
