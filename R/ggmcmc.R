@@ -78,39 +78,6 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, param.page=5, width=7
 
     cat("Plotting density plots\n")
     for (p in 1:n.pages) print(ggs_density(D[D$page==p,]))
-    cat("Plotting autocorrelation plots\n")
-    print(ggs_autocorrelation(D))
-
-  } else {
-    # Arrange manually the plots to fit in the pages
-    # Create a new variable that sets each parameter in a specified page number
-    # Preserve the attributes of the original object
-    old.atrib <- attributes(D)
-    n.pages <- ceiling(n.param / param.page)
-    parameters <- unique(D$Parameter)
-    D.parameters <- data.frame(Parameter=parameters, 
-      page=as.numeric(as.character(gl(n.pages, param.page, length=length(parameters)))))
-    new.atrib <- old.atrib
-    D <- merge(D, D.parameters)
-    # In case merge has changed the order of the columns of the dataframe,
-    # arrange it
-    D <- D[,c(old.atrib$names, "page")]
-    new.atrib$names <- c(old.atrib$names, "page")
-    attributes(D) <- new.atrib
-
-    # Loop for every page and print only the parameters in that page
-    # The following lines would be ideal, but they don't work yet
-    #ddply(D, .variables="page", .fun=function(x) {
-    #  print(ggs_density(x))
-    #}, .parallel=TRUE)
-    #ddply(D, .(page), .fun=ggs_histogram(D))
-
-    # So just do it manually
-    cat("Plotting histograms\n")
-    for (p in 1:n.pages) print(ggs_histogram(D[D$page==p,]))
-
-    cat("Plotting density plots\n")
-    for (p in 1:n.pages) print(ggs_density(D[D$page==p,]))
 
     cat("Plotting traceplots\n")
     for (p in 1:n.pages) print(ggs_traceplot(D[D$page==p,]))
@@ -123,6 +90,7 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, param.page=5, width=7
 
     cat("Plotting autocorrelation plots\n")
     for (p in 1:n.pages) print(ggs_autocorrelation(D[D$page==p,]))
+
   }
 
   ##
