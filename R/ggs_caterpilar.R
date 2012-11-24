@@ -2,13 +2,14 @@
 #'
 #' Caterpillar plots are plotted combining all chains for each parameter.
 #'
-#' @param D data frame whith the simulations
+#' @param D data frame whith the simulations or list of data frame with simulations
 #' @param X data frame with two columns, Parameter and the value for the x location. Parameter must be a character vector with the same names that the parameters in the D object. 
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
 #' @param thick.ci vector of length 2 with the quantiles of the thick band for the credible interval
 #' @param thin.ci vector of length 2 with the quantiles of the thin band for the credible interval
 #' @param line plot a line indicating a concrete position, usually used to mark where zero is. By default do not plot any line.
 #' @param horizontal logical value for the plot having horizontal or vertical lines. Vertical is the default.
+#' @param labels vector of strings that matches the number of models in the list (if applicable), used for facet labels
 #' @return a ggplot object
 #' @export
 #' @examples
@@ -64,14 +65,13 @@ ggs_caterpillar <- function(D, family=NA, X=NA, thick.ci=c(0.05, 0.95), thin.ci=
                                 if (length(D[[i]]) > 1)
                                 cbind(D[[i]], label = labels[i])))
   }
-  else{ #if obj 'D' is not a list
+  else if (!is.list(D)) { #if obj 'D' is not a list
     multi = FALSE
     dc <- ddply(D, .(Parameter), summarize, 
-              q=quantile(value, probs=qs), 
-              qs=qs,
-              .parallel=attributes(D)$parallel)
-  dc$qs <- factor(dc$qs, labels=names(qs))
-  dcm <- as.data.frame(cast(dc, Parameter ~ qs, value=.(q)))
+                q=quantile(value, probs=qs), qs=qs,
+                .parallel=attributes(D)$parallel)
+    dc$qs <- factor(dc$qs, labels=names(qs))
+    dcm <- as.data.frame(cast(dc, Parameter ~ qs, value=.(q)))
   }
   # Plot, depending on continuous or categorical x
   if (!x.present) {
