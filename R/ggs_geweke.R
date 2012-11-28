@@ -2,11 +2,11 @@
 #'
 #' Dotplot of Geweke diagnostic.
 #
-#' @param D data frame whith the simulations
+#' @param D data frame whith the simulations.
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
-#' @param frac1 numeric, proportion of the first part of the chains selected. Defaults to 0.1
-#' @param frac2 numeric, proportion of the last part of the chains selected. Defaults to 0.5
-#' @return a ggplot object
+#' @param frac1 Numeric, proportion of the first part of the chains selected. Defaults to 0.1.
+#' @param frac2 Numeric, proportion of the last part of the chains selected. Defaults to 0.5.
+#' @return A \code{ggplot} object.
 #' @export
 #' @examples
 #' data(samples)

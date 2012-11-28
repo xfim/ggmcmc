@@ -1,10 +1,10 @@
-#' Density plots
+#' Density plots of the chains
 #'
 #' Density plots with the parameter distribution. For multiple chains, use colours to differentiate the distributions.
 #'
-#' @param D data frame whith the simulations
+#' @param D Data frame whith the simulations.
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
-#' @return a ggplot object
+#' @return A \code{ggplot} object.
 #' @export
 #' @examples
 #' data(samples)

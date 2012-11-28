@@ -2,9 +2,9 @@
 #'
 #' Plot a histogram of each of the parameters. Histograms are plotted combining all chains for each parameter.
 #
-#' @param D data frame whith the simulations
+#' @param D Data frame whith the simulations.
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
-#' @return a ggplot object
+#' @return A \code{ggplot} object.
 #' @export
 #' @examples
 #' data(samples)

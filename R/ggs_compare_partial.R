@@ -1,10 +1,11 @@
-#' Compare the distribution of the whole chain with only the last part of it
+#' Density plots comparing the distribution of the whole chain with only its last part.
 #'
+#' Density plots comparing the distribution of the whole chain with only its last part.
 #'
-#' @param D data frame whith the simulations
+#' @param D Data frame whith the simulations
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
-#' @param partial percentage of the chain to compare to, by default the last 10 percent.
-#' @return a ggplot object
+#' @param partial Percentage of the chain to compare to. Defaults to the last 10 percent.
+#' @return A \code{ggplot} object.
 #' @export
 #' @examples
 #' data(samples)

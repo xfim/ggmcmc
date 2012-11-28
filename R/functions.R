@@ -1,8 +1,10 @@
-#' Subset a ggs object to get only the parameters with a given name. 
+#' Subset a ggs object to get only the parameters with a given regular expression.
 #'
-#' @param D data frame with the data arranged and ready to be used by the rest of the ggmcmc functions. The dataframe has four columns, namely: Iteration, Parameter, value and Chain, and four attributes: nChains, nParameters, nIterations, parallel.
-#' @param x character vector with the partial name to subset
-#' @return D subset of the original D dataset given.
+#' Internal function used by the graphical functions to get only some of the parameters that follow a given regular expression.
+#'
+#' @param D Data frame with the data arranged and ready to be used by the rest of the ggmcmc functions. The dataframe has four columns, namely: Iteration, Parameter, value and Chain, and six attributes: nChains, nParameters, nIterations, nBurnin, nThin and parallel.
+#' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
+#' @return D Data frame that is a subset of the original D dataset given.
 get_family <- function(D, family=NA) {
   if (!is.character(family) | length(family)!=1) {
     stop("family must be a character vector with a single element")
@@ -17,28 +19,21 @@ get_family <- function(D, family=NA) {
   attr(D.sub, "nChains") <- attributes(D)$nChains
   attr(D.sub, "nParameters") <- length(unique(D.sub$Parameter))
   attr(D.sub, "nIterations") <- attributes(D)$nIterations
+  attr(D.sub, "nBurnin") <- attributes(D)$nBurnin
+  attr(D.sub, "nThin") <- attributes(D)$nThin
   attr(D.sub, "parallel") <- attributes(D)$parallel
   return(D=D.sub)
 }
 
 #' Spectral Density Estimate at Zero Frequency
 #'
-#' @param x a time series
-#' @return
+#' Compute the Spectral Density Estimate at Zero Frequency for a given chain.
+#'
+#' @param x A time series
+#' @return A vector with the spectral density estimate at zero frequency
+#' @export
 sde0f <- function(x) {
   m.ar <- ar(x)
   v0 <- m.ar$var.pred / (1-sum(m.ar$ar))^2
   return(v0)
-}
-
-#' Functions to manage the change in the labels of the Iterations when there
-# are present burnin, thinning and burnin+thinning parameters
-bt_format <- function() {
-  function(x) return( attributes(D)$nBurnin + (((x-1) * attributes(D)$nThin) + attributes(D)$nThin))
-}
-b_format <- function() {
-  function(x) return(x + attributes(D)$nBurnin)
-}
-t_format <- function() {
-  function(x) return( ((x-1) * attributes(D)$nThin) + attributes(D)$nThin)
 }

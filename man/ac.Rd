@@ -1,18 +1,23 @@
 \name{ac}
 \alias{ac}
-\title{Compute the autocorrelation of a single chain, for a specified amount of lags}
+\title{Calculate the autocorrelation of a single chain, for a specified amount of lags}
 \usage{
   ac(x, nLags)
 }
 \arguments{
-  \item{x}{vector with a chain of simulated values}
+  \item{x}{Vector with a chain of simulated values.}
 
-  \item{nLags}{maximum number of lags to take into account}
+  \item{nLags}{Numerical value with the maximum number of
+  lags to take into account.}
 }
 \value{
-  a matrix with the autocorrelations of every chain
+  A matrix with the autocorrelations of every chain.
 }
 \description{
+  Calculate the autocorrelation of a single chain, for a
+  specified amount of lags.
+}
+\details{
   Internal function used by
   \code{\link{ggs_autocorrelation}}.
 }

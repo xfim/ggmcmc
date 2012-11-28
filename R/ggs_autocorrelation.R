@@ -1,10 +1,12 @@
-#' Compute the autocorrelation of a single chain, for a specified amount of lags
+#' Calculate the autocorrelation of a single chain, for a specified amount of lags
+#'
+#' Calculate the autocorrelation of a single chain, for a specified amount of lags.
 #'
 #' Internal function used by \code{\link{ggs_autocorrelation}}.
 #'
-#' @param x vector with a chain of simulated values
-#' @param nLags maximum number of lags to take into account
-#' @return a matrix with the autocorrelations of every chain
+#' @param x Vector with a chain of simulated values.
+#' @param nLags Numerical value with the maximum number of lags to take into account.
+#' @return A matrix with the autocorrelations of every chain.
 #' @export
 #' @examples
 #' # Calculate the autocorrelation of a simple vector
@@ -21,10 +23,12 @@ ac <- function(x, nLags) {
 
 #' Plot an autocorrelation matrix
 #'
-#' @param D data frame whith the simulations
+#' Plot an autocorrelation matrix.
+#'
+#' @param D Data frame whith the simulations.
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
-#' @param nLags integer indicating the number of lags of the autocorrelation plot
-#' @return a ggplot object
+#' @param nLags Integer indicating the number of lags of the autocorrelation plot.
+#' @return A \code{ggplot} object.
 #' @export
 #' @examples
 #' data(samples)

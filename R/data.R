@@ -1,6 +1,6 @@
-#' Simulations of the parameters of a simple linear regression y = beta[0] + beta[1] * X + sigma with fake data
+#' Simulations of the parameters of a simple linear regression with fake data.
 #'
-#' A coda object containing simulated values from the posterior distribution of the intercept, slope and error of a simple linear regression with fake data. The purpose of the dataset is only to show the possibilities of the ggmcmc package.
+#' A coda object containing simulated values from the posterior distribution of the intercept, slope and error of a simple linear regression with fake data (y = beta[0] + beta[1] * X + sigma) . The purpose of the dataset is only to show the possibilities of the ggmcmc package.
 #'
 #' @name S
 #' @docType data

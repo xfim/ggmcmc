@@ -2,19 +2,26 @@
 \alias{ggs_autocorrelation}
 \title{Plot an autocorrelation matrix}
 \usage{
-  ggs_autocorrelation(D, nLags = 50)
+  ggs_autocorrelation(D, family = NA, nLags = 50)
 }
 \arguments{
-  \item{D}{data frame whith the simulations}
+  \item{D}{Data frame whith the simulations.}
 
-  \item{nLags}{integer indicating the number of lags of the
-  autocorrelation plot}
+  \item{family}{Name of the family of parameters to plot,
+  as given by a character vector or a regular expression. A
+  family of parameters is considered to be any group of
+  parameters with the same name but different numerical
+  value between square brackets (as beta[1], beta[2],
+  etc).}
+
+  \item{nLags}{Integer indicating the number of lags of the
+  autocorrelation plot.}
 }
 \value{
-  a ggplot object
+  A \code{ggplot} object.
 }
 \description{
-  Plot an autocorrelation matrix
+  Plot an autocorrelation matrix.
 }
 \examples{
 data(samples)

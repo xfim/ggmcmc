@@ -1,10 +1,12 @@
-#' Plot a dotplot of Potentian Scale Reduction Factor (Rhat), proposed by Gelman and Rubin 1992. The version from Bayesian Data Analysis (Gelman, Carlin, Stein and Rubin; Second Edition) is used.
+#' Dotplot of Potential Scale Reduction Factor (Rhat)
 #'
-#' At least two chains are required
+#' Plot a dotplot of Potential Scale Reduction Factor (Rhat), proposed by Gelman and Rubin (1992). The version from the second edition of Bayesian Data Analysis (Gelman, Carlin, Stein and Rubin) is used.
+#'
+#' Notice that at least two chains are required.
 #
-#' @param D data frame whith the simulations
+#' @param D Data frame whith the simulations
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
-#' @return a ggplot object
+#' @return A \code{ggplot} object.
 #' @export
 #' @examples
 #' data(samples)
@@ -25,20 +27,30 @@ ggs_Rhat <- function(D, family=NA) {
   psi.j <- ddply(D, .(Parameter), summarize, psi.j=mean(value), 
     .parallel=attributes(D)$parallel)
   b.df <- merge(psi.dot, psi.j)
+  # Apparently I can't pass the D's attributes as an argument to b.df
+  attr(b.df, "nIterations") <- attributes(D)$nIterations
+  # todo, try to make it pass properly
+  b.df <- cbind(b.df, nIterations=attributes(D)$nIterations)
   B <- ddply(b.df, .(Parameter), summarize, 
-    B=var(psi.j-psi.dot)*attributes(S)$nIterations,
+    B=var(psi.j-psi.dot)*nIterations,
+    #B=var(psi.j-psi.dot)*(attributes(D)$nIterations),
     .parallel=attributes(D)$parallel)
+  print(str(B))
   # Compute within-sequence variance using s2j
   s2j <- ddply(D, .(Parameter, Chain), summarize, s2j=var(value),
     .parallel=attributes(D)$parallel)
   W <- ddply(s2j, .(Parameter), summarize, W=mean(s2j),
     .parallel=attributes(D)$parallel)
   # Merge BW and compute the weighted average (wa, var.hat+) and the Rhat
+  # todo, again try to pass it properly
   BW <- merge(B, W)
+  BW <- cbind(BW, nIterations=attributes(D)$nIterations)
   BW <- ddply(BW, .(Parameter), transform, 
     wa=( 
-      (((attributes(S)$nIterations-1)/attributes(S)$nIterations )* W) + 
-      ((1/ attributes(S)$nIterations)*B) ),
+      #(((attributes(D)$nIterations-1)/attributes(D)$nIterations )* W) + 
+      #((1/ attributes(D)$nIterations)*B) ),
+      (((nIterations-1)/nIterations )* W) + 
+      ((1/ nIterations)*B) ),
     .parallel=attributes(D)$parallel)
   BW <- ddply(BW, .(Parameter), transform, Rhat=sqrt(wa/W),
     .parallel=attributes(D)$parallel)

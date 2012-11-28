@@ -1,14 +1,16 @@
-#' Wrapper for creating a single pdf file with all plots that ggmcmc can produce.
+#' Wrapper function that creates a single pdf file with all plots that ggmcmc can produce.
+#'
+#' ggmcmc is simply a wrapper function that generates a pdf file with all the potential plots that the package can produce.
 #'
 #' Notice that caterpillar plots are only created when there are multiple parameters within the same family. A family of parameters is considered to be all parameters that have the same name (usually the same greek letter) but different number within square brackets (such as alpha[1], alpha[2], ...).
 #'
-#' @param D data frame whith the simulations, previously arranged using \code{\link{ggs}}
-#' @param file name of the file to create with the plots. By default, use "ggmcmc-output.pdf"
+#' @param D Data frame whith the simulations, previously arranged using \code{\link{ggs}}
+#' @param file Character vector with the name of the file to create. By default, use "ggmcmc-output.pdf"
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
-#' @param param.page numerical, number of parameters to plot for each page. Defaults to 5.
-#' @param width width of the pdf display, in inches. Defaults to 7.
-#' @param height of the pdf display, in inches. Defaults to 10.
-#' @param ... other options for the pdf device
+#' @param param.page Numerical, number of parameters to plot for each page. Defaults to 5.
+#' @param width Width of the pdf display, in inches. Defaults to 7.
+#' @param height Height of the pdf display, in inches. Defaults to 10.
+#' @param ... Other options passed to the pdf device.
 #' @export
 #' @examples
 #' data(samples)

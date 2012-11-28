@@ -1,6 +1,6 @@
 \name{ggs_chain}
 \alias{ggs_chain}
-\title{Manage each chain}
+\title{Auxiliary function that extracts information from a single chain.}
 \usage{
   ggs_chain(s)
 }
@@ -11,6 +11,7 @@
   D data frame with the chain arranged
 }
 \description{
-  Manage each chain
+  Auxiliary function that extracts information from a
+  single chain.
 }
 

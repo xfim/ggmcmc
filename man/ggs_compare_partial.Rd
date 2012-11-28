@@ -1,21 +1,28 @@
 \name{ggs_compare_partial}
 \alias{ggs_compare_partial}
-\title{Compare the distribution of the whole chain with only the last part of it}
+\title{Density plots comparing the distribution of the whole chain with only its last part.}
 \usage{
-  ggs_compare_partial(D, partial = 0.1)
+  ggs_compare_partial(D, family = NA, partial = 0.1)
 }
 \arguments{
-  \item{D}{data frame whith the simulations}
+  \item{D}{Data frame whith the simulations}
 
-  \item{partial}{percentage of the chain to compare to, by
-  default the last 10 percent.}
+  \item{family}{Name of the family of parameters to plot,
+  as given by a character vector or a regular expression. A
+  family of parameters is considered to be any group of
+  parameters with the same name but different numerical
+  value between square brackets (as beta[1], beta[2],
+  etc).}
+
+  \item{partial}{Percentage of the chain to compare to.
+  Defaults to the last 10 percent.}
 }
 \value{
-  a ggplot object
+  A \code{ggplot} object.
 }
 \description{
-  Compare the distribution of the whole chain with only the
-  last part of it
+  Density plots comparing the distribution of the whole
+  chain with only its last part.
 }
 \examples{
 data(samples)
