@@ -25,7 +25,6 @@ Collate:
     'ggmcmc.R'
     'ggs.R'
     'ggs_autocorrelation.R'
-    'ggs_caterpilar.R'
     'ggs_compare_partial.R'
     'ggs_crosscorrelation.R'
     'ggs_density.R'
@@ -37,3 +36,4 @@ Collate:
     'functions.R'
     'ggs_Rhat.R'
     'ggs_geweke.R'
+    'ggs_caterpillar.R'
