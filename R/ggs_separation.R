@@ -25,8 +25,8 @@ ggs_separation <- function(ppd, data, xlab = "", ylab = "", title = "", labels =
         ppd[[i]] <- as.data.frame(ppd[[i]], row.names = NULL)
         names(ppd[[i]]) <- "ppd"
         ppd[[i]]$label = labels[i] #add label to each list element
-        ppd[[i]] <- ppd[[i]][order(ppd[[i]]$ppd, ppd[[i]]$label), ] #order ppd within labels
         ppd[[i]]$data <- data
+        ppd[[i]] <- ppd[[i]][order(ppd[[i]]$ppd, ppd[[i]]$label), ] #order ppd within labels
         ppd[[i]]$id = seq_along(ppd[[i]]$data) #add index for each list element
       }
       #bind and replicate data for each list element
