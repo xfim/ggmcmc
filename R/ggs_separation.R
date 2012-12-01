@@ -65,18 +65,3 @@ ggs_separation <- function(ppd, data, xlab = "", ylab = "", title = "", labels =
     
     return(p)
   }
-
-
-test.out <- lapply(list(mod.ppd, base.ppd, null.ppd), function(x) as.data.frame(t(as.matrix(x))))
-labels = c("m1", "m2", "m3")
-test.out <- lapply(test.out, rowMeans)
-test.out <- lapply(test.out, as.numeric)
-
-for(i in 1:length(test.out)) {
-  test.out[[i]] <- as.data.frame(test.out[[i]], row.names = NULL)
-  test.out[[i]]$label <- labels[i]
-  test.out[[i]]$data <- data$onset
-  test.out[[i]]$id <- seq_along(data$onset)
-}
-test <- do.call(rbind, test.out)
-names(test) <- c("ppd", "label", "response", "id")
