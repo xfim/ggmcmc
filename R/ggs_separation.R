@@ -25,12 +25,13 @@ ggs_separation <- function(ppd, data, xlab = "", ylab = "", title = "")
     #create an index for the y variable and binds together id, y, and ppd
     df <- data.frame(response = as.integer(data), ppd.df)
     df <- df[order(df$mean), ] #order df by y values
-    df$id = seq_along(data)
+    df$id = seq_along(data) #create index
     p <- ggplot(df, aes(x = id)) +
          geom_line(aes(x = id, y = response, color = "#E77471")) +
          geom_line(aes(x = id, y = mean)) +
          xlab(xlab) + ylab(ylab) + ggtitle(title) + theme_bw() +
          scale_x_discrete(breaks = NULL) +
+         scale_y_continuous() +
          theme(legend.position = "none", axis.text.x = element_blank())
 
     return(p)
