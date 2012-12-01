@@ -27,12 +27,11 @@ ggs_separation <- function(ppd, data, xlab = "", ylab = "", title = "", labels =
         ppd[[i]]$label = labels[i] #add label to each list element
         ppd[[i]] <- ppd[[i]][order(ppd[[i]]$ppd, ppd[[i]]$label), ] #order ppd within labels
         ppd[[i]]$data <- data
-        ppd[[i]]$id = seq_along(data) #add index for each list element
+        ppd[[i]]$id = seq_along(ppd[[i]]$data) #add index for each list element
       }
       #bind and replicate data for each list element
       df <- do.call(rbind, ppd)
-#      df <- data.frame(response = rep(as.integer(data), nrow(ppd) / length(data)), ppd)
-      names(df) <- c("ppd", "label", "id", "response")
+      names(df) <- c("ppd", "label", "response", "id")
     }
     
     else if(is.mcmc(ppd) | is.mcmc.list(ppd)) { #if user passes a single ppd
@@ -56,7 +55,8 @@ ggs_separation <- function(ppd, data, xlab = "", ylab = "", title = "", labels =
          geom_line(aes(x = id, y = response, color = "#E77471")) +
          geom_line(aes(x = id, y = ppd)) +
          xlab(xlab) + ylab(ylab) + ggtitle(title) + theme_bw() +
-         scale_x_discrete(breaks = NULL) + scale_y_continuous() +
+         scale_x_discrete(breaks = NULL) +
+         scale_y_continuous() +
          theme(legend.position = "none", axis.text.x = element_blank())
 
     #add faceting if applicable
@@ -75,6 +75,8 @@ test.out <- lapply(test.out, as.numeric)
 for(i in 1:length(test.out)) {
   test.out[[i]] <- as.data.frame(test.out[[i]], row.names = NULL)
   test.out[[i]]$label <- labels[i]
+  test.out[[i]]$data <- data$onset
   test.out[[i]]$id <- seq_along(data$onset)
 }
 test <- do.call(rbind, test.out)
+names(test) <- c("ppd", "label", "response", "id")
