@@ -1,4 +1,4 @@
-ggs_separation <- function(ppd, data)
+ggs_separation <- function(ppd, data, xlab = "", ylab = "", title = "")
   {
     if(is.mcmc(ppd) | is.mcmc.list(ppd)) #check inputs
       ppd <- as.matrix(ppd)
@@ -28,8 +28,9 @@ ggs_separation <- function(ppd, data)
     df$id = seq_along(data)
     p <- ggplot(df, aes(x = id)) +
          geom_line(aes(x = id, y = response, color = "#E77471")) +
-         geom_line(aes(x = id, y = mean, size = hi - lo)) +
-         xlab("") + ylab("") + theme_bw() + 
+         geom_line(aes(x = id, y = mean)) +
+         xlab(xlab) + ylab(ylab) + ggtitle(title) + theme_bw() +
+         scale_x_discrete(breaks = NULL) +
          theme(legend.position = "none", axis.text.x = element_blank())
 
     return(p)
