@@ -1,3 +1,16 @@
+#' Separation plot for models with binary response variables
+#' @param ppd mcmc or mcmc.list, or list of mcmc or mcmc.list objects which contains posterior predictions. If ia list of posterior predictive distributions are passed, the names of the models are the names of the objects in the list.
+#' @param data a vector which contains the binary response variable
+#' @param xlab label for the x-axis
+#' @param ylab label for the y-axis
+#' @param title title for the entire plot
+#' @param labels labels for facets if multiple posterior predictive distributions are passed and the desired facet labels are different from the object names
+#' @return A \code{ggplot} object
+#' @export
+#' @examples
+#' ggs_separation(mod.ppd, data$response)
+#' ggs_separation(list(mod.ppd, null.ppd), data$response, label = c("alt model", "null model"))
+
 ggs_separation <- function(ppd, data, xlab = "", ylab = "", title = "", labels = NULL)
   {
     if(is.vector(data) == FALSE)
@@ -7,13 +20,13 @@ ggs_separation <- function(ppd, data, xlab = "", ylab = "", title = "", labels =
     
     if(is.list(ppd) & !is.mcmc.list(ppd)) { #if user pases a list of ppds
       
-#      if(length(labels) != length(ppd))
-#        stop("The number of labels passed does not match the number of ppds.")
-
+      if(length(labels) != length(ppd))
+        stop("The number of labels passed does not match the number of ppds.")
+      
       ppd <- lapply(ppd, function(x) as.data.frame(t(as.matrix(x))))
-#      check <- unique(unlist(lapply(ppd, length))) #find the length of each list element
-#      if(length(check) != 1) #check to make sure all elements have the same length
-#        stop("Posterior predictive distribution length mismatch.")
+      check <- unique(unlist(lapply(ppd, length))) #find the length of each list element
+      if(length(check) != 1) #check to make sure all elements have the same length
+        stop("Posterior predictive distribution length mismatch.")
 #      else if(length(check) != length(data)) #check lengths against response variable
 #        stop("The length of one of the posterior prediction matrices does not match
 #              the length of the response variable vector.")
@@ -32,6 +45,7 @@ ggs_separation <- function(ppd, data, xlab = "", ylab = "", title = "", labels =
       #bind and replicate data for each list element
       df <- do.call(rbind, ppd)
       names(df) <- c("ppd", "label", "response", "id")
+      df$label <- reorder(df$label, df$ppd)
     }
     
     else if(is.mcmc(ppd) | is.mcmc.list(ppd)) { #if user passes a single ppd
