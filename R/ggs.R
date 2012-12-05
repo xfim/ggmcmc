@@ -92,7 +92,6 @@ ggs <- function(S, description=NA, burnin=FALSE, inc_warmup=FALSE, stan_include_
       }
       attr(D, "description") <- as.character(sys.call()[2]) # use the name of the source object
     }
-    print(attributes(D)$description)
     # Whether parallel computing is desired
     attr(D, "parallel") <- parallel
     return(D)
