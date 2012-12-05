@@ -84,14 +84,15 @@ ggs <- function(S, description=NA, burnin=FALSE, inc_warmup=FALSE, stan_include_
     # Thinning interval
     attr(D, "nThin") <- nThin
     # Descriptive text
-    if (is.character(description)) {
-      attr(D, "description") <- descripion
+    if (is.character(description)) { # if the description is given, us it when it is a character string
+      attr(D, "description") <- description
     } else {
-      if (!is.na(description)) {
-        print("description is not a text string. NA is used instead.")
+      if (!is.na(description)) { # if it is not a character string and not NA, show an informative message
+        print("description is not a text string. The name of the imported object is used instead.")
       }
-      attr(D, "description") <- NA
+      attr(D, "description") <- as.character(sys.call()[2]) # use the name of the source object
     }
+    print(attributes(D)$description)
     # Whether parallel computing is desired
     attr(D, "parallel") <- parallel
     return(D)
