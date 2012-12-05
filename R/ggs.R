@@ -87,7 +87,9 @@ ggs <- function(S, description=NA, burnin=FALSE, inc_warmup=FALSE, stan_include_
     if (is.character(description)) {
       attr(D, "description") <- descripion
     } else {
-      print("description is not a text string. NA is used instead.")
+      if (!is.na(description)) {
+        print("description is not a text string. NA is used instead.")
+      }
       attr(D, "description") <- NA
     }
     # Whether parallel computing is desired
