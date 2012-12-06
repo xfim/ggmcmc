@@ -35,7 +35,6 @@ ggs_Rhat <- function(D, family=NA) {
     B=var(psi.j-psi.dot)*nIterations,
     #B=var(psi.j-psi.dot)*(attributes(D)$nIterations),
     .parallel=attributes(D)$parallel)
-  print(str(B))
   # Compute within-sequence variance using s2j
   s2j <- ddply(D, .(Parameter, Chain), summarize, s2j=var(value),
     .parallel=attributes(D)$parallel)
