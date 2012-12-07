@@ -105,9 +105,9 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
 
   # Manage multiple models
   if (multi==TRUE & horizontal==TRUE) 
-    f <- f + facet_grid(Model ~ ., scale="free", space="free")
+    f <- f + facet_grid(Model ~ ., scales="free", space="free")
   if (multi==TRUE & horizontal==FALSE)
-    f <- f + facet_grid(. ~ Model, scale="free", space="free")
+    f <- f + facet_grid(. ~ Model, scales="free", space="free")
 
   # Manage axis labels
   if (!x.present & horizontal==FALSE) {
