@@ -33,9 +33,9 @@
   \item{...}{Other options passed to the pdf device.}
 }
 \description{
-  ggmcmc is simply a wrapper function that generates a pdf
-  file with all the potential plots that the package can
-  produce.
+  \code{ggmcmc()} is simply a wrapper function that
+  generates a pdf file with all the potential plots that
+  the package can produce.
 
   ggmcmc is a tool for assessing and diagnosing convergence
   of Markov Chain Monte Carlo simulations, as well as for

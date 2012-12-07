@@ -46,7 +46,7 @@
   of models in the list. It is only used in case of
   multiple models and when the list of ggs objects given at
   \code{D} is not named. Otherwise, the names in the list
-  is used.}
+  are used.}
 }
 \value{
   A \code{ggplot} object.

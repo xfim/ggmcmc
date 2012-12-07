@@ -2,8 +2,9 @@
 \alias{ggs}
 \title{Import MCMC samples into a ggs object than can be used by all ggs_* graphical functions.}
 \usage{
-  ggs(S, burnin = FALSE, inc_warmup = FALSE,
-    stan_include_auxiliar = FALSE, parallel = TRUE)
+  ggs(S, description = NA, burnin = FALSE,
+    inc_warmup = FALSE, stan_include_auxiliar = FALSE,
+    parallel = TRUE)
 }
 \arguments{
   \item{S}{Either a \code{mcmc.list} object with samples
@@ -14,6 +15,9 @@
   files is assumed to be the order of the chains). ggmcmc
   guesses what is the original object and tries to import
   it accordingly.}
+
+  \item{description}{Character vector giving a short
+  descriptive text that identifies the model.}
 
   \item{burnin}{Logical or numerical value. When logical
   and TRUE, the number of samples in the burnin period will
@@ -41,18 +45,20 @@
   D A data frame with the data arranged and ready to be
   used by the rest of the \code{ggmcmc} functions. The data
   frame has four columns, namely: Iteration, Parameter,
-  value and Chain, and six attributes: nChains,
-  nParameters, nIterations, nBurnin, nThin and parallel.
+  value and Chain, and seven attributes: nChains,
+  nParameters, nIterations, nBurnin, nThin, description and
+  parallel.
 }
 \description{
   This function manages MCMC samples from different sources
   (JAGS, MCMCpack, STAN -both via rstan and via csv files-)
   and converts them into a data frame. The resulting data
   frame has four columns (Iteration, Parameter, value,
-  Chain) and six attributes (nChains, nParameters,
-  nIterations, nBurnin, nThin and parallel). The ggs object
-  returned is then used as the input of the ggs_* functions
-  to actually plot the different convergence diagnostics.
+  Chain) and seven attributes (nChains, nParameters,
+  nIterations, nBurnin, nThin, description and parallel).
+  The ggs object returned is then used as the input of the
+  ggs_* functions to actually plot the different
+  convergence diagnostics.
 }
 \examples{
 # Assign 'D' to be a data frame suitable for \\code{ggmcmc} functions from
