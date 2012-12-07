@@ -16,8 +16,7 @@ Depends:
 Suggests:
     foreach,
     coda,
-    rjags,
-    rstan
+    rjags
 License: GPL-2
 URL: http://xavier-fim.net/packages/ggmcmc
 Encoding: UTF-8
