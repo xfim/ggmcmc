@@ -2,9 +2,9 @@
 #'
 #' Internal function used by the graphical functions to get only some of the parameters that follow a given regular expression.
 #'
-#' @param D Data frame with the data arranged and ready to be used by the rest of the ggmcmc functions. The dataframe has four columns, namely: Iteration, Parameter, value and Chain, and six attributes: nChains, nParameters, nIterations, nBurnin, nThin and parallel.
+#' @param D Data frame with the data arranged and ready to be used by the rest of the ggmcmc functions. The dataframe has four columns, namely: Iteration, Parameter, value and Chain, and seven attributes: nChains, nParameters, nIterations, nBurnin, nThin, description and parallel.
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
-#' @return D Data frame that is a subset of the original D dataset given.
+#' @return D Data frame that is a subset of the given D dataset.
 get_family <- function(D, family=NA) {
   if (!is.character(family) | length(family)!=1) {
     stop("family must be a character vector with a single element")
@@ -21,6 +21,7 @@ get_family <- function(D, family=NA) {
   attr(D.sub, "nIterations") <- attributes(D)$nIterations
   attr(D.sub, "nBurnin") <- attributes(D)$nBurnin
   attr(D.sub, "nThin") <- attributes(D)$nThin
+  attr(D.sub, "description") <- attributes(D)$description
   attr(D.sub, "parallel") <- attributes(D)$parallel
   return(D=D.sub)
 }
