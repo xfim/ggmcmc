@@ -21,7 +21,10 @@ ggs <- function(S, description=NA, burnin=FALSE, inc_warmup=FALSE, stan_include_
   # Manage stan output first because it is firstly converted into an mcmc.list
   #
   if (class(S)=="stanfit") { 
-    S <- rstan::extract(S, inc_warmup=inc_warmup)
+    if (inc_warmup) warning("inc_warmup must be 'FALSE', so it is ignored.")
+    S <- as.array(S)
+    # If someday rstan gets into CRAN the more elegant 
+    # rstan::extract(S, inc_warmup=inc_warmup) may be used
     S <- do.call(mcmc.list, alply(S, 2, coda::mcmc))
     # Exclude, by default, lp parameter
     if (!stan_include_auxiliar) {
