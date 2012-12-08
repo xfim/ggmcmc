@@ -36,3 +36,4 @@ Collate:
     'ggs_Rhat.R'
     'ggs_geweke.R'
     'ggs_caterpillar.R'
+    'globals.R'
