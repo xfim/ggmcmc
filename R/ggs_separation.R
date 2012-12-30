@@ -1,81 +1,38 @@
 #' Separation plot for models with binary response variables
-#' @param ppd mcmc or mcmc.list, or list of mcmc or mcmc.list objects which contains posterior predictions. If ia list of posterior predictive distributions are passed, the names of the models are the names of the objects in the list.
+#' @param ppd object of type mcmc or mcmc.list, which contains posterior predictions. The number of columns of each element must be the length of the response variable vector and the number of rows of each element of the object should be the number of MCMC iterations run
 #' @param data a vector which contains the binary response variable
 #' @param xlab label for the x-axis
 #' @param ylab label for the y-axis
 #' @param title title for the entire plot
-#' @param labels labels for facets if multiple posterior predictive distributions are passed and the desired facet labels are different from the object names
 #' @return A \code{ggplot} object
 #' @export
 #' @examples
-#' ggs_separation(mod.ppd, data$response)
-#' ggs_separation(list(mod.ppd, null.ppd), data$response, label = c("alt model", "null model"))
+#' ggs_separation(ppd, df$response)
 
-ggs_separation <- function(ppd, data, xlab = "", ylab = "", title = "", labels = NULL)
+ggs_separation <- function(ppd, data, xlab = "", ylab = "", title = "")
   {
     if(is.vector(data) == FALSE)
       stop("The response variable argument is not a vector.")
     if(!(max(data) == 1 & min(data) == 0))
       stop("This plot is designed for binary response variables.")
-    
-    if(is.list(ppd) & !is.mcmc.list(ppd)) { #if user pases a list of ppds
-      
-      if(length(labels) != length(ppd))
-        stop("The number of labels passed does not match the number of ppds.")
-      
-      ppd <- lapply(ppd, function(x) as.data.frame(t(as.matrix(x))))
-      check <- unique(unlist(lapply(ppd, length))) #find the length of each list element
-      if(length(check) != 1) #check to make sure all elements have the same length
-        stop("Posterior predictive distribution length mismatch.")
-#      else if(length(check) != length(data)) #check lengths against response variable
-#        stop("The length of one of the posterior prediction matrices does not match
-#              the length of the response variable vector.")
-      ppd <- lapply(ppd, rowMeans) #find ppd means
-      ppd <- lapply(ppd, as.numeric)
-      multi = TRUE
+    if(class(ppd) != "mcmc.list")
+      stop("The ppd argument is not an mcmc.list.")
 
-      for(i in 1:length(ppd)) {
-        ppd[[i]] <- as.data.frame(ppd[[i]], row.names = NULL)
-        names(ppd[[i]]) <- "ppd"
-        ppd[[i]]$label = labels[i] #add label to each list element
-        ppd[[i]]$data <- data
-        ppd[[i]] <- ppd[[i]][order(ppd[[i]]$ppd, ppd[[i]]$label), ] #order ppd within labels
-        ppd[[i]]$id = seq_along(ppd[[i]]$data) #add index for each list element
-      }
-      #bind and replicate data for each list element
-      df <- do.call(rbind, ppd)
-      names(df) <- c("ppd", "label", "response", "id")
-      df$label <- reorder(df$label, df$ppd)
-    }
-    
-    else if(is.mcmc(ppd) | is.mcmc.list(ppd)) { #if user passes a single ppd
-      multi = FALSE
-      ppd <- as.matrix(ppd)
-      if(length(data) != length(ppd[2,]))
-        stop("The length of the posterior predictive distribution matrix does not match
-              the length of the response variable vector.")
-      ppd <- as.data.frame(t(ppd)) #transpose and cast ppd as a df
-      ppd <- rowMeans(ppd) #find ppd mean
-      ppd <- as.numeric(ppd)
+    ppd <- as.data.frame(t(apply(ldply(ppd), 2, quantile, c(.5, .025, .975))))
+    names(ppd) <- c("mean", "lo", "hi")
+    ppd$response <- data
 
-      #create an index for the y variable and binds together id, y, and ppd
-      df <- data.frame(response = as.integer(data), ppd)
-      df <- df[order(df$ppd), ] #order df by y values
-      df$id = seq_along(data) #create index
-    }
+    ppd <- ppd[order(ppd$mean), ]
+    ppd$id <- seq_along(data)
+    row.names(ppd) <- NULL
 
-    #create plot
-    p <- ggplot(df, aes(x = id)) +
-         geom_line(aes(x = id, y = response, color = "#E77471")) +
-         geom_line(aes(x = id, y = ppd)) +
-         xlab(xlab) + ylab(ylab) + ggtitle(title) + theme_bw() +
-         scale_x_discrete(breaks = NULL) +
-         scale_y_continuous() +
-         theme(legend.position = "none", axis.text.x = element_blank())
-
-    #add faceting if applicable
-    if(multi == TRUE)
-      p <- p + facet_grid(label ~ ., scale = "free", space = "free")
+    p <- ggplot(ppd, aes(x = id)) +
+      geom_line(aes(x = id, y = mean)) +
+      geom_ribbon(aes(y = mean, ymin = lo, ymax = hi), alpha = 0.25) +
+      geom_vline(xintercept = which(ppd$response == 1), colour = "red") +
+      scale_x_discrete(breaks = NULL) + 
+      xlab(xlab) + ylab(ylab) + ggtitle(title) + 
+      theme(legend.position = "none", axis.text.x = element_blank())
     
     return(p)
   }
