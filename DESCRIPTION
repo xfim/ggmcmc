@@ -38,3 +38,4 @@ Collate:
     'ggs_geweke.R'
     'ggs_caterpillar.R'
     'ggs_separation.R'
+    'ggs_rocplot.R'
