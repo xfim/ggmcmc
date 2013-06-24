@@ -28,7 +28,7 @@ ggs <- function(S, description=NA, burnin=FALSE, inc_warmup=FALSE, stan_include_
     S <- do.call(mcmc.list, alply(S, 2, coda::mcmc))
     # Exclude, by default, lp parameter
     if (!stan_include_auxiliar) {
-      S <- S[,1:(dim(S[[1]])[2]-1)] # delete the last column, the last parameter, which is lp__
+      S <- S[,1:(dim(S[[1]])[2]-1),drop=FALSE] # delete the last column, the last parameter, which is lp__
     }
   }
   #
@@ -44,7 +44,7 @@ ggs <- function(S, description=NA, burnin=FALSE, inc_warmup=FALSE, stan_include_
     S <- S.out
     # Exclude, by default, lp parameter
     if (!stan_include_auxiliar) {
-      S <- S[,-c(1:3)] # delete the last column, the last parameter, which is lp__
+      S <- S[,-c(1:3),drop=FALSE] # delete the last column, the last parameter, which is lp__
     }
   }
   #
