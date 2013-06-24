@@ -18,7 +18,7 @@ ggs_crosscorrelation <- function(D, family=NA, absolute.scale=TRUE) {
   if (attributes(D)$nParameters <= 1) {
     stop("Can't calculate crosscorrelations with a single chain")
   } 
-  X <- cast(D, Iteration + Chain ~ Parameter)
+  X <- dcast(D, Iteration + Chain ~ Parameter)
   # Chain management is not easy
   bc.cc <- melt(cor(as.matrix(X[,-c(1, 2)])))
   # Need to revert parameter names
