@@ -22,11 +22,11 @@ ggs_crosscorrelation <- function(D, family=NA, absolute.scale=TRUE) {
   # Chain management is not easy
   bc.cc <- melt(cor(as.matrix(X[,-c(1, 2)])))
   # Need to revert parameter names
-  bc.cc$X1 <- factor(bc.cc$X1, labels=levels(D$Parameter))
-  bc.cc$X2 <- factor(bc.cc$X2, labels=levels(D$Parameter))
-  bc.cc$value[bc.cc$X1==bc.cc$X2] <- NA
+  bc.cc$Var1 <- factor(bc.cc$Var1, labels=levels(D$Parameter))
+  bc.cc$Var2 <- factor(bc.cc$Var2, labels=levels(D$Parameter))
+  bc.cc$value[bc.cc$Var1==bc.cc$Var2] <- NA
   # Plot
-  f <- ggplot(bc.cc, aes(x=X1, y=X2)) + 
+  f <- ggplot(bc.cc, aes(x=Var1, y=Var2)) +
     geom_tile(aes(fill=value)) +
     xlab("") + ylab("") + theme(axis.text.x=element_text(angle=90))
     if (absolute.scale) {
