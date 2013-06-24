@@ -12,11 +12,12 @@ Author: Xavier Fernández i Marín <xavier.fim@gmail.com>
 Depends:
     plyr,
     reshape,
+    coda,
     ggplot2
 Suggests:
     foreach,
-    coda,
-    rjags
+    rjags,
+    rstan
 License: GPL-2
 URL: http://xavier-fim.net/packages/ggmcmc
 Encoding: UTF-8
