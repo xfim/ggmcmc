@@ -11,7 +11,7 @@ Maintainer: Xavier Fernández i Marín <xavier.fim@gmail.com>
 Author: Xavier Fernández i Marín <xavier.fim@gmail.com>
 Depends:
     plyr,
-    reshape,
+    reshape2,
     ggplot2
 Suggests:
     foreach,

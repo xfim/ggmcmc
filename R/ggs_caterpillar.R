@@ -58,7 +58,7 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
       dc <- ddply(D[[i]], .(Parameter), summarize,
                   q=quantile(value, probs=qs), qs=qs)
       dc$qs <- factor(dc$qs, labels=names(qs))
-      dcm <- cast(dc, Parameter ~ qs, value=.(q))
+      dcm <- dcast(dc, Parameter ~ qs, value=.(q))
       D[[i]] <- dcm # replace list element with transformed list element
     }
     #
@@ -79,7 +79,7 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
                 q=quantile(value, probs=qs), qs=qs,
                 .parallel=attributes(D)$parallel)
     dc$qs <- factor(dc$qs, labels=names(qs))
-    dcm <- as.data.frame(cast(dc, Parameter ~ qs, value=.(q)))
+    dcm <- as.data.frame(dcast(dc, Parameter ~ qs, value=.(q)))
   }
 
   #

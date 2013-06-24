@@ -116,7 +116,7 @@ ggs_chain <- function(s) {
 
   # Prepare the dataframe
   d <- data.frame(Iteration=iter, as.matrix(unclass(s)))
-  D <- melt(d, id.vars=c("Iteration"), variable_name="Parameter")
+  D <- melt(d, id.vars=c("Iteration"), variable.name="Parameter")
 
   # Revert the name of the parameters to their original names
   levels(D$Parameter) <- name.chains
