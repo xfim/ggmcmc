@@ -20,7 +20,7 @@ ggs_crosscorrelation <- function(D, family=NA, absolute.scale=TRUE) {
   } 
   X <- cast(D, Iteration + Chain ~ Parameter)
   # Chain management is not easy
-  bc.cc <- melt(cor(as.matrix(X[,-c(1, 2)])))
+  bc.cc <- melt(cor(as.matrix(X[,-c(1, 2),drop=FALSE])))
   # Need to revert parameter names
   bc.cc$X1 <- factor(bc.cc$X1, labels=levels(D$Parameter))
   bc.cc$X2 <- factor(bc.cc$X2, labels=levels(D$Parameter))
