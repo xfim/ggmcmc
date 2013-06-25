@@ -38,12 +38,8 @@ ggs_autocorrelation <- function(D, family=NA, nLags=50) {
   if (!is.na(family)) {
     D <- get_family(D, family=family)
   }
-  # I'm sure that this can be done directly through ddply, but have fight with
-  # it for too many time, so it is somewhat dirty
-  # Pass nLags as a variable of the dataframe, instead of a single number coming
-  # from the arguments of the function.
-  D.lags <- cbind(D, nLags=nLags)
-  wc.ac <- ddply(D.lags, c("Parameter", "Chain"), summarise, 
+  
+  wc.ac <- ddply(D, c("Parameter", "Chain"), here(summarise), .inform=TRUE,
     Autocorrelation=ac(value, nLags), 
     Lag=1:nLags,
     .parallel=attributes(D)$parallel)
