@@ -39,6 +39,12 @@ ggs_autocorrelation <- function(D, family=NA, nLags=50) {
     D <- get_family(D, family=family)
   }
   
+  nIter <- attr(D, 'nIteration')
+  if (nIter < nLags) {
+    warning(sprintf('nLags=%d is larger than number of iterations, computing until max possible lag %d', nLags, nIter))
+    nLags <- nIter
+  }
+
   wc.ac <- ddply(D, c("Parameter", "Chain"), here(summarise), .inform=TRUE,
     Autocorrelation=ac(value, nLags), 
     Lag=1:nLags,
