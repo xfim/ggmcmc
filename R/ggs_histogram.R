@@ -15,7 +15,7 @@ ggs_histogram <- function(D, family=NA) {
     D <- get_family(D, family=family)
   }
   # Plot
-  f <- ggplot(D, aes(x=value)) + geom_histogram() + 
+  f <- ggplot(D, aes(x=value)) + geom_histogram(position="identity") + 
     facet_wrap(~ Parameter, ncol=1, scales="free")
   return(f)
 }
