@@ -79,7 +79,7 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
                 q=quantile(value, probs=qs), qs=qs,
                 .parallel=attributes(D)$parallel)
     dc$qs <- factor(dc$qs, labels=names(qs))
-    dcm <- as.data.frame(dcast(dc, Parameter ~ qs, value=.(q)))
+    dcm <- dcast(dc, Parameter ~ qs, value.var="q")
   }
 
   #
