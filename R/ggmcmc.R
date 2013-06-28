@@ -101,8 +101,10 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, param.page=5, width=7
   cat("Plotting crosscorrelation plot\n")
   print(ggs_crosscorrelation(D))
 
-  cat("Plotting Potential Scale Reduction Factors\n")
-  print(ggs_Rhat(D))
+  if (attributes(D)$nChain > 1) {                         # only in case of multiple chains
+    cat("Plotting Potential Scale Reduction Factors\n")
+    print(ggs_Rhat(D))
+  }
 
   cat("Plotting Geweke Diagnostic\n")
   print(ggs_geweke(D))
