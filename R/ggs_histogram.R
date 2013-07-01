@@ -4,18 +4,32 @@
 #
 #' @param D Data frame whith the simulations.
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
+#' @param bins integer indicating the total number of bins in which to divide the histogram. Defaults to 30, which is the same as geom_histogram()
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
 #' data(samples)
 #' ggs_histogram(ggs(S, parallel=FALSE))
-ggs_histogram <- function(D, family=NA) {
+ggs_histogram <- function(D, family=NA, bins=30) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {
     D <- get_family(D, family=family)
   }
+  # Calculate binwidths by parameter, based on the total number of bins
+  calc.bin <- function(x, bins=bins) {
+    mn <- min(x)
+    mx <- max(x)
+    bw <- (mx-mn)/bins
+    z <- ggplot2:::bin(x, binwidth=bw)
+    return(z[,c("x", "width", "count")])
+  }
+  # Manually generate the histogram
+  l <- unlist(dlply(D, .(Parameter), here(summarize), calc.bin(value, bins)), recursive=FALSE)
+  dl <- dim(l[[1]]) # only the dimensions of the first parameter are needed to recreate Parameter names
+  ds <- rbind.fill(l)
+  ds <- cbind(Parameter=gl(attributes(D)$nParameter, dl[1], labels=levels(D$Parameter)), ds)
   # Plot
-  f <- ggplot(D, aes(x=value)) + geom_histogram(position="identity") + 
+  f <- ggplot(ds, aes(x=x, y=count, width=width)) + geom_bar(stat="identity", position="identity") +
     facet_wrap(~ Parameter, ncol=1, scales="free")
   return(f)
 }
