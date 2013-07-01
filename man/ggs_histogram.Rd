@@ -2,7 +2,7 @@
 \alias{ggs_histogram}
 \title{Histograms of the paramters.}
 \usage{
-  ggs_histogram(D, family = NA)
+  ggs_histogram(D, family = NA, bins = 30)
 }
 \arguments{
   \item{D}{Data frame whith the simulations.}
@@ -13,6 +13,10 @@
   parameters with the same name but different numerical
   value between square brackets (as beta[1], beta[2],
   etc).}
+
+  \item{bins}{integer indicating the total number of bins
+  in which to divide the histogram. Defaults to 30, which
+  is the same as geom_histogram()}
 }
 \value{
   A \code{ggplot} object.
