@@ -5,7 +5,7 @@
 #' Notice that caterpillar plots are only created when there are multiple parameters within the same family. A family of parameters is considered to be all parameters that have the same name (usually the same greek letter) but different number within square brackets (such as alpha[1], alpha[2], ...).
 #'
 #' @param D Data frame whith the simulations, previously arranged using \code{\link{ggs}}
-#' @param file Character vector with the name of the file to create. By default, use "ggmcmc-output.pdf"
+#' @param file Character vector with the name of the file to create. Defaults to "ggmcmc-output.pdf". When NULL, no pdf device is opened or closed. This allows the user to work with an opened pdf (or other) device.
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
 #' @param param.page Numerical, number of parameters to plot for each page. Defaults to 5.
 #' @param width Width of the pdf display, in inches. Defaults to 7.
@@ -25,7 +25,9 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, param.page=5, width=7
   n.param <- length(unique(D$Parameter))
 
   ## Open the pdf device
-  pdf(file, width=width, height=height)
+  if (!is.null(file)) {
+    pdf(file, width=width, height=height)
+  }
 
   # When there are fewer parameters to plot than the number of requested
   # parameters per page, simply print them. Otherwise, the device needs to be
@@ -129,5 +131,7 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, param.page=5, width=7
   }
 
   # Close the pdf device
-  dev.off()
+  if (!is.null(file)) {
+    dev.off()
+  }
 }
