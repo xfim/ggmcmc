@@ -28,7 +28,7 @@ ggs_separation <- function(ppd, data, xlab = "", ylab = "", title = "") {
   p <- ggplot(ppd, aes(x = id))
   p <- p + geom_line(aes(x = id, y = mean))
   p <- p + geom_ribbon(aes(y = mean, ymin = lo, ymax = hi), alpha = 0.25)
-  p <- p + geom_vline(xintercept = which(ppd$response == 1), colour = "red") +
+  p <- p + geom_vline(xintercept = which(ppd$response == 1), colour = "red")
   p <- p + scale_x_discrete(breaks = NULL)
   p <- p + labs(x = xlab, y = ylab, title = title)
   P <- p + theme(legend.position = "none", axis.text.x = element_blank())

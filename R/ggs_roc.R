@@ -23,7 +23,7 @@ ggs_rocplot <- function(ppd, data, xlab = "false positive rate",
 
   if(grepl("mcmc", class(ppd))) { #if a single ppd is passed
     m.ppd <- colMeans(ldply(ppd))
-    roc.df <- data.frame(response, prob = m.ppd)
+    roc.df <- data.frame(data, prob = m.ppd)
     roc.plot <- roc.calc(roc.df)
     p <- ggplot(data = roc.plot, aes(x = 1 - spe, y = sen))
     p <- p + geom_line()
@@ -34,7 +34,7 @@ ggs_rocplot <- function(ppd, data, xlab = "false positive rate",
     if(!exists("labels", mode = "character"))
       labels <- paste("model", 1:length(ppd), sep = " ")
 
-    m.ppd.list <- lapply(ppd, function(x) data.frame(response, prob = colMeans(ldply(x))))
+    m.ppd.list <- lapply(ppd, function(x) data.frame(data, prob = colMeans(ldply(x))))
     roc.plot.list <- lapply(m.ppd.list, roc.calc)
     for(i in 1:length(roc.plot.list))
       roc.plot.list[[i]]$label <- labels[i]
