@@ -12,7 +12,9 @@
   arranged using \code{\link{ggs}}}
 
   \item{file}{Character vector with the name of the file to
-  create. By default, use "ggmcmc-output.pdf"}
+  create. Defaults to "ggmcmc-output.pdf". When NULL, no
+  pdf device is opened or closed. This allows the user to
+  work with an opened pdf (or other) device.}
 
   \item{family}{Name of the family of parameters to plot,
   as given by a character vector or a regular expression. A

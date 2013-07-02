@@ -40,3 +40,5 @@ Collate:
     'ggs_roc.R'
     'ggs_separation.R'
     'globals.R'
+    'ggs_ppmean.R'
+    'ggs_ppsd.R'
