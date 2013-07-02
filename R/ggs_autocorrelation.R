@@ -45,10 +45,10 @@ ggs_autocorrelation <- function(D, family=NA, nLags=50) {
     nLags <- nIter
   }
 
-  wc.ac <- ddply(D, c("Parameter", "Chain"), here(summarise), .inform=TRUE,
+  wc.ac <- suppressWarnings(ddply(D, c("Parameter", "Chain"), here(summarise), .inform=TRUE,
     Autocorrelation=ac(value, nLags), 
     Lag=1:nLags,
-    .parallel=attributes(D)$parallel)
+    .parallel=attributes(D)$parallel))
 
   # Manage multiple chains
   if (attributes(D)$nChains <= 1) {
