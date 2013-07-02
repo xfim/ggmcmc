@@ -3,7 +3,7 @@
 #' Internal function used by the graphical functions to get only some of the parameters that follow a given regular expression.
 #'
 #' @param D Data frame with the data arranged and ready to be used by the rest of the ggmcmc functions. The dataframe has four columns, namely: Iteration, Parameter, value and Chain, and seven attributes: nChains, nParameters, nIterations, nBurnin, nThin, description and parallel.
-#' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
+#' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc).
 #' @return D Data frame that is a subset of the given D dataset.
 get_family <- function(D, family=NA) {
   if (!is.character(family) | length(family)!=1) {
@@ -38,3 +38,21 @@ sde0f <- function(x) {
   v0 <- m.ar$var.pred / (1-sum(m.ar$ar))^2
   return(v0)
 }
+
+#' Calculate binwidths by parameter, based on the total number of bins
+#'
+#' Compute the minimal elements to recreate a histogram manually by defining the
+#' total number of bins
+#'
+#' @param x any vector or variable
+#' @param bins the number of requested bins
+#' @return A data frame with the x location, the width of the bars and the number of observations at each x location.
+#' @export
+calc.bin <- function(x, bins=bins) {
+  mn <- min(x)
+  mx <- max(x)
+  bw <- (mx-mn)/bins
+  z <- ggplot2:::bin(x, binwidth=bw)
+  return(z[,c("x", "width", "count")])
+}
+

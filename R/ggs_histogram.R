@@ -15,15 +15,8 @@ ggs_histogram <- function(D, family=NA, bins=30) {
   if (!is.na(family)) {
     D <- get_family(D, family=family)
   }
-  # Calculate binwidths by parameter, based on the total number of bins
-  calc.bin <- function(x, bins=bins) {
-    mn <- min(x)
-    mx <- max(x)
-    bw <- (mx-mn)/bins
-    z <- ggplot2:::bin(x, binwidth=bw)
-    return(z[,c("x", "width", "count")])
-  }
-  # Manually generate the histogram
+  # Manually generate the histogram by parameter, based on the total number of
+  # bins
   l <- unlist(dlply(D, .(Parameter), here(summarize), calc.bin(value, bins)), recursive=FALSE)
   dl <- dim(l[[1]]) # only the dimensions of the first parameter are needed to recreate Parameter names
   ds <- rbind.fill(l)
