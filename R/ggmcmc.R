@@ -98,8 +98,10 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, param.page=5, width=7
   ##
   ## Print also the figures that can fit in a single page
   ##
-  cat("Plotting crosscorrelation plot\n")
-  print(ggs_crosscorrelation(D))
+  if (attributes(D)$nParameters > 1) {                    # only in case of more than one parameter
+    cat("Plotting crosscorrelation plot\n")
+    print(ggs_crosscorrelation(D))
+  }
 
   if (attributes(D)$nChain > 1) {                         # only in case of multiple chains
     cat("Plotting Potential Scale Reduction Factors\n")
