@@ -50,7 +50,7 @@ ggs <- function(S, description=NA, burnin=FALSE, inc_warmup=FALSE, stan_include_
   #
   # Manage mcmc.list and mcmc objects
   #
-  if (class(S)=="mcmc.list" | class(S)=="mcmc") {  # JAGS typical output or MCMCpack
+  if (class(S)=="mcmc.list" | class(S)=="mcmc") {  # JAGS typical output or MCMCpack (or also previously managet Stan output)
     lS <- length(S)
     D <- NULL
     if (lS == 1 | class(S)=="mcmc") { # Single chain or MCMCpack
