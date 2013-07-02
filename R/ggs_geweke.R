@@ -41,9 +41,9 @@ ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5) {
     .parallel=attributes(D)$parallel)
   # Cast the dataframe in pieces to have the data arranged by parameter, chain
   # and first and last
-  M <- dcast(D.geweke, Parameter + Chain ~ part, value=.(m))
-  N <- dcast(D.geweke, Parameter + Chain ~ part, value=.(n))
-  SDE0F <- dcast(D.geweke, Parameter + Chain ~ part, value=.(sde0f))
+  M <- dcast(D.geweke, Parameter + Chain ~ part, value.var="m")
+  N <- dcast(D.geweke, Parameter + Chain ~ part, value.var="n")
+  SDE0F <- dcast(D.geweke, Parameter + Chain ~ part, value.var="sde0f")
   # Reorganize the z scores
   Z <- data.frame(Parameter=M$Parameter, Chain=M$Chain, 
     z= (M$first - M$last) /
