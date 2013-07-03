@@ -6,6 +6,7 @@
 #' @param family Name of the family of parameters to process, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc).
 #' @param description Character vector giving a short descriptive text that identifies the model.
 #' @param burnin Logical or numerical value. When logical and TRUE (the default), the number of samples in the burnin period will be taken into account, if it can be guessed by the extracting process. Otherwise, iterations will start counting from 1. If a numerical vector is given, the user then supplies the length of the burnin period. 
+#' @param par_labels data frame with two colums. One named "Parameter" with the same names of the parameters of the model. Another named "Label" with the label of the parameter. When missing, the names passed to the model are used for representation. When there is no correspondence between a Parameter and a Label, the original name of the parameter is used. The order of the levels of the original Parameter does not change.
 #' @param inc_warmup Logical. When dealing with stanfit objects from rstan, logical value whether the warmup samples are included. Defaults to FALSE.
 #' @param stan_include_auxiliar Logical value to include "lp__" parameter in rstan, and "lp__", "treedepth__" and "stepsize__" in stan running without rstan. Defaults to FALSE.
 #' @param parallel Logical value for using parallel computing when managing the data frame in other functions. Defaults to TRUE, although it has not been fully tested yet.
@@ -16,7 +17,7 @@
 #' # a coda object called S
 #' data(samples)
 #' D <- ggs(S)        # S is a coda object
-ggs <- function(S, family=NA, description=NA, burnin=TRUE, inc_warmup=FALSE, stan_include_auxiliar=FALSE, parallel=TRUE) {
+ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_warmup=FALSE, stan_include_auxiliar=FALSE, parallel=TRUE) {
   #
   # Manage stanfit obcjets
   # Manage stan output first because it is firstly converted into an mcmc.list
@@ -75,6 +76,19 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, inc_warmup=FALSE, sta
       # chain is fine. All chains are assumed to have the same structure.
       nBurnin <- (attributes(s)$mcpar[1])-(1*attributes(s)$mcpar[3])
       nThin <- attributes(s)$mcpar[3]
+    }
+    # Change the names of the parameters if par_labels argument has been passed
+    if (!is.na(par_labels)) {
+      if (class(par_labels)=="data.frame") {
+        if (names(par_labels)==c("Parameter", "Label") | names(par_labels)==c("Label", "Parameter")) {
+          levels(D$Parameter)[which(levels(D$Parameter) %in% P$Parameter)] <-
+            as.character(P$Label[which(P$Parameter %in% levels(D$Parameter))])
+        } else {
+          stop("The names of the data frame of par_labels must be 'Parameter' and 'Label'.")
+        }
+      } else {
+        stop("par_labels must be a data frame.")
+      }
     }
     # Set several attributes to the object, to avoid computations afterwards
     # Number of chains
