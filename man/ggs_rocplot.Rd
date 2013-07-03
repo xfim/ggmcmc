@@ -14,13 +14,6 @@
   observed outcome variable. Currently only a vector is
   supported.}
 
-  \item{family}{Name of the family of parameters to plot,
-  as given by a character vector or a regular expression. A
-  family of parameters is considered to be any group of
-  parameters with the same name but different numerical
-  value between square brackets (as beta[1], beta[2],
-  etc).}
-
   \item{fully.bayesian}{logical, false by default. When not
   fully Bayesian, it uses the median of the predictions for
   each observation by iteration. When TRUE the function
