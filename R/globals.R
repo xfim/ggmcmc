@@ -13,6 +13,8 @@ if (base::getRversion() >= "2.15.1") {
     "sd", # for ggs_ppsd
     "x", "width", # for ggs_histogram
     "Posterior predictive mean", "Posterior predictive standard deviation", # for ggs_ppmean and ggs_ppsd
+    "Specificity", "Sensitivity", # for ggs_rocplot()
+    "low", "high", "y", # for ggs_separation()
     "m" # for ggs_geweke, ggs_running, ggs_ppmean
   ))
 }
