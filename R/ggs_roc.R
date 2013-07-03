@@ -39,18 +39,19 @@ ggs_rocplot <- function(D, outcome, points=21, fully.bayesian=FALSE,
   # It replicates code, but it is the way to either use Iterations or not.
   if (fully.bayesian) {
     roc.df <- ddply(roc.df, .(Parameter, Iteration, Chain), transform,
-      tp=value > point & Observed==1,
-      tn=value < point & Observed==0,
-      fp=value > point & Observed==0,
-      fn=value < point & Observed==1,
+      tp=value > point & Observed==1,       # True positives
+      tn=value < point & Observed==0,       # True negatives
+      fp=value > point & Observed==0,       # False positives
+      fn=value < point & Observed==1,       # False negatives
       .parallel=attributes(D)$parallel)
     roc.summary <- ddply(roc.df, .(Chain, Iteration, point), summarize,
       Sensitivity=length(which(tp)) / (length(which(tp)) + length(which(fn))),
       Specificity=length(which(tn)) / (length(which(tn)) + length(which(fp))),
       .parallel=attributes(D)$parallel)
+    roc.summary <- roc.summary[order(roc.summary$Sensitivity, roc.summary$Specificity, decreasing=FALSE),]
     # Start plotting
     f <- ggplot(roc.summary, aes(x=1-Specificity, y=Sensitivity, group=as.factor(Iteration), color=as.factor(Chain))) +
-      geom_line(alpha=0.1)
+      geom_step(alpha=0.1)
   } else {
     roc.df <- ddply(roc.df, .(Parameter, Chain), transform,
       tp=value > point & Observed==1,
@@ -62,12 +63,13 @@ ggs_rocplot <- function(D, outcome, points=21, fully.bayesian=FALSE,
       Sensitivity=length(which(tp)) / (length(which(tp)) + length(which(fn))),
       Specificity=length(which(tn)) / (length(which(tn)) + length(which(fp))),
       .parallel=attributes(D)$parallel)
+    roc.summary <- roc.summary[order(roc.summary$Sensitivity, roc.summary$Specificity, decreasing=FALSE),]
     # Start plotting
     f <- ggplot(roc.summary, aes(x=1-Specificity, y=Sensitivity, group=as.factor(Chain), color=as.factor(Chain))) +
-      geom_line()
+      geom_step(alpha=0.6, size=1.2)
   }
   # Polish the details
-  f <- f + geom_abline(intercept=0, slope=1, color="grey") +
+  f <- f + geom_rug(alpha=0.5, sides="b") + geom_abline(intercept=0, slope=1, color="grey") +
     scale_colour_discrete(name="Chain")
   return(f)
 }
