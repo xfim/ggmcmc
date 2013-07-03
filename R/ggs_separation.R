@@ -12,8 +12,7 @@
 #' }
 #' @export
 
-#ggs_separation <- function(ppd, data, xlab = "", ylab = "", title = "") {
-ggs_separation <- function(ppd, data, D, outcome, fully.bayesian=FALSE, minimalist=FALSE) {
+ggs_separation <- function(D, outcome, fully.bayesian=FALSE, minimalist=FALSE) {
   if (fully.bayesian) {
     stop("The fully Bayesian version has not been implemented yet.")
   }
