@@ -35,8 +35,8 @@ ggs_rocplot <- function(D, outcome, fully.bayesian=FALSE) {
   if (fully.bayesian) {
     D.predicted <- D
   } else {
-    D.predicted <- ddply(D, .(Parameter, Chain), summarize, value=quantile(value, 0.5),
-      .parallel=attributes(D)$parallel)
+    D.predicted <- suppressWarnings(ddply(D, .(Parameter, Chain), summarize, value=quantile(value, 0.5),
+      .parallel=attributes(D)$parallel))
   }
   roc.df <- merge(D.predicted, D.observed)
   # Compute the roc curve using the roc.calc function
