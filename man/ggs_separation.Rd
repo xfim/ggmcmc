@@ -15,8 +15,13 @@
   observed outcome variable. Currently only a vector is
   supported.}
 
-  \item{fully.bayesian}{logical, false by default.
+  \item{fully.bayesian}{logical, FALSE by default.
   Currently not implemented}
+
+  \item{minimalist}{logical, FALSE by default. It returns a
+  minimalistic version of the figure with the bare minimum
+  elements, suitable for being used inline as suggested by
+  Greenhill, Ward and Sacks citing Tufte.}
 }
 \value{
   A \code{ggplot} object
