@@ -25,6 +25,7 @@ ggs_rocplot <- function(ppd, data, xlab = "false positive rate",
     m.ppd <- colMeans(ldply(ppd))
     roc.df <- data.frame(data, prob = m.ppd)
     roc.plot <- roc.calc(roc.df)
+    roc.plot <- roc.plot[order(roc.plot$sen, roc.plot$spe, decreasing=FALSE),]
     p <- ggplot(data = roc.plot, aes(x = 1 - spe, y = sen))
     p <- p + geom_line()
     p <- p + labs(x = xlab, y = ylab, title = title)
