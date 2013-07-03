@@ -7,8 +7,8 @@
 \arguments{
   \item{D}{Data frame whith the simulations. Notice that
   only the posterior outcomes are needed, and so either the
-  ggs() call limits the parameters to the outcomes or the
-  user provides a family of parameters to limit it.}
+  previous call to ggs() should have limited the family of
+  parameters to pass to the predicted outcomes.}
 
   \item{outcome}{vector (or matrix or array) containing the
   observed outcome variable. Currently only a vector is

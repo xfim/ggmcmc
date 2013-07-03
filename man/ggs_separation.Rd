@@ -2,24 +2,21 @@
 \alias{ggs_separation}
 \title{Separation plot for models with binary response variables}
 \usage{
-  ggs_separation(ppd, data, xlab = "", ylab = "",
-    title = "")
+  ggs_separation(ppd, data, D, outcome,
+    fully.bayesian = FALSE, minimalist = FALSE)
 }
 \arguments{
-  \item{ppd}{object of type mcmc or mcmc.list, which
-  contains posterior predictions. The number of columns of
-  each element must be the length of the response variable
-  vector and the number of rows of each element of the
-  object should be the number of MCMC iterations run}
+  \item{D}{Data frame whith the simulations. Notice that
+  only the posterior outcomes are needed, and so either the
+  previous call to ggs() should have limited the family of
+  parameters to pass to the predicted outcomes.}
 
-  \item{data}{a vector which contains the binary response
-  variable}
+  \item{outcome}{vector (or matrix or array) containing the
+  observed outcome variable. Currently only a vector is
+  supported.}
 
-  \item{xlab}{label for the x-axis}
-
-  \item{ylab}{label for the y-axis}
-
-  \item{title}{title for the entire plot}
+  \item{fully.bayesian}{logical, false by default.
+  Currently not implemented}
 }
 \value{
   A \code{ggplot} object
@@ -28,6 +25,14 @@
   Separation plot for models with binary response variables
 }
 \examples{
-ggs_separation(ppd, df$response)
+\dontrun{
+ggs_separation(S, outcome=y)
+}
+}
+\references{
+  Greenhill, Ward and Sacks (2011): The separation plot: a
+  new visual method for evaluating the fit of binary
+  models. American Journal of Political Science, vol 55,
+  number 4, pg 991-1002.
 }
 
