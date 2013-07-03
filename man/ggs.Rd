@@ -3,8 +3,8 @@
 \title{Import MCMC samples into a ggs object than can be used by all ggs_* graphical functions.}
 \usage{
   ggs(S, family = NA, description = NA, burnin = TRUE,
-    inc_warmup = FALSE, stan_include_auxiliar = FALSE,
-    parallel = TRUE)
+    par_labels = NA, inc_warmup = FALSE,
+    stan_include_auxiliar = FALSE, parallel = TRUE)
 }
 \arguments{
   \item{S}{Either a \code{mcmc.list} object with samples
@@ -35,6 +35,15 @@
   will start counting from 1. If a numerical vector is
   given, the user then supplies the length of the burnin
   period.}
+
+  \item{par_labels}{data frame with two colums. One named
+  "Parameter" with the same names of the parameters of the
+  model. Another named "Label" with the label of the
+  parameter. When missing, the names passed to the model
+  are used for representation. When there is no
+  correspondence between a Parameter and a Label, the
+  original name of the parameter is used. The order of the
+  levels of the original Parameter does not change.}
 
   \item{inc_warmup}{Logical. When dealing with stanfit
   objects from rstan, logical value whether the warmup
