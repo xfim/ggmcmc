@@ -2,8 +2,8 @@
 \alias{ggs_separation}
 \title{Separation plot for models with binary response variables}
 \usage{
-  ggs_separation(ppd, data, D, outcome,
-    fully.bayesian = FALSE, minimalist = FALSE)
+  ggs_separation(D, outcome, fully.bayesian = FALSE,
+    minimalist = FALSE)
 }
 \arguments{
   \item{D}{Data frame whith the simulations. Notice that
