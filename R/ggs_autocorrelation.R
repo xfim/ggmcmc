@@ -32,7 +32,7 @@ ac <- function(x, nLags) {
 #' @export
 #' @examples
 #' data(samples)
-#' ggs_autocorrelation(ggs(S, parallel=FALSE))
+#' ggs_autocorrelation(ggs(S))
 ggs_autocorrelation <- function(D, family=NA, nLags=50) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {

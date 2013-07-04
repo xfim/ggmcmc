@@ -9,7 +9,7 @@
 #' @export
 #' @examples
 #' data(samples)
-#' ggs_compare_partial(ggs(S, parallel=FALSE))
+#' ggs_compare_partial(ggs(S))
 ggs_compare_partial <- function(D, family=NA, partial=0.1) {
   # Check that partial is a percentage
   if (partial <= 0 | partial >=1 | !is.numeric(partial)) {

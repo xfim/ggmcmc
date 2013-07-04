@@ -25,6 +25,6 @@
 }
 \examples{
 data(samples)
-ggs_autocorrelation(ggs(S, parallel=FALSE))
+ggs_autocorrelation(ggs(S))
 }
 

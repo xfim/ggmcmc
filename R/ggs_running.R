@@ -10,7 +10,7 @@
 #' @export
 #' @examples
 #' data(samples)
-#' ggs_running(ggs(S, parallel=FALSE))
+#' ggs_running(ggs(S))
 ggs_running <- function(D, family=NA, original.burnin=TRUE, original.thin=TRUE) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {

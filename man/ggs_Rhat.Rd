@@ -28,6 +28,6 @@
 }
 \examples{
 data(samples)
-ggs_Rhat(ggs(S, parallel=FALSE))
+ggs_Rhat(ggs(S))
 }
 

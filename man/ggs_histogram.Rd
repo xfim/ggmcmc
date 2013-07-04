@@ -27,6 +27,6 @@
 }
 \examples{
 data(samples)
-ggs_histogram(ggs(S, parallel=FALSE))
+ggs_histogram(ggs(S))
 }
 

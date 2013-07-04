@@ -14,8 +14,8 @@
 #' @export
 #' @examples
 #' data(samples)
-#' ggs_caterpillar(ggs(S, parallel=FALSE))
-#' ggs_caterpillar(list(A=ggs(S, parallel=FALSE), B=ggs(S, parallel=FALSE))) # silly example duplicating the same model
+#' ggs_caterpillar(ggs(S))
+#' ggs_caterpillar(list(A=ggs(S), B=ggs(S))) # silly example duplicating the same model
 ggs_caterpillar <- function(D, family=NA, X=NA, 
   thick.ci=c(0.05, 0.95), thin.ci=c(0.025, 0.975),
   line=NA, horizontal=TRUE, labels=NULL) {

@@ -26,6 +26,6 @@
 }
 \examples{
 data(samples)
-ggs_compare_partial(ggs(S, parallel=FALSE))
+ggs_compare_partial(ggs(S))
 }
 

@@ -30,6 +30,6 @@
 }
 \examples{
 data(samples)
-ggs_running(ggs(S, parallel=FALSE))
+ggs_running(ggs(S))
 }
 

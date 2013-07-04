@@ -14,7 +14,7 @@
 #' @export
 #' @examples
 #' data(samples)
-#' ggmcmc(ggs(S, parallel=FALSE))  # Directly from a coda object
+#' ggmcmc(ggs(S))  # Directly from a coda object
 ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, param.page=5, width=7, height=10, ...) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {

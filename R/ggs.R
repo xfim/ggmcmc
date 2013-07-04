@@ -9,7 +9,7 @@
 #' @param par_labels data frame with two colums. One named "Parameter" with the same names of the parameters of the model. Another named "Label" with the label of the parameter. When missing, the names passed to the model are used for representation. When there is no correspondence between a Parameter and a Label, the original name of the parameter is used. The order of the levels of the original Parameter does not change.
 #' @param inc_warmup Logical. When dealing with stanfit objects from rstan, logical value whether the warmup samples are included. Defaults to FALSE.
 #' @param stan_include_auxiliar Logical value to include "lp__" parameter in rstan, and "lp__", "treedepth__" and "stepsize__" in stan running without rstan. Defaults to FALSE.
-#' @param parallel Logical value for using parallel computing when managing the data frame in other functions. Defaults to TRUE, although it has not been fully tested yet.
+#' @param parallel Logical value for using parallel computing when managing the data frame in other functions. Defaults to FALSE. It needs a registered parallel backend. Currently it has only been extensively tested in \code{doMC}.
 #' @export
 #' @return D A data frame with the data arranged and ready to be used by the rest of the \code{ggmcmc} functions. The data frame has four columns, namely: Iteration, Parameter, value and Chain, and seven attributes: nChains, nParameters, nIterations, nBurnin, nThin, description and parallel.
 #' @examples
@@ -17,7 +17,7 @@
 #' # a coda object called S
 #' data(samples)
 #' D <- ggs(S)        # S is a coda object
-ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_warmup=FALSE, stan_include_auxiliar=FALSE, parallel=TRUE) {
+ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_warmup=FALSE, stan_include_auxiliar=FALSE, parallel=FALSE) {
   #
   # Manage stanfit obcjets
   # Manage stan output first because it is firstly converted into an mcmc.list

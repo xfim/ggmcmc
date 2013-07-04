@@ -28,6 +28,6 @@
 }
 \examples{
 data(samples)
-ggs_geweke(ggs(S, parallel=FALSE))
+ggs_geweke(ggs(S))
 }
 

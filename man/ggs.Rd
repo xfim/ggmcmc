@@ -4,7 +4,7 @@
 \usage{
   ggs(S, family = NA, description = NA, burnin = TRUE,
     par_labels = NA, inc_warmup = FALSE,
-    stan_include_auxiliar = FALSE, parallel = TRUE)
+    stan_include_auxiliar = FALSE, parallel = FALSE)
 }
 \arguments{
   \item{S}{Either a \code{mcmc.list} object with samples
@@ -56,8 +56,9 @@
 
   \item{parallel}{Logical value for using parallel
   computing when managing the data frame in other
-  functions. Defaults to TRUE, although it has not been
-  fully tested yet.}
+  functions. Defaults to FALSE. It needs a registered
+  parallel backend. Currently it has only been extensively
+  tested in \code{doMC}.}
 }
 \value{
   D A data frame with the data arranged and ready to be

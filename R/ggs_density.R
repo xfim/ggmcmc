@@ -8,7 +8,7 @@
 #' @export
 #' @examples
 #' data(samples)
-#' ggs_density(ggs(S, parallel=FALSE))
+#' ggs_density(ggs(S))
 ggs_density <- function(D, family=NA) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {

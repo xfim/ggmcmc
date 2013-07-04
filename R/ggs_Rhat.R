@@ -10,7 +10,7 @@
 #' @export
 #' @examples
 #' data(samples)
-#' ggs_Rhat(ggs(S, parallel=FALSE))
+#' ggs_Rhat(ggs(S))
 ggs_Rhat <- function(D, family=NA) {
   if (attributes(D)$nChains<2) {
     stop("At least two chains are required")

@@ -57,7 +57,7 @@
 }
 \examples{
 data(samples)
-ggs_caterpillar(ggs(S, parallel=FALSE))
-ggs_caterpillar(list(A=ggs(S, parallel=FALSE), B=ggs(S, parallel=FALSE))) # silly example duplicating the same model
+ggs_caterpillar(ggs(S))
+ggs_caterpillar(list(A=ggs(S), B=ggs(S))) # silly example duplicating the same model
 }
 

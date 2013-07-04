@@ -29,6 +29,6 @@
 }
 \examples{
 data(samples)
-ggs_crosscorrelation(ggs(S, parallel=FALSE))
+ggs_crosscorrelation(ggs(S))
 }
 

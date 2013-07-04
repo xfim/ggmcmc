@@ -56,7 +56,7 @@
 }
 \examples{
 data(samples)
-ggmcmc(ggs(S, parallel=FALSE))  # Directly from a coda object
+ggmcmc(ggs(S))  # Directly from a coda object
 }
 \references{
   \url{http://xavier-fim.net/packages/ggmcmc}.

@@ -12,7 +12,7 @@
 #' @examples
 #' \dontrun{
 #' data(samples)
-#' ggs_ppsd(ggs(S, parallel=FALSE, family="y"), outcome="y")
+#' ggs_ppsd(ggs(S, family="y"), outcome="y")
 #' }
 ggs_ppsd <- function(D, outcome, family=NA, bins=30) {
   # Manage subsetting a family of parameters

@@ -10,7 +10,7 @@
 #' @export
 #' @examples
 #' data(samples)
-#' ggs_geweke(ggs(S, parallel=FALSE))
+#' ggs_geweke(ggs(S))
 ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {

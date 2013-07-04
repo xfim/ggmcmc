@@ -9,7 +9,7 @@
 #' @export
 #' @examples
 #' data(samples)
-#' ggs_histogram(ggs(S, parallel=FALSE))
+#' ggs_histogram(ggs(S))
 ggs_histogram <- function(D, family=NA, bins=30) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {

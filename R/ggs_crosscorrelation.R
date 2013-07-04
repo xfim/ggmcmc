@@ -9,7 +9,7 @@
 #' @export
 #' @examples
 #' data(samples)
-#' ggs_crosscorrelation(ggs(S, parallel=FALSE))
+#' ggs_crosscorrelation(ggs(S))
 ggs_crosscorrelation <- function(D, family=NA, absolute.scale=TRUE) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {

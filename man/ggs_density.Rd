@@ -24,6 +24,6 @@
 }
 \examples{
 data(samples)
-ggs_density(ggs(S, parallel=FALSE))
+ggs_density(ggs(S))
 }
 

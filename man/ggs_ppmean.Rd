@@ -36,7 +36,7 @@
 \examples{
 \dontrun{
 data(samples)
-ggs_ppmean(ggs(S, parallel=FALSE, family="y"), outcome="y")
+ggs_ppmean(ggs(S, family="y"), outcome="y")
 }
 }
 
