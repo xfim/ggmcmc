@@ -86,7 +86,9 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
         stop("par_labels must include at least columns called 'Parameter' and 'Label'.")
       }
     } else {
-      stop("par_labels must be a data frame.")
+      if (!is.na(par_labels)) {
+        stop("par_labels must be a data frame.")
+      }
     }
     # Set several attributes to the object, to avoid computations afterwards
     # Number of chains
