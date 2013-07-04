@@ -34,11 +34,11 @@ ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5) {
     part="last")
   D.geweke <- rbind(D.geweke.first, D.geweke.last)
   # Compute means, spectral densities and N's
-  D.geweke <- suppressWarnings(ddply(D.geweke, .(Parameter, Chain, part), summarize, 
+  D.geweke <- ddply(D.geweke, .(Parameter, Chain, part), summarize, 
     m=mean(value), 
     sde0f=sde0f(value), 
     n=length(value),
-    .parallel=attributes(D)$parallel))
+    .parallel=attributes(D)$parallel)
   # Cast the dataframe in pieces to have the data arranged by parameter, chain
   # and first and last
   M <- dcast(D.geweke, Parameter + Chain ~ part, value.var="m")

@@ -20,11 +20,11 @@ ggs_separation <- function(D, outcome, fully.bayesian=FALSE, minimalist=FALSE) {
   # Calculate the prediction bands
   if (fully.bayesian) {
   } else {
-    S <- suppressWarnings(ddply(D, .(Parameter), summarize,
+    S <- ddply(D, .(Parameter), summarize,
       low=quantile(value, 0.025),
       median=quantile(value, 0.5),
       high=quantile(value, 0.975),
-      .parallel=attributes(D)$parallel))
+      .parallel=attributes(D)$parallel)
   }
   S <- merge(S, data.frame(Observed=outcome, Parameter=unique(D$Parameter)))
   # Sort the observations by predicted value

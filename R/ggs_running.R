@@ -17,14 +17,14 @@ ggs_running <- function(D, family=NA, original.burnin=TRUE, original.thin=TRUE) 
     D <- get_family(D, family=family)
   }
   # Calculate the mean of the chain
-  dm.m <- suppressWarnings(ddply(D, .(Parameter, Chain), summarize, m=mean(value), 
-    .parallel=attributes(D)$parallel))
+  dm.m <- ddply(D, .(Parameter, Chain), summarize, m=mean(value), 
+    .parallel=attributes(D)$parallel)
   # Calculate the running mean
   # Force the object to be sorted by Parameter, and hence avoid 'rm' calculation
   # to be wrong
   D.sorted <- D[order(D$Parameter, D$Iteration),]
-  dm.rm <- suppressWarnings(ddply(D.sorted, .(Parameter, Chain), transform, rm=cumsum(value)/Iteration, 
-    .parallel=attributes(D)$parallel))
+  dm.rm <- ddply(D.sorted, .(Parameter, Chain), transform, rm=cumsum(value)/Iteration, 
+    .parallel=attributes(D)$parallel)
   # Plot
   f <- ggplot(dm.rm, aes(x=Iteration, y=rm, colour=as.factor(Chain))) + 
     geom_line() + 

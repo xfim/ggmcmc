@@ -22,37 +22,37 @@ ggs_Rhat <- function(D, family=NA) {
   # The computations follow BDA, pg 296-297, and the notation tries to be
   # consistent with it
   # Compute between-sequence variance using psi.. and psi.j
-  psi.dot <- suppressWarnings(ddply(D, .(Parameter, Chain), summarize, psi.dot=mean(value), 
-    .parallel=attributes(D)$parallel))
-  psi.j <- suppressWarnings(ddply(D, .(Parameter), summarize, psi.j=mean(value), 
-    .parallel=attributes(D)$parallel))
+  psi.dot <- ddply(D, .(Parameter, Chain), summarize, psi.dot=mean(value), 
+    .parallel=attributes(D)$parallel)
+  psi.j <- ddply(D, .(Parameter), summarize, psi.j=mean(value), 
+    .parallel=attributes(D)$parallel)
   b.df <- merge(psi.dot, psi.j)
   # Apparently I can't pass the D's attributes as an argument to b.df
   attr(b.df, "nIterations") <- attributes(D)$nIterations
   # todo, try to make it pass properly
   b.df <- cbind(b.df, nIterations=attributes(D)$nIterations)
-  B <- suppressWarnings(ddply(b.df, .(Parameter), summarize, 
+  B <- ddply(b.df, .(Parameter), summarize, 
     B=var(psi.j-psi.dot)*nIterations,
     #B=var(psi.j-psi.dot)*(attributes(D)$nIterations),
-    .parallel=attributes(D)$parallel))
+    .parallel=attributes(D)$parallel)
   # Compute within-sequence variance using s2j
-  s2j <- suppressWarnings(ddply(D, .(Parameter, Chain), summarize, s2j=var(value),
-    .parallel=attributes(D)$parallel))
-  W <- suppressWarnings(ddply(s2j, .(Parameter), summarize, W=mean(s2j),
-    .parallel=attributes(D)$parallel))
+  s2j <- ddply(D, .(Parameter, Chain), summarize, s2j=var(value),
+    .parallel=attributes(D)$parallel)
+  W <- ddply(s2j, .(Parameter), summarize, W=mean(s2j),
+    .parallel=attributes(D)$parallel)
   # Merge BW and compute the weighted average (wa, var.hat+) and the Rhat
   # todo, again try to pass it properly
   BW <- merge(B, W)
   BW <- cbind(BW, nIterations=attributes(D)$nIterations)
-  BW <- suppressWarnings(ddply(BW, .(Parameter), transform, 
+  BW <- ddply(BW, .(Parameter), transform, 
     wa=( 
       #(((attributes(D)$nIterations-1)/attributes(D)$nIterations )* W) + 
       #((1/ attributes(D)$nIterations)*B) ),
       (((nIterations-1)/nIterations )* W) + 
       ((1/ nIterations)*B) ),
-    .parallel=attributes(D)$parallel))
-  BW <- suppressWarnings(ddply(BW, .(Parameter), transform, Rhat=sqrt(wa/W),
-    .parallel=attributes(D)$parallel))
+    .parallel=attributes(D)$parallel)
+  BW <- ddply(BW, .(Parameter), transform, Rhat=sqrt(wa/W),
+    .parallel=attributes(D)$parallel)
   # Plot
   f <- ggplot(BW, aes(x=Rhat, y=Parameter)) + geom_point() +
     ggtitle("Potential Scale Reduction Factor")

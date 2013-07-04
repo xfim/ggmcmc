@@ -75,9 +75,9 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
 
   } else if (is.data.frame(D)) { # D is a data frame, and so a single model is passed
     multi <-  FALSE
-    dc <- suppressWarnings(ddply(D, .(Parameter), summarize, 
+    dc <- ddply(D, .(Parameter), summarize, 
                 q=quantile(value, probs=qs), qs=qs,
-                .parallel=attributes(D)$parallel))
+                .parallel=attributes(D)$parallel)
     dc$qs <- factor(dc$qs, labels=names(qs))
     dcm <- dcast(dc, Parameter ~ qs, value.var="q")
   }
