@@ -86,14 +86,14 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
   # Plot, depending on continuous or categorical x
   #
   if (!x.present) {
-    f <- ggplot(dcm, aes(x=median, y=reorder(Parameter, median))) + geom_point() +
-      geom_segment(aes(x=thick.low, xend=thick.high, yend=reorder(Parameter, median)), size=0.7) +
+    f <- ggplot(dcm, aes(x=median, y=reorder(Parameter, median))) + geom_point(size=3) +
+      geom_segment(aes(x=thick.low, xend=thick.high, yend=reorder(Parameter, median)), size=1.5) +
       geom_segment(aes(x=thin.low, xend=thin.high, yend=reorder(Parameter, median)), size=0.5) +
       xlab("HPD") + ylab("Parameter")
   } else {
     dcm <- merge(dcm, X)
-    f <- ggplot(dcm, aes_string(x="median", y=x.name)) + geom_point() +
-      geom_segment(aes_string(x="thick.low", xend="thick.high", yend=x.name), size=0.7) +
+    f <- ggplot(dcm, aes_string(x="median", y=x.name)) + geom_point(size=3) +
+      geom_segment(aes_string(x="thick.low", xend="thick.high", yend=x.name), size=1.5) +
       geom_segment(aes_string(x="thin.low", xend="thin.high", yend=x.name), size=0.5) +
       xlab("HPD") + ylab(x.name)
   }
