@@ -78,17 +78,15 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
       nThin <- attributes(s)$mcpar[3]
     }
     # Change the names of the parameters if par_labels argument has been passed
-    if (!is.na(par_labels)) {
-      if (class(par_labels)=="data.frame") {
-        if (names(par_labels)==c("Parameter", "Label") | names(par_labels)==c("Label", "Parameter")) {
-          levels(D$Parameter)[which(levels(D$Parameter) %in% P$Parameter)] <-
-            as.character(P$Label[which(P$Parameter %in% levels(D$Parameter))])
-        } else {
-          stop("The names of the data frame of par_labels must be 'Parameter' and 'Label'.")
-        }
+    if (class(par_labels)=="data.frame") {
+      if (length(which(c("Parameter", "Label") %in% names(par_labels))) == 2) {
+        levels(D$Parameter)[which(levels(D$Parameter) %in% P$Parameter)] <-
+          as.character(P$Label[which(P$Parameter %in% levels(D$Parameter))])
       } else {
-        stop("par_labels must be a data frame.")
+        stop("par_labels must include at least columns called 'Parameter' and 'Label'.")
       }
+    } else {
+      stop("par_labels must be a data frame.")
     }
     # Set several attributes to the object, to avoid computations afterwards
     # Number of chains
