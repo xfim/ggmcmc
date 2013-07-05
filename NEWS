@@ -1,36 +1,75 @@
+Version 0.4
+------------------------------
+
+MAJOR CHANGES
+
+- Add the possibility to use different parameter names than the default ones
+  provided by the MCMC software, using the argument "par_labels" in ggs().
+
+- Move from reshape() to reshape2().
+
+- geom_histogram() allows to specify a desired number of bins.
+
+- ROC plot (ggs_rocplot()) with code originally from Zachary M. Jones.
+
+- Separation plot (ggs_separation()) with code originally from Zachary M. Jones.
+
+- New plots ggs_ppmean() and ggs_ppsd() for posterior predictive checks.
+
+- Make parallel=FALSE the default in ggs().
+
+MINOR CHANGES
+
+- rstan is no more a suggested package, because it is not in CRAN, and it is
+  not expected to be there in the near future.
+
+- Fix bugs in ggs_crosscorrelation when the number of parameters was 1 or 2.
+
+- In ggmcmc, do not plot Potential Scale Reduction Factor when there is a
+  single chain.
+
+- Allow NULL as filename for the pdf file in ggmcmc.
+
+- argument "labels" in ggs_caterpillar() is renamed to "model_labols" avoid
+  confusion with the parameter names
+
+- Adjust the defaults for the caterpillar plots, to remark the thick and thin
+  segments
+
+
 Version 0.3
 ------------------------------
 
 MAJOR CHANGES
 
- - ggs() can import MCMCpack objects, stanfit objects and csv files from Stan
-   running from the command line, in addition to the previous import of samples
-   from mcmc.list() objects (from the coda package).
+- ggs() can import MCMCpack objects, stanfit objects and csv files from Stan
+  running from the command line, in addition to the previous import of samples
+  from mcmc.list() objects (from the coda package).
 
- - New functions ggs_Rhat() and ggs_geweke() that show graphically the results
-   of the Rhat (potential scale reduction factor, by Gelman & Rubin), and the
-   Geweke diagnostic (z-score).
+- New functions ggs_Rhat() and ggs_geweke() that show graphically the results
+  of the Rhat (potential scale reduction factor, by Gelman & Rubin), and the
+  Geweke diagnostic (z-score).
 
- - ggs_caterpillar is able to plot against a continuous variable due to the
-   addition of the 'X' argument
+- ggs_caterpillar is able to plot against a continuous variable due to the
+  addition of the 'X' argument
 
- - ggs_caterpillar() has the ability to plot two models, so that model
-   comparison is easier. Thanks to Zachary M. Jones.
+- ggs_caterpillar() has the ability to plot two models, so that model
+  comparison is easier. Thanks to Zachary M. Jones.
 
- - New parameter "family" that allows to select only certain parameters from
-   the ggs object based on a regular expression (i.e., select all "beta"
-   parameters, or all "theta", ones, or "alpha\\[1,.\\]", etc...)
+- New parameter "family" that allows to select only certain parameters from
+  the ggs object based on a regular expression (i.e., select all "beta"
+  parameters, or all "theta", ones, or "alpha\\[1,.\\]", etc...)
 
 MINOR CHANGES
 
- - Traceplot now shows by default the burnin period and takes care of the
-   thinning, used by ggs_traceplot() and ggs_running().
+- Traceplot now shows by default the burnin period and takes care of the
+  thinning, used by ggs_traceplot() and ggs_running().
 
- - New argument to have absolute colour scale in crosscorrelations.
+- New argument to have absolute colour scale in crosscorrelations.
 
- - ggs_caterpillar() is horizontal by default.
+- ggs_caterpillar() is horizontal by default.
 
- - Documentation has been improved.
+- Documentation has been improved.
 
 
 Version 0.2
@@ -38,13 +77,13 @@ Version 0.2
 
 MINOR CHANGES
 
- - opts() is replaced by theme() as it is deprecated in ggplot-0.9.2.
+- opts() is replaced by theme() as it is deprecated in ggplot-0.9.2.
 
- - theme_text() is replaced by element_text() as it is deprecated in
-   ggplot-0.9.2.
+- theme_text() is replaced by element_text() as it is deprecated in
+  ggplot-0.9.2.
 
-  - opts(title="") is replaced by labs(title="") as it is deprecated in
-    ggplot-0.9.2.
+- opts(title="") is replaced by labs(title="") as it is deprecated in
+  ggplot-0.9.2.
 
 
 Version 0.1
