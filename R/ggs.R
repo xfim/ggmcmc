@@ -77,19 +77,6 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
       nBurnin <- (attributes(s)$mcpar[1])-(1*attributes(s)$mcpar[3])
       nThin <- attributes(s)$mcpar[3]
     }
-    # Change the names of the parameters if par_labels argument has been passed
-    if (class(par_labels)=="data.frame") {
-      if (length(which(c("Parameter", "Label") %in% names(par_labels))) == 2) {
-        levels(D$Parameter)[which(levels(D$Parameter) %in% P$Parameter)] <-
-          as.character(P$Label[which(P$Parameter %in% levels(D$Parameter))])
-      } else {
-        stop("par_labels must include at least columns called 'Parameter' and 'Label'.")
-      }
-    } else {
-      if (!is.na(par_labels)) {
-        stop("par_labels must be a data frame.")
-      }
-    }
     # Set several attributes to the object, to avoid computations afterwards
     # Number of chains
     attr(D, "nChains") <- lS
@@ -129,6 +116,20 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
     if (!is.na(family)) {
       D <- get_family(D, family=family)
     }
+    # Change the names of the parameters if par_labels argument has been passed
+    if (class(par_labels)=="data.frame") {
+      if (length(which(c("Parameter", "Label") %in% names(par_labels))) == 2) {
+        levels(D$Parameter)[which(levels(D$Parameter) %in% par_labels$Parameter)] <-
+          as.character(par_labels$Label[which(par_labels$Parameter %in% levels(D$Parameter))])
+      } else {
+        stop("par_labels must include at least columns called 'Parameter' and 'Label'.")
+      }
+    } else {
+      if (!is.na(par_labels)) {
+        stop("par_labels must be a data frame.")
+      }
+    }
+    # Once everything is ready, return the processed object
     return(D)
   } else {
     stop("ggs is not able to transform the input object into a ggs object suitable for ggmcmc.")
