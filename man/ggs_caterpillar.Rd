@@ -3,7 +3,7 @@
 \title{Caterpillar plot with thick and thin CI}
 \usage{
   ggs_caterpillar(D, family = NA, X = NA,
-    thick.ci = c(0.05, 0.95), thin.ci = c(0.025, 0.975),
+    thick_ci = c(0.05, 0.95), thin_ci = c(0.025, 0.975),
     line = NA, horizontal = TRUE, model_labels = NULL)
 }
 \arguments{
@@ -24,10 +24,10 @@
   value between square brackets (as beta[1], beta[2],
   etc).}
 
-  \item{thick.ci}{Vector of length 2 with the quantiles of
+  \item{thick_ci}{Vector of length 2 with the quantiles of
   the thick band for the credible interval}
 
-  \item{thin.ci}{Vector of length 2 with the quantiles of
+  \item{thin_ci}{Vector of length 2 with the quantiles of
   the thin band for the credible interval}
 
   \item{line}{Numerical value indicating a concrete

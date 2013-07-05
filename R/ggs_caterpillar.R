@@ -5,8 +5,8 @@
 #' @param D Data frame whith the simulations or list of data frame with simulations. If a list of data frames with simulations is passed, the names of the models are the names of the objects in the list.
 #' @param X data frame with two columns, Parameter and the value for the x location. Parameter must be a character vector with the same names that the parameters in the D object. 
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
-#' @param thick.ci Vector of length 2 with the quantiles of the thick band for the credible interval
-#' @param thin.ci Vector of length 2 with the quantiles of the thin band for the credible interval
+#' @param thick_ci Vector of length 2 with the quantiles of the thick band for the credible interval
+#' @param thin_ci Vector of length 2 with the quantiles of the thin band for the credible interval
 #' @param line Numerical value indicating a concrete position, usually used to mark where zero is. By default do not plot any line.
 #' @param horizontal Logical. When TRUE (the default), the plot has horizontal lines. When FALSE, the plot is reversed to show vertical lines. Horizontal lines are more appropriate for categorical caterpillar plots, because the x-axis is the only dimension that matters. But for caterpillar plots against another variable, the vertical position is more appropriate.
 #' @param model_labels Vector of strings that matches the number of models in the list. It is only used in case of multiple models and when the list of ggs objects given at \code{D} is not named. Otherwise, the names in the list are used.
@@ -17,7 +17,7 @@
 #' ggs_caterpillar(ggs(S))
 #' ggs_caterpillar(list(A=ggs(S), B=ggs(S))) # silly example duplicating the same model
 ggs_caterpillar <- function(D, family=NA, X=NA, 
-  thick.ci=c(0.05, 0.95), thin.ci=c(0.025, 0.975),
+  thick_ci=c(0.05, 0.95), thin_ci=c(0.025, 0.975),
   line=NA, horizontal=TRUE, model_labels=NULL) {
   
   # Manage subsetting a family of parameters
@@ -47,8 +47,8 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
   # http://stackoverflow.com/questions/6955128/object-not-found-error-with-ddply-inside-a-function
   # One of the solutions, not elegant, is to assign qs globally (as well as
   # locally  for further commands in this function
-  qs  <- qs <<- c(thin.low=thin.ci[1], thick.low=thick.ci[1], 
-                  median=0.5, thick.high=thick.ci[2], thin.high=thin.ci[2])
+  qs  <- qs <<- c(thin.low=thin_ci[1], thick.low=thick_ci[1], 
+                  median=0.5, thick.high=thick_ci[2], thin.high=thin_ci[2])
   
   # Multiple models or a single model
   #

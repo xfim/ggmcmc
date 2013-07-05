@@ -3,7 +3,7 @@
 \title{Plot the Cross-correlation between-chains}
 \usage{
   ggs_crosscorrelation(D, family = NA,
-    absolute.scale = TRUE)
+    absolute_scale = TRUE)
 }
 \arguments{
   \item{D}{Data frame whith the simulations.}
@@ -15,7 +15,7 @@
   value between square brackets (as beta[1], beta[2],
   etc).}
 
-  \item{absolute.scale}{Logical. When TRUE (the default),
+  \item{absolute_scale}{Logical. When TRUE (the default),
   the scale of the colour diverges between perfect inverse
   correlation (-1) to perfect correlation (1), whereas when
   FALSE, the scale is relative to the minimum and maximum

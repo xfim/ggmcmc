@@ -18,6 +18,8 @@ MAJOR CHANGES
 
 - Make parallel=FALSE the default in ggs().
 
+- Consistency in names of the arguments achieved by moving all "." into "_".
+
 MINOR CHANGES
 
 - rstan is no more a suggested package, because it is not in CRAN, and it is

@@ -4,14 +4,14 @@
 #'
 #' @param D Data frame whith the simulations.
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
-#' @param original.burnin Logical. When TRUE (the default), start the iteration counter in the x-axis at the end of the burnin period.
-#' @param original.thin Logical. When TRUE (the default), take into account the thinning interval in the x-axis.
+#' @param original_burnin Logical. When TRUE (the default), start the iteration counter in the x-axis at the end of the burnin period.
+#' @param original_thin Logical. When TRUE (the default), take into account the thinning interval in the x-axis.
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
 #' data(samples)
 #' ggs_running(ggs(S))
-ggs_running <- function(D, family=NA, original.burnin=TRUE, original.thin=TRUE) {
+ggs_running <- function(D, family=NA, original_burnin=TRUE, original_thin=TRUE) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {
     D <- get_family(D, family=family)
@@ -47,11 +47,11 @@ ggs_running <- function(D, family=NA, original.burnin=TRUE, original.thin=TRUE) 
   bt_format <- function(x) {
     return( attributes(D)$nBurnin + (((x-1) * attributes(D)$nThin) + attributes(D)$nThin))
   }
-  if (original.burnin & !original.thin) {
+  if (original_burnin & !original_thin) {
     f <- f + scale_x_continuous(labels=b_format)
-  } else if (!original.burnin & original.thin) {
+  } else if (!original_burnin & original_thin) {
     f <- f + scale_x_continuous(labels=t_format)
-  } else if (original.burnin & original.thin) {
+  } else if (original_burnin & original_thin) {
     f <- f + scale_x_continuous(labels=bt_format)
   } else {
     f <- f

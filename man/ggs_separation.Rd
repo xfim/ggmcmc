@@ -2,7 +2,7 @@
 \alias{ggs_separation}
 \title{Separation plot for models with binary response variables}
 \usage{
-  ggs_separation(D, outcome, fully.bayesian = FALSE,
+  ggs_separation(D, outcome, fully_bayesian = FALSE,
     minimalist = FALSE)
 }
 \arguments{
@@ -15,7 +15,7 @@
   observed outcome variable. Currently only a vector is
   supported.}
 
-  \item{fully.bayesian}{logical, FALSE by default.
+  \item{fully_bayesian}{logical, FALSE by default.
   Currently not implemented}
 
   \item{minimalist}{logical, FALSE by default. It returns a

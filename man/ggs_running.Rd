@@ -2,8 +2,8 @@
 \alias{ggs_running}
 \title{Running means of the chains}
 \usage{
-  ggs_running(D, family = NA, original.burnin = TRUE,
-    original.thin = TRUE)
+  ggs_running(D, family = NA, original_burnin = TRUE,
+    original_thin = TRUE)
 }
 \arguments{
   \item{D}{Data frame whith the simulations.}
@@ -15,11 +15,11 @@
   value between square brackets (as beta[1], beta[2],
   etc).}
 
-  \item{original.burnin}{Logical. When TRUE (the default),
+  \item{original_burnin}{Logical. When TRUE (the default),
   start the iteration counter in the x-axis at the end of
   the burnin period.}
 
-  \item{original.thin}{Logical. When TRUE (the default),
+  \item{original_thin}{Logical. When TRUE (the default),
   take into account the thinning interval in the x-axis.}
 }
 \value{

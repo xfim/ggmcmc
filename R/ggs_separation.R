@@ -2,7 +2,7 @@
 #'
 #' @param D Data frame whith the simulations. Notice that only the posterior outcomes are needed, and so either the previous call to ggs() should have limited the family of parameters to pass to the predicted outcomes.
 #' @param outcome vector (or matrix or array) containing the observed outcome variable. Currently only a vector is supported.
-#' @param fully.bayesian logical, FALSE by default. Currently not implemented
+#' @param fully_bayesian logical, FALSE by default. Currently not implemented
 #' @param minimalist logical, FALSE by default. It returns a minimalistic version of the figure with the bare minimum elements, suitable for being used inline as suggested by Greenhill, Ward and Sacks citing Tufte.
 #'
 #' @return A \code{ggplot} object
@@ -13,12 +13,12 @@
 #' }
 #' @export
 
-ggs_separation <- function(D, outcome, fully.bayesian=FALSE, minimalist=FALSE) {
-  if (fully.bayesian) {
+ggs_separation <- function(D, outcome, fully_bayesian=FALSE, minimalist=FALSE) {
+  if (fully_bayesian) {
     stop("The fully Bayesian version has not been implemented yet.")
   }
   # Calculate the prediction bands
-  if (fully.bayesian) {
+  if (fully_bayesian) {
   } else {
     S <- ddply(D, .(Parameter), summarize,
       low=quantile(value, 0.025),
@@ -31,7 +31,7 @@ ggs_separation <- function(D, outcome, fully.bayesian=FALSE, minimalist=FALSE) {
   S <- S[order(S$median),]
   S <- cbind(S, id=1:dim(S)[1])
   # Calculate expected number of events
-  if (fully.bayesian) {
+  if (fully_bayesian) {
   } else {
     N <- length(outcome)
     perc.obs.events <- length(which(outcome==1)) / N            # percent observed events
