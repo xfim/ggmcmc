@@ -9,7 +9,7 @@
 #' @param thin.ci Vector of length 2 with the quantiles of the thin band for the credible interval
 #' @param line Numerical value indicating a concrete position, usually used to mark where zero is. By default do not plot any line.
 #' @param horizontal Logical. When TRUE (the default), the plot has horizontal lines. When FALSE, the plot is reversed to show vertical lines. Horizontal lines are more appropriate for categorical caterpillar plots, because the x-axis is the only dimension that matters. But for caterpillar plots against another variable, the vertical position is more appropriate.
-#' @param labels Vector of strings that matches the number of models in the list. It is only used in case of multiple models and when the list of ggs objects given at \code{D} is not named. Otherwise, the names in the list are used.
+#' @param model_labels Vector of strings that matches the number of models in the list. It is only used in case of multiple models and when the list of ggs objects given at \code{D} is not named. Otherwise, the names in the list are used.
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
@@ -18,7 +18,7 @@
 #' ggs_caterpillar(list(A=ggs(S), B=ggs(S))) # silly example duplicating the same model
 ggs_caterpillar <- function(D, family=NA, X=NA, 
   thick.ci=c(0.05, 0.95), thin.ci=c(0.025, 0.975),
-  line=NA, horizontal=TRUE, labels=NULL) {
+  line=NA, horizontal=TRUE, model_labels=NULL) {
   
   # Manage subsetting a family of parameters
   if (!is.na(family)) {
@@ -65,7 +65,7 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
     # Get model names, by default the description attribute of the ggs object
     model.names <- lapply(D, function(x) return(attributes(x)$description))
     # But prevalence is for the names of the named list, not for labels or for the description
-    if (length(labels)==length(D)) model.names <- labels       # get model names from labels
+    if (length(model_labels)==length(D)) model.names <- model_labels       # get model names from labels
     if (length(names(D)!=0)) model.names <- names(D)           # get model names from named list
     # Final data frame to use for plotting
     dcm <- do.call(

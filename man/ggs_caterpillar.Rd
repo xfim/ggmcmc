@@ -4,7 +4,7 @@
 \usage{
   ggs_caterpillar(D, family = NA, X = NA,
     thick.ci = c(0.05, 0.95), thin.ci = c(0.025, 0.975),
-    line = NA, horizontal = TRUE, labels = NULL)
+    line = NA, horizontal = TRUE, model_labels = NULL)
 }
 \arguments{
   \item{D}{Data frame whith the simulations or list of data
@@ -42,8 +42,8 @@
   But for caterpillar plots against another variable, the
   vertical position is more appropriate.}
 
-  \item{labels}{Vector of strings that matches the number
-  of models in the list. It is only used in case of
+  \item{model_labels}{Vector of strings that matches the
+  number of models in the list. It is only used in case of
   multiple models and when the list of ggs objects given at
   \code{D} is not named. Otherwise, the names in the list
   are used.}
