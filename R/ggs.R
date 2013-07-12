@@ -18,68 +18,81 @@
 #' data(samples)
 #' D <- ggs(S)        # S is a coda object
 ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_warmup=FALSE, stan_include_auxiliar=FALSE, parallel=FALSE) {
+  processed <- FALSE # set by default that there has not been any processed samples
   #
   # Manage stanfit obcjets
   # Manage stan output first because it is firstly converted into an mcmc.list
   #
   if (class(S)=="stanfit") { 
     if (inc_warmup) warning("inc_warmup must be 'FALSE', so it is ignored.")
-    S <- as.array(S)
-    # If someday rstan gets into CRAN the more elegant 
-    # rstan::extract(S, inc_warmup=inc_warmup) may be used
-    S <- do.call(mcmc.list, alply(S, 2, coda::mcmc))
+    D <- melt(as.array(S))
+    names(D)[1:3] <- c("Iteration", "Chain", "Parameter")
+    D$Chain <- as.integer(gsub("chain:", "", D$Chain))
     # Exclude, by default, lp parameter
     if (!stan_include_auxiliar) {
-      S <- S[,1:(dim(S[[1]])[2]-1), drop=FALSE] # delete the last column, the last parameter, which is lp__
+      D <- subset(D, Parameter!="lp__") # delete lp__
+      D$Parameter <- factor(as.character(D$Parameter))
     }
+    nBurnin <- S@sim$warmup
+    nThin <- S@sim$thin
+    mDescription <- S@model_name
+    processed <- TRUE  # whether the object has been processed or not
   }
   #
   # Manage csv files than contain stan samples
   # Also converted first to an mcmc.list
   #
   if (class(S)=="list") {
-    S.out <- coda::mcmc.list()
+    D <- NULL
     for (i in 1:length(S)) {
-      S.out[[i]] <- coda::mcmc(
-        read.table(S[[i]], sep=",", header=TRUE, colClasses="numeric"))
+      samples.c <- read.table(S[[i]], sep=",", header=TRUE, colClasses="numeric") 
+      samples <- suppressMessages(melt(samples.c, variable.name="Parameter"))
+      D <- rbind(D, cbind(Iteration=1:(dim(samples.c)[1]), Chain=i, samples))
     }
-    S <- S.out
-    # Exclude, by default, lp parameter
+    # Exclude, by default, lp parameter and other auxiliar ones
     if (!stan_include_auxiliar) {
-      S <- S[,-c(1:3), drop=FALSE] # delete the last column, the last parameter, which is lp__
+      D <- D[grep("__$", D$Parameter, invert=TRUE),]
+      D$Parameter <- factor(as.character(D$Parameter))
     }
+    nBurnin <- as.integer(gsub("warmup=", "", scan(S[[i]], "", skip=12, nlines=1, quiet=TRUE)[2]))
+    nThin <- as.integer(gsub("thin=", "", scan(S[[i]], "", skip=13, nlines=1, quiet=TRUE)[2]))
+    processed <- TRUE
   }
   #
   # Manage mcmc.list and mcmc objects
   #
-  if (class(S)=="mcmc.list" | class(S)=="mcmc") {  # JAGS typical output or MCMCpack (or also previously managet Stan output)
-    lS <- length(S)
-    D <- NULL
-    if (lS == 1 | class(S)=="mcmc") { # Single chain or MCMCpack
-      if (lS == 1 & class(S)=="mcmc.list") { # single chain
-        s <- S[[1]]
-      } else { # MCMCpack
-        s <- S
+  if (class(S)=="mcmc.list" | class(S)=="mcmc" | processed) {  # JAGS typical output or MCMCpack (or previously processed stan samples)
+    if (!processed) { # only in JAGS or MCMCpack, using coda
+      lS <- length(S)
+      D <- NULL
+      if (lS == 1 | class(S)=="mcmc") { # Single chain or MCMCpack
+        if (lS == 1 & class(S)=="mcmc.list") { # single chain
+          s <- S[[1]]
+        } else { # MCMCpack
+          s <- S
+        }
+        # Process a single chain
+        D <- cbind(ggs_chain(s), Chain=1)
+        D <- D[,c("Iteration", "Chain", "Parameter", "value")]
+        # Get information from mcpar (burnin period, thinning)
+        nBurnin <- (attributes(s)$mcpar[1])-(1*attributes(s)$mcpar[3])
+        nThin <- attributes(s)$mcpar[3]
+      } else {
+        # Process multiple chains
+        for (l in 1:lS) {
+          s <- S[l][[1]]
+          D <- rbind(D, cbind(ggs_chain(s), Chain=l))
+        }
+        D <- D[,c("Iteration", "Chain", "Parameter", "value")]
+        # Get information from mcpar (burnin period, thinning). Taking the last
+        # chain is fine. All chains are assumed to have the same structure.
+        nBurnin <- (attributes(s)$mcpar[1])-(1*attributes(s)$mcpar[3])
+        nThin <- attributes(s)$mcpar[3]
       }
-      # Process a single chain
-      D <- cbind(ggs_chain(s), Chain=1)
-      # Get information from mcpar (burnin period, thinning)
-      nBurnin <- (attributes(s)$mcpar[1])-(1*attributes(s)$mcpar[3])
-      nThin <- attributes(s)$mcpar[3]
-    } else {
-      # Process multiple chains
-      for (l in 1:lS) {
-        s <- S[l][[1]]
-        D <- rbind(D, cbind(ggs_chain(s), Chain=l))
-      }
-      # Get information from mcpar (burnin period, thinning). Taking the last
-      # chain is fine. All chains are assumed to have the same structure.
-      nBurnin <- (attributes(s)$mcpar[1])-(1*attributes(s)$mcpar[3])
-      nThin <- attributes(s)$mcpar[3]
     }
     # Set several attributes to the object, to avoid computations afterwards
     # Number of chains
-    attr(D, "nChains") <- lS
+    attr(D, "nChains") <- length(unique(D$Chain))
     # Number of parameters
     attr(D, "nParameters") <- length(unique(D$Parameter))
     # Number of Iterations really present in the sample
@@ -105,7 +118,11 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
       if (!is.na(description)) { # if it is not a character string and not NA, show an informative message
         print("description is not a text string. The name of the imported object is used instead.")
       }
-      attr(D, "description") <- as.character(sys.call()[2]) # use the name of the source object
+      if (exists("mDescription")) { # In case of stan model names
+        attr(D, "description") <- mDescription
+      } else {
+        attr(D, "description") <- as.character(sys.call()[2]) # use the name of the source object
+      }
     }
     # Whether parallel computing is desired
     attr(D, "parallel") <- parallel
