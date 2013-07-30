@@ -1,3 +1,13 @@
+Version 0.4.1
+------------------------------
+
+MINOR CHANGES
+
+- Bug in export on ggs_rocplot.
+
+- Stan samples are imported without relying on coda.
+
+
 Version 0.4
 ------------------------------
 

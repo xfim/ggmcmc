@@ -23,6 +23,7 @@ roc.calc <- function(R) {
 #' @param fully.bayesian logical, false by default. When not fully Bayesian, it uses the median of the predictions for each observation by iteration. When TRUE the function plots as many ROC curves as iterations. It uses a a lot of CPU and needs more memory. Use it with caution.
 #'
 #' @return A \code{ggplot} object
+#' @export
 #' @examples
 #' \dontrun{
 #' ggs_rocplot(S, outcome=y)
