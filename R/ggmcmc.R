@@ -78,7 +78,11 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, param.page=5, width=7
 
     # So just do it manually
     cat("Plotting histograms\n")
-    for (p in 1:n.pages) print(ggs_histogram(D[D$page==p,]))
+    for (p in 1:n.pages) {
+      Dsub <- D[D$page==p,]
+      attr(Dsub, "nParameters") <- length(unique(Dsub$Parameter))
+      print(ggs_histogram(Dsub))
+    }
 
     cat("Plotting density plots\n")
     for (p in 1:n.pages) print(ggs_density(D[D$page==p,]))
