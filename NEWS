@@ -3,7 +3,7 @@ Version 0.4.2
 
 MINOR CHANGES
 
-- Bug in ggmcmc() (related to ggs_histogram() and the division in pages relying
+- Bug in ggmcmc() related to ggs_histogram() and the division in pages relying
   on nParameters.
 
 
