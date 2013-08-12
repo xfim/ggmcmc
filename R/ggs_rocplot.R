@@ -20,7 +20,7 @@ roc.calc <- function(R) {
 #'
 #' @param D Data frame whith the simulations. Notice that only the posterior outcomes are needed, and so either the previous call to ggs() should have limited the family of parameters to pass to the predicted outcomes.
 #' @param outcome vector (or matrix or array) containing the observed outcome variable. Currently only a vector is supported.
-#' @param fully.bayesian logical, false by default. When not fully Bayesian, it uses the median of the predictions for each observation by iteration. When TRUE the function plots as many ROC curves as iterations. It uses a a lot of CPU and needs more memory. Use it with caution.
+#' @param fully_bayesian logical, false by default. When not fully Bayesian, it uses the median of the predictions for each observation by iteration. When TRUE the function plots as many ROC curves as iterations. It uses a a lot of CPU and needs more memory. Use it with caution.
 #'
 #' @return A \code{ggplot} object
 #' @export
@@ -28,11 +28,11 @@ roc.calc <- function(R) {
 #' \dontrun{
 #' ggs_rocplot(S, outcome=y)
 #' }
-ggs_rocplot <- function(D, outcome, fully.bayesian=FALSE) {
+ggs_rocplot <- function(D, outcome, fully_bayesian=FALSE) {
   # Create a single object that stores the predicted 'value' and the observed 'Outcome'
   D.observed <- data.frame(Observed=outcome, Parameter=unique(D$Parameter))
   # Work with the full posterior or with the expected medians, to economize memory
-  if (fully.bayesian) {
+  if (fully_bayesian) {
     D.predicted <- D
   } else {
     D.predicted <- ddply(D, .(Parameter, Chain), summarize, value=quantile(value, 0.5),
@@ -44,7 +44,7 @@ ggs_rocplot <- function(D, outcome, fully.bayesian=FALSE) {
   # Sort it to be sure that the figure is plotted nicely
   roc.df <- roc.df[order(roc.df$Sensitivity, roc.df$Specificity, decreasing=FALSE),]
   # Plot differently if it's a fully Bayesian figure or not
-  if (fully.bayesian) {
+  if (fully_bayesian) {
     # Start plotting
     f <- ggplot(roc.df, aes(x=1-Specificity, y=Sensitivity, group=as.factor(Iteration), color=as.factor(Chain))) +
       geom_step(alpha=0.4, size=0.4) + geom_rug(alpha=0.1, size=0.1, sides="b")
