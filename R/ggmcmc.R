@@ -150,8 +150,20 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, plot=NULL,
   }
 
   if (is.null(plot) | length(grep("caterpillar", plot)) > 0) {
+    # Caterpillar plots are only plotted for each of the repeated parameters
     cat("Plotting caterpillar plot\n")
-    print(ggs_caterpillar(D))
+
+    # get the names of the parameters without their number (parameter family)
+    Parameter.family <- gsub("\\[.+\\]", "", D$Parameter)
+
+    # Count how many members each family of parameters has, and only plot where
+    # there is more than one parameter
+    n.family.members <- apply(ifelse(table(D$Parameter, Parameter.family) > 0, 1, 0), 2, sum)
+    for (f in unique(Parameter.family)) {
+      if (n.family.members[f] > 1) {
+        print(ggs_caterpillar(D, family=f, horizontal=TRUE) + labs(title=f))
+      }
+    }
   }
 
   # Close the pdf device
