@@ -6,12 +6,13 @@
 #
 #' @param D Data frame whith the simulations
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
+#' @param scaling Value of the upper limit for the x-axis. By default, it is 1.5, to help contextualization of the convergence. When 0 or NA, the axis are not scaled.
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
 #' data(samples)
 #' ggs_Rhat(ggs(S))
-ggs_Rhat <- function(D, family=NA) {
+ggs_Rhat <- function(D, family=NA, scaling=1.5) {
   if (attributes(D)$nChains<2) {
     stop("At least two chains are required")
   }
@@ -56,5 +57,11 @@ ggs_Rhat <- function(D, family=NA) {
   # Plot
   f <- ggplot(BW, aes(x=Rhat, y=Parameter)) + geom_point() +
     ggtitle("Potential Scale Reduction Factor")
+  # If scaling, add the scale
+  if (!is.na(scaling)) {
+    # Use the maximum of Rhat if it is larger than the prespecified value
+    scaling <- ifelse(scaling > max(BW$Rhat), scaling, max(BW$Rhat))
+    f <- f + xlim(1, scaling)
+  }
   return(f)
 }
