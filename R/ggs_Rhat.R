@@ -56,6 +56,7 @@ ggs_Rhat <- function(D, family=NA, scaling=1.5) {
     .parallel=attributes(D)$parallel)
   # Plot
   f <- ggplot(BW, aes(x=Rhat, y=Parameter)) + geom_point() +
+    xlab(expression(hat("R"))) +
     ggtitle("Potential Scale Reduction Factor")
   # If scaling, add the scale
   if (!is.na(scaling)) {
