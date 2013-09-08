@@ -8,7 +8,7 @@
 #' @param file Character vector with the name of the file to create. Defaults to "ggmcmc-output.pdf". When NULL, no pdf device is opened or closed. This allows the user to work with an opened pdf (or other) device.
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
 #' @param plot character vector containing the names of the desired plots. By default (NULL), \code{ggmcmc()} plots \code{ggs_histogram()}, \code{ggs_density()}, \code{ggs_traceplot()}, \code{ggs_running()}, \code{ggs_compare_partial()}, \code{ggs_autocorrelation()}, \code{ggs_crosscorrelation()}, \code{ggs_Rhat()}, \code{ggs_geweke()} and \code{ggs_caterpillar()}.
-#' @param param.page Numerical, number of parameters to plot for each page. Defaults to 5.
+#' @param param_page Numerical, number of parameters to plot for each page. Defaults to 5.
 #' @param width Width of the pdf display, in inches. Defaults to 7.
 #' @param height Height of the pdf display, in inches. Defaults to 10.
 #' @param ... Other options passed to the pdf device.
@@ -17,7 +17,7 @@
 #' data(samples)
 #' ggmcmc(ggs(S))  # Directly from a coda object
 ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, plot=NULL,
-  param.page=5, width=7, height=10, ...) {
+  param_page=5, width=7, height=10, ...) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {
     D <- get_family(D, family=family)
@@ -34,7 +34,7 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, plot=NULL,
   # When there are fewer parameters to plot than the number of requested
   # parameters per page, simply print them. Otherwise, the device needs to be
   # arranged
-  if (attributes(D)$nParameters <= param.page) {
+  if (attributes(D)$nParameters <= param_page) {
     # Simply print each plot separately
     if (is.null(plot) | length(grep("histogram", plot)) > 0) {
       cat("Plotting histograms\n")
@@ -71,10 +71,10 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, plot=NULL,
     # Create a new variable that sets each parameter in a specified page number
     # Preserve the attributes of the original object
     old.atrib <- attributes(D)
-    n.pages <- ceiling(n.param / param.page)
+    n.pages <- ceiling(n.param / param_page)
     parameters <- unique(D$Parameter)
     D.parameters <- data.frame(Parameter=parameters, 
-      page=as.numeric(as.character(gl(n.pages, param.page, length=length(parameters)))))
+      page=as.numeric(as.character(gl(n.pages, param_page, length=length(parameters)))))
     new.atrib <- old.atrib
     D <- merge(D, D.parameters)
     # In case merge has changed the order of the columns of the dataframe,
