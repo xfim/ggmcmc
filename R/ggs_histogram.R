@@ -23,6 +23,6 @@ ggs_histogram <- function(D, family=NA, bins=30) {
   ds <- cbind(Parameter=gl(attributes(D)$nParameters, dl[1], labels=levels(D$Parameter)), ds)
   # Plot
   f <- ggplot(ds, aes(x=x, y=count, width=width)) + geom_bar(stat="identity", position="identity") +
-    facet_wrap(~ Parameter, ncol=1, scales="free")
+    facet_wrap(~ Parameter, ncol=1, scales="free") + xlab("value")
   return(f)
 }
