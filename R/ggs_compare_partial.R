@@ -5,12 +5,13 @@
 #' @param D Data frame whith the simulations
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
 #' @param partial Percentage of the chain to compare to. Defaults to the last 10 percent.
+#' @param rug Logical indicating whether a rug must be added to the plot. It is FALSE by default, since in large chains it may use lot of resources and it is not central to the plot.
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
 #' data(samples)
 #' ggs_compare_partial(ggs(S))
-ggs_compare_partial <- function(D, family=NA, partial=0.1) {
+ggs_compare_partial <- function(D, family=NA, partial=0.1, rug=FALSE) {
   # Check that partial is a percentage
   if (partial <= 0 | partial >=1 | !is.numeric(partial)) {
     stop("partial must be a numerical argument and a value greater than zero or less than one")
@@ -37,8 +38,9 @@ ggs_compare_partial <- function(D, family=NA, partial=0.1) {
   } else {
     f <- f + facet_wrap(Parameter ~ Chain, ncol=attributes(D)$nChains, scales=c("free"))
   }
-  f <- f + geom_rug(alpha=0.1) +
+  f <- f +
     scale_colour_manual(name="Chain length", values=c("black", "aquamarine3")) +
     scale_fill_manual(name="Chain length", values=c("black", "aquamarine3"))
+  if (rug) f <- f + geom_rug(alpha=0.1)
   return(f)
 }
