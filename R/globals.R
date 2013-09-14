@@ -9,7 +9,7 @@ if (base::getRversion() >= "2.15.1") {
     "thick.low", "thick.high", "thin.low", "thin.high", # from ggs_caterpillar
     "part_chain", # for ggs_compare_partial
     "Var1", "Var2", # for ggs_crosscorrelation
-    "n", "z", "part", # for ggs_geweke
+    "n", "z", "part", "g", # for ggs_geweke
     "sd", # for ggs_ppsd
     "x", "width", # for ggs_histogram
     "Posterior predictive mean", "Posterior predictive standard deviation", # for ggs_ppmean and ggs_ppsd
