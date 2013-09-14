@@ -2,7 +2,7 @@
 \alias{ggs_density}
 \title{Density plots of the chains}
 \usage{
-  ggs_density(D, family = NA)
+  ggs_density(D, family = NA, rug = FALSE)
 }
 \arguments{
   \item{D}{Data frame whith the simulations.}
@@ -13,6 +13,11 @@
   parameters with the same name but different numerical
   value between square brackets (as beta[1], beta[2],
   etc).}
+
+  \item{rug}{Logical indicating whether a rug must be added
+  to the plot. It is FALSE by default, since in large
+  chains it may use lot of resources and it is not central
+  to the plot.}
 }
 \value{
   A \code{ggplot} object.

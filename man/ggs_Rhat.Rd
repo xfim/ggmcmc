@@ -2,7 +2,7 @@
 \alias{ggs_Rhat}
 \title{Dotplot of Potential Scale Reduction Factor (Rhat)}
 \usage{
-  ggs_Rhat(D, family = NA)
+  ggs_Rhat(D, family = NA, scaling = 1.5)
 }
 \arguments{
   \item{D}{Data frame whith the simulations}
@@ -13,6 +13,10 @@
   parameters with the same name but different numerical
   value between square brackets (as beta[1], beta[2],
   etc).}
+
+  \item{scaling}{Value of the upper limit for the x-axis.
+  By default, it is 1.5, to help contextualization of the
+  convergence. When 0 or NA, the axis are not scaled.}
 }
 \value{
   A \code{ggplot} object.

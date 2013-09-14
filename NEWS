@@ -1,3 +1,30 @@
+Version 0.5
+------------------------------
+
+MAJOR CHANGES
+
+- ggmcmc() now allows the argument "plot" to 
+
+- ggs_Rhat() now has scaling between 1 and 1.5 by default, so that perspective
+  on real convergence is present. 
+
+- ggs_geweke() includes anargument shadow_limit to highlight the -2+2 range
+
+- rugs in ggs_density() and ggs_compare_partial() are FALSE by default: rug it
+  is only a visual improvement that really does not add too much information to
+  the plot, but it takes a lot of resources.
+
+
+MINOR CHANGES
+
+- Old arguments "param.page" from ggmcmc() and "fully.bayesian" from
+  ggs_rocplot() now use underscore to be systematic with the rest of the package.
+
+- Change default label for ggs_histogram().
+
+- Rhat label now has a real hat.
+
+
 Version 0.4.2
 ------------------------------
 

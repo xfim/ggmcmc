@@ -2,7 +2,7 @@
 \alias{ggs_rocplot}
 \title{Receiver-Operator Characteristic (ROC) plot for models with binary outcomes}
 \usage{
-  ggs_rocplot(D, outcome, fully.bayesian = FALSE)
+  ggs_rocplot(D, outcome, fully_bayesian = FALSE)
 }
 \arguments{
   \item{D}{Data frame whith the simulations. Notice that
@@ -14,7 +14,7 @@
   observed outcome variable. Currently only a vector is
   supported.}
 
-  \item{fully.bayesian}{logical, false by default. When not
+  \item{fully_bayesian}{logical, false by default. When not
   fully Bayesian, it uses the median of the predictions for
   each observation by iteration. When TRUE the function
   plots as many ROC curves as iterations. It uses a a lot

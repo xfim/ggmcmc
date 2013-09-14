@@ -2,7 +2,8 @@
 \alias{ggs_compare_partial}
 \title{Density plots comparing the distribution of the whole chain with only its last part.}
 \usage{
-  ggs_compare_partial(D, family = NA, partial = 0.1)
+  ggs_compare_partial(D, family = NA, partial = 0.1,
+    rug = FALSE)
 }
 \arguments{
   \item{D}{Data frame whith the simulations}
@@ -16,6 +17,11 @@
 
   \item{partial}{Percentage of the chain to compare to.
   Defaults to the last 10 percent.}
+
+  \item{rug}{Logical indicating whether a rug must be added
+  to the plot. It is FALSE by default, since in large
+  chains it may use lot of resources and it is not central
+  to the plot.}
 }
 \value{
   A \code{ggplot} object.

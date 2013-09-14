@@ -5,7 +5,8 @@
 \title{Wrapper function that creates a single pdf file with all plots that ggmcmc can produce.}
 \usage{
   ggmcmc(D, file = "ggmcmc-output.pdf", family = NA,
-    param.page = 5, width = 7, height = 10, ...)
+    plot = NULL, param_page = 5, width = 7, height = 10,
+    ...)
 }
 \arguments{
   \item{D}{Data frame whith the simulations, previously
@@ -23,7 +24,16 @@
   value between square brackets (as beta[1], beta[2],
   etc).}
 
-  \item{param.page}{Numerical, number of parameters to plot
+  \item{plot}{character vector containing the names of the
+  desired plots. By default (NULL), \code{ggmcmc()} plots
+  \code{ggs_histogram()}, \code{ggs_density()},
+  \code{ggs_traceplot()}, \code{ggs_running()},
+  \code{ggs_compare_partial()},
+  \code{ggs_autocorrelation()},
+  \code{ggs_crosscorrelation()}, \code{ggs_Rhat()},
+  \code{ggs_geweke()} and \code{ggs_caterpillar()}.}
+
+  \item{param_page}{Numerical, number of parameters to plot
   for each page. Defaults to 5.}
 
   \item{width}{Width of the pdf display, in inches.
