@@ -34,8 +34,13 @@ get_family <- function(D, family=NA) {
 #' @return A vector with the spectral density estimate at zero frequency
 #' @export
 sde0f <- function(x) {
-  m.ar <- ar(x)
-  v0 <- m.ar$var.pred / (1-sum(m.ar$ar))^2
+  # In case of series not varying, set v0 to 0
+  if (length(unique(x))>1) {
+    m.ar <- ar(x)
+    v0 <- m.ar$var.pred / (1-sum(m.ar$ar))^2
+  } else {
+    v0 <- 0
+  }
   return(v0)
 }
 
