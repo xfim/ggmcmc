@@ -57,8 +57,9 @@ calc.bin <- function(x, bins=bins) {
   mn <- min(x)
   mx <- max(x)
   bw <- (mx-mn)/bins
-  z <- ggplot2:::bin(x, binwidth=bw)
-  return(z[,c("x", "width", "count")])
+  z <- seq(mn, mx, by=bw)
+  count <- as.vector(table(cut(x, breaks=z)))
+  return(data.frame(x=z[-length(z)], width=bw, count=count))
 }
 
 #' Generate a factor with unequal number of repetitions
@@ -67,6 +68,7 @@ calc.bin <- function(x, bins=bins) {
 #'
 #' @param n number of levels
 #' @param k number of repetitions
+#' @param labels optional vector of labels
 #' @return A factor
 #' @export
 gl.unq <- function (n, k, labels=1:n) {

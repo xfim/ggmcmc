@@ -1,3 +1,16 @@
+Version 0.5.1
+------------------------------
+
+MINOR CHANGES
+
+- When the chain is stucked in the same value, the computation of the ar() for
+  the spectral density needed by ggs_geweke() failed. It has been solved
+
+- When the range of a parameter is huge the calculation of the bins is
+  approximate, and gave different number of bins. Now ggs_histogram takes care of
+  different number of bins by each variable due to rounding.
+
+
 Version 0.5
 ------------------------------
 
