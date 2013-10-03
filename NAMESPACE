@@ -1,5 +1,6 @@
 export(ac)
 export(calc.bin)
+export(gl.unq)
 export(ggmcmc)
 export(ggs)
 export(ggs_Rhat)

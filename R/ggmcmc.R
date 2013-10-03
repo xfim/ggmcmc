@@ -95,6 +95,7 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, plot=NULL,
       cat("Plotting histograms\n")
       for (p in 1:n.pages) {
         Dsub <- D[D$page==p,]
+        Dsub$Parameter <- as.factor(as.character(Dsub$Parameter))
         attr(Dsub, "nParameters") <- length(unique(Dsub$Parameter))
         print(ggs_histogram(Dsub))
       }

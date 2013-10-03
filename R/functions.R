@@ -56,3 +56,19 @@ calc.bin <- function(x, bins=bins) {
   return(z[,c("x", "width", "count")])
 }
 
+#' Generate a factor with unequal number of repetitions
+#'
+#' Generate a factor with levels of unequal length
+#'
+#' @param n number of levels
+#' @param k number of repetitions
+#' @return A factor
+#' @export
+gl.unq <- function (n, k, labels=1:n) {
+  x <- NULL
+  for (i in 1:n) {
+    x <- append(x, rep(i, length.out=k[i]))
+  }
+  x <- factor(x, levels=1:n, labels=labels)
+  return(x)
+}

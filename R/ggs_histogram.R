@@ -18,9 +18,11 @@ ggs_histogram <- function(D, family=NA, bins=30) {
   # Manually generate the histogram by parameter, based on the total number of
   # bins
   l <- unlist(dlply(D, .(Parameter), here(summarize), calc.bin(value, bins)), recursive=FALSE)
-  dl <- dim(l[[1]]) # only the dimensions of the first parameter are needed to recreate Parameter names
-  ds <- rbind.fill(l)
-  ds <- cbind(Parameter=gl(attributes(D)$nParameters, dl[1], labels=levels(D$Parameter)), ds)
+  ds <- ldply(l, data.frame)
+  dl <- as.numeric(table(ds$`.id`))
+  # There may be cases of parameters with slightly different numbers of bins,
+  # and therefore a Parameter-by-Parameter approach is needed
+  ds <- cbind(Parameter=gl.unq(attributes(D)$nParameters, dl, labels=levels(D$Parameter)), ds)
   # Plot
   f <- ggplot(ds, aes(x=x, y=count, width=width)) + geom_bar(stat="identity", position="identity") +
     facet_wrap(~ Parameter, ncol=1, scales="free") + xlab("value")
