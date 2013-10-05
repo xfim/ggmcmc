@@ -49,8 +49,19 @@ ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE) {
   Z <- data.frame(Parameter=M$Parameter, Chain=M$Chain,
     z= (M$first - M$last) /
       sqrt( (SDE0F$first/N$first) + (SDE0F$last/N$last) ) )
+  # Check that there are no Inf values, otherwise raise a message and continue
+  # having converted it into NA
+  Zinf <- which(is.infinite(Z$z))
+  if (length(Zinf) > 0) {
+    for (nas in 1:length(Zinf)) {
+      warning(paste(
+        "Infinite value in the z score for Parameter ", Z$Parameter[Zinf[nas]],
+        ", Chain ", Z$Chain[Zinf[nas]], ".", sep=""))
+    }
+    Z$z[Zinf] <- NA
+  }
   # Calculate ranges of z-scores for plotting
-  rz <- range(Z$z)
+  rz <- range(Z$z, na.rm=TRUE)
   rz[1] <- ifelse(rz[1] < -2.5, rz[1], -2.5)
   rz[2] <- ifelse(rz[2] > 2.5, rz[2], 2.5)
   # Plot
