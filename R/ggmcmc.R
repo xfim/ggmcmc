@@ -72,7 +72,7 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, plot=NULL,
     # Preserve the attributes of the original object
     old.atrib <- attributes(D)
     n.pages <- ceiling(n.param / param_page)
-    parameters <- unique(D$Parameter)
+    parameters <- sort(unique(D$Parameter))
     D.parameters <- data.frame(Parameter=parameters, 
       page=as.numeric(as.character(gl(n.pages, param_page, length=length(parameters)))))
     new.atrib <- old.atrib
