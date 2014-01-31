@@ -137,7 +137,8 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
     if (class(par_labels)=="data.frame") {
       if (length(which(c("Parameter", "Label") %in% names(par_labels))) == 2) {
         levels(D$Parameter)[which(levels(D$Parameter) %in% par_labels$Parameter)] <-
-          as.character(par_labels$Label[which(par_labels$Parameter %in% levels(D$Parameter))])
+          as.character(par_labels$Label[
+            match(levels(D$Parameter)[which(levels(D$Parameter) %in% par_labels$Parameter)], par_labels$Parameter)])
       } else {
         stop("par_labels must include at least columns called 'Parameter' and 'Label'.")
       }
