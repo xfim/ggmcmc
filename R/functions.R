@@ -58,8 +58,12 @@ calc.bin <- function(x, bins=bins) {
   mx <- max(x)
   bw <- (mx-mn)/bins
   z <- seq(mn, mx, by=bw)
-  count <- as.vector(table(cut(x, breaks=z)))
-  return(data.frame(x=z[-length(z)], width=bw, count=count))
+  if (length(z)==1) { # no variation on the parameter, manual table
+    return(data.frame(x=c(mn-1, mn, mn+1), width=rep(1, 3), count=c(0, length(x), 0)))
+  } else {
+    count <- as.vector(table(cut(x, breaks=z)))
+    return(data.frame(x=z[-length(z)], width=bw, count=count))
+  }
 }
 
 #' Generate a factor with unequal number of repetitions
