@@ -28,7 +28,8 @@ ggs_crosscorrelation <- function(D, family=NA, absolute_scale=TRUE) {
   # Plot
   f <- ggplot(bc.cc, aes(x=Var1, y=Var2)) +
     geom_tile(aes(fill=value)) +
-    xlab("") + ylab("") + theme(axis.text.x=element_text(angle=90))
+    xlab("") + ylab("") +
+    theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5))
     if (absolute_scale) {
       f <- f + scale_fill_gradient2(limits=c(-1, 1)) 
     } else {
