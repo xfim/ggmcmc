@@ -36,6 +36,7 @@ ggs_Rhat <- function(D, family=NA, scaling=1.5) {
     B=var(psi.j-psi.dot)*nIterations,
     #B=var(psi.j-psi.dot)*(attributes(D)$nIterations),
     .parallel=attributes(D)$parallel)
+  B <- unique(B)
   # Compute within-sequence variance using s2j
   s2j <- ddply(D, .(Parameter, Chain), summarize, s2j=var(value),
     .parallel=attributes(D)$parallel)
@@ -54,6 +55,8 @@ ggs_Rhat <- function(D, family=NA, scaling=1.5) {
     .parallel=attributes(D)$parallel)
   BW <- ddply(BW, .(Parameter), transform, Rhat=sqrt(wa/W),
     .parallel=attributes(D)$parallel)
+  # For parameters that do not vary, Rhat is Nan. Move it to NA
+  BW$Rhat[is.nan(BW$Rhat)] <- NA
   # Plot
   f <- ggplot(BW, aes(x=Rhat, y=Parameter)) + geom_point() +
     xlab(expression(hat("R"))) +
@@ -61,8 +64,8 @@ ggs_Rhat <- function(D, family=NA, scaling=1.5) {
   # If scaling, add the scale
   if (!is.na(scaling)) {
     # Use the maximum of Rhat if it is larger than the prespecified value
-    scaling <- ifelse(scaling > max(BW$Rhat), scaling, max(BW$Rhat))
-    f <- f + xlim(1, scaling)
+    scaling <- ifelse(scaling > max(BW$Rhat, na.rm=TRUE), scaling, max(BW$Rhat, na.rm=TRUE))
+    f <- f + xlim(min(BW$Rhat, na.rm=TRUE), scaling)
   }
   return(f)
 }
