@@ -10,19 +10,28 @@
 #' @param line Numerical value indicating a concrete position, usually used to mark where zero is. By default do not plot any line.
 #' @param horizontal Logical. When TRUE (the default), the plot has horizontal lines. When FALSE, the plot is reversed to show vertical lines. Horizontal lines are more appropriate for categorical caterpillar plots, because the x-axis is the only dimension that matters. But for caterpillar plots against another variable, the vertical position is more appropriate.
 #' @param model_labels Vector of strings that matches the number of models in the list. It is only used in case of multiple models and when the list of ggs objects given at \code{D} is not named. Otherwise, the names in the list are used.
+#' @param param_label_from Vector of strings (can be regular expressions) for the original paramater labels that you would like to replace in the plot lables using \code{param_label_to}. 
+#' @param param_label_to Vector of strings for paramater labels you would like to use in the resulting plot. Must be both the same length as \code{param_label_from} and in the same order.
 #' @return A \code{ggplot} object.
+#'
+#' @importFrom plyr ddply
+#' @importFrom reshape2 dcast
+#' @importFrom ggplot2 ggplot
 #' @export
 #' @examples
 #' data(samples)
 #' ggs_caterpillar(ggs(S))
 #' ggs_caterpillar(list(A=ggs(S), B=ggs(S))) # silly example duplicating the same model
+
+
 ggs_caterpillar <- function(D, family=NA, X=NA, 
-  thick_ci=c(0.05, 0.95), thin_ci=c(0.025, 0.975),
-  line=NA, horizontal=TRUE, model_labels=NULL) {
+                            thick_ci=c(0.05, 0.95), thin_ci=c(0.025, 0.975),
+                            line=NA, horizontal=TRUE, model_labels=NULL,
+                            param_label_from = NULL, param_label_to = NULL) {
   
   # Manage subsetting a family of parameters
   if (!is.na(family)) {
-    D <- get_family(D, family=family)
+    D <- ggmcmc:::get_family(D, family=family)
   }
   # Manage adding a X dataframe, and check potential errors in X
   x.present <- FALSE
@@ -71,8 +80,8 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
     dcm <- do.call(
       rbind, 
       lapply(1:length(D), 
-        function(i) if (length(D[[i]]) > 1) cbind(D[[i]], Model=model.names[i])))
-
+             function(i) if (length(D[[i]]) > 1) cbind(D[[i]], Model=model.names[i])))
+    
   } else if (is.data.frame(D)) { # D is a data frame, and so a single model is passed
     multi <-  FALSE
     dc <- ddply(D, .(Parameter), summarize, 
@@ -81,7 +90,16 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
     dc$qs <- factor(dc$qs, labels=names(qs))
     dcm <- dcast(dc, Parameter ~ qs, value.var="q")
   }
-
+  
+  # Relabel plotted parameters
+  if (!is.null(param_label_from) & !is.null(param_label_to)){
+    if (length(param_label_from) != length(param_label_to)){
+      stop('param_label_from must be the same length as param_label_to', .call = FALSE)
+    }
+    for (i in 1:length(param_label_from))
+    dcm[, 'Parameter'] <- gsub(pattern = param_label_from[i], replacement = param_label_to[i], dcm[, 'Parameter'])    
+  }
+  
   #
   # Plot, depending on continuous or categorical x
   #
@@ -97,25 +115,25 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
       geom_segment(aes_string(x="thin.low", xend="thin.high", yend=x.name), size=0.5) +
       xlab("HPD") + ylab(x.name)
   }
-
+  
   # Manage horizontal or vertical plot
   if (horizontal == FALSE) {
     f <- f + coord_flip() 
   }
-
+  
   # Manage multiple models
   if (multi==TRUE & horizontal==TRUE) 
     f <- f + facet_grid(Model ~ ., scales="free", space="free")
   if (multi==TRUE & horizontal==FALSE)
     f <- f + facet_grid(. ~ Model, scales="free", space="free")
-
+  
   # Manage axis labels
   if (!x.present & horizontal==FALSE) {
     f <- f + theme(legend.position="none", axis.text.x=element_text(size=7, hjust=1, angle=90))
   } else {
     f <- f + theme(legend.position="none", axis.text.x=element_text(size=7, hjust=1))
   } 
-
+  
   # Add a line to remark a specific point
   if (!is.na(line)) {
     f <- f + geom_vline(xintercept=line, linetype="dashed")
