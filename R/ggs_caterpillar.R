@@ -31,7 +31,7 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
   
   # Manage subsetting a family of parameters
   if (!is.na(family)) {
-    D <- ggmcmc:::get_family(D, family=family)
+    D <- get_family(D, family=family)
   }
   # Manage adding a X dataframe, and check potential errors in X
   x.present <- FALSE
@@ -80,7 +80,7 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
     dcm <- do.call(
       rbind, 
       lapply(1:length(D), 
-             function(i) if (length(D[[i]]) > 1) cbind(D[[i]], Model=model.names[i])))
+            function(i) if (length(D[[i]]) > 1) cbind(D[[i]], Model=model.names[i])))
     
   } else if (is.data.frame(D)) { # D is a data frame, and so a single model is passed
     multi <-  FALSE
