@@ -12,7 +12,7 @@ get_family <- function(D, family=NA) {
   # Select only the family paramaters
   family.id.parameters <- grep(family, D$Parameter)
   D.sub <- D[family.id.parameters,]
-  D.sub$Parameter <- factor(as.character(D.sub$Parameter))
+  D.sub$Parameter <- droplevels(D.sub$Parameter)
   # Copy the same attributes to the new object, except the number of
   # parameters
   # Probably there's a cleaner way to do it
