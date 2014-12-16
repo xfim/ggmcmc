@@ -21,9 +21,7 @@ ggs_crosscorrelation <- function(D, family=NA, absolute_scale=TRUE) {
   X <- dcast(D, Iteration + Chain ~ Parameter)
   # Chain management is not easy
   bc.cc <- melt(cor(as.matrix(X[,-c(1, 2), drop=FALSE])))
-  # Need to revert parameter names
-  bc.cc$Var1 <- factor(bc.cc$Var1, labels=levels(D$Parameter))
-  bc.cc$Var2 <- factor(bc.cc$Var2, labels=levels(D$Parameter))
+  # Diagonals are avoided
   bc.cc$value[bc.cc$Var1==bc.cc$Var2] <- NA
   # Plot
   f <- ggplot(bc.cc, aes(x=Var1, y=Var2)) +
