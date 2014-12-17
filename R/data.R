@@ -8,3 +8,10 @@
 #' @usage S
 #' @format A coda object with 2 chains of 1000 iterations each one for 3 parameters
 NULL
+
+#' @name s.radon
+#' @docType data
+#' @keywords datasets
+#' @usage S.radon
+#' @format A coda object with 2 chains of 200 iterations each one for batches of alpha and beta parameters (175 parameters)
+NULL
