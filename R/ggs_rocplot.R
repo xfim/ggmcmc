@@ -30,19 +30,23 @@ roc.calc <- function(R) {
 #' }
 ggs_rocplot <- function(D, outcome, fully_bayesian=FALSE) {
   # Create a single object that stores the predicted 'value' and the observed 'Outcome'
-  D.observed <- data.frame(Observed=outcome, Parameter=unique(D$Parameter))
+  D.observed <- tbl_df(data.frame(Observed=outcome, Parameter=unique(D$Parameter)))
   # Work with the full posterior or with the expected medians, to economize memory
   if (fully_bayesian) {
     D.predicted <- D
   } else {
-    D.predicted <- ddply(D, .(Parameter, Chain), summarize, value=quantile(value, 0.5),
-      .parallel=attributes(D)$parallel)
+    D.predicted <- D %>%
+      group_by(Parameter, Chain) %>%
+      summarize(value=quantile(value, 0.5))
   }
-  roc.df <- merge(D.predicted, D.observed)
+  roc.df <- left_join(D.predicted, D.observed, by="Parameter")
   # Compute the roc curve using the roc.calc function
-  roc.df <- cbind(roc.df, roc.calc(roc.df[,c("value", "Observed")]))
+  # As of dplyr 0.2 cbind must be used.
+  # Later on, this may change with cbind_list
+  roc.df <- cbind(roc.df, roc.calc(dplyr::select(roc.df, value, Observed)))
   # Sort it to be sure that the figure is plotted nicely
-  roc.df <- roc.df[order(roc.df$Sensitivity, roc.df$Specificity, decreasing=FALSE),]
+  roc.df <- tbl_df(roc.df) %>%
+    filter(Sensitivity, Specificity)
   # Plot differently if it's a fully Bayesian figure or not
   if (fully_bayesian) {
     # Start plotting

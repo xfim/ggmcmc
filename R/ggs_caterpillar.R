@@ -47,39 +47,42 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
   # http://stackoverflow.com/questions/6955128/object-not-found-error-with-ddply-inside-a-function
   # One of the solutions, not elegant, is to assign qs globally (as well as
   # locally  for further commands in this function
-  qs  <- qs <<- c(thin.low=thin_ci[1], thick.low=thick_ci[1], 
-                  median=0.5, thick.high=thick_ci[2], thin.high=thin_ci[2])
+
+  # See ggs_autocorrelation.R
+  # No way to make the following use summarize(), as of dplyr 0.3
+  # https://github.com/hadley/dplyr/issues/154
+  # Temporary workaround using dplyr 0.2 and do()
+  q <- data.frame(
+    qs=c("thin.low", "thick.low", "median", "thick.high", "thin.high"),
+    q=c(thin_ci[1], thick_ci[1], 0.5, thick_ci[2], thin_ci[2]))
   
   # Multiple models or a single model
-  #
   if (!is.data.frame(D)) { # D is a list, and so multiple models are passed
     multi <- TRUE # used later in plot call
+    dcm <- NULL
     for (i in 1:length(D)) { # iterate over list elements
-      dc <- ddply(D[[i]], .(Parameter), summarize,
-                  q=quantile(value, probs=qs), qs=qs)
-      dc$qs <- factor(dc$qs, labels=names(qs))
-      dcm <- dcast(dc, Parameter ~ qs, value.var="q")
-      D[[i]] <- dcm # replace list element with transformed list element
+      # Get model labels, by default the description attribute of the ggs object
+      model.label <- attributes(D[[i]]$description)[i]
+      # But prevalence is for the names of the named list, not for labels or for the description
+      if (length(model_labels)==length(D)) model.label <- model_labels[i]  # get model labels from labels
+      if (length(names(D)!=0)) model.label <- names(D)[i]                   # get model labels from named list
+
+      # Transform list elements into wide dfs with thick and thin limits
+      dcm <- rbind_list(dcm, D[[i]] %>%
+        group_by(Parameter) %>%
+        do(data.frame(qs=q$qs, q=quantile(.$value, prob=q$q))) %>%
+        ungroup() %>%
+        spread(qs, q) %>%
+        mutate(Model=model.label))
     }
-    #
-    # Get model names, by default the description attribute of the ggs object
-    model.names <- lapply(D, function(x) return(attributes(x)$description))
-    # But prevalence is for the names of the named list, not for labels or for the description
-    if (length(model_labels)==length(D)) model.names <- model_labels       # get model names from labels
-    if (length(names(D)!=0)) model.names <- names(D)           # get model names from named list
-    # Final data frame to use for plotting
-    dcm <- do.call(
-      rbind, 
-      lapply(1:length(D), 
-        function(i) if (length(D[[i]]) > 1) cbind(D[[i]], Model=model.names[i])))
 
   } else if (is.data.frame(D)) { # D is a data frame, and so a single model is passed
     multi <-  FALSE
-    dc <- ddply(D, .(Parameter), summarize, 
-                q=quantile(value, probs=qs), qs=qs,
-                .parallel=attributes(D)$parallel)
-    dc$qs <- factor(dc$qs, labels=names(qs))
-    dcm <- dcast(dc, Parameter ~ qs, value.var="q")
+    dcm <- D %>%
+      group_by(Parameter) %>%
+      do(data.frame(qs=q$qs, q=quantile(.$value, prob=q$q))) %>%
+      ungroup() %>%
+      spread(qs, q)
   }
 
   #

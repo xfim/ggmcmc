@@ -26,8 +26,9 @@ ggs_ppsd <- function(D, outcome, family=NA, bins=30) {
     stop("The length of the outcome must be equal to the number of Parameters of the ggs object.")
   }
   # Calculate the posterior predictive means at each iteration
-  ppSD <- ddply(D, .(Iteration), summarize, sd=sd(value),
-    .parallel=attributes(D)$parallel)
+  ppSD <- D %>%
+    group_by(Iteration) %>%
+    summarize(sd=sd(value))
   sd <- sd(outcome, na.rm=TRUE)
   # Calculate binwidths
   ppSDbw <- calc.bin(ppSD$sd, bins=bins)

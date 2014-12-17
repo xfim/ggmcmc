@@ -27,24 +27,27 @@ ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE) {
   # Take subsequences of the chains
   window.1 <- 1:trunc(attributes(D)$nIterations * frac1)
   window.2 <- trunc(attributes(D)$nIterations * frac2):attributes(D)$nIterations
-  D.geweke.first <- cbind(
-    D[!is.na(match(D$Iteration, window.1)),],
-    part="first")
-  D.geweke.last <- cbind(
-    D[!is.na(match(D$Iteration, window.2)),],
-    part="last")
-  D.geweke <- rbind(D.geweke.first, D.geweke.last)
+  D.geweke.first <- mutate(filter(D, Iteration <= max(window.1)), part="first")
+  D.geweke.last <- mutate(filter(D, Iteration <= max(window.2)), part="last")
+  D.geweke <- rbind_list(D.geweke.first, D.geweke.last)
   # Compute means, spectral densities and N's
-  D.geweke <- ddply(D.geweke, .(Parameter, Chain, part), summarize,
-    m=mean(value),
-    sde0f=sde0f(value),
-    n=length(value),
-    .parallel=attributes(D)$parallel)
+  D.geweke <- D.geweke %>%
+    group_by (Parameter, Chain, part) %>%
+    summarize(m=mean(value), sde0f=sde0f(value), n=n())
   # Cast the dataframe in pieces to have the data arranged by parameter, chain
   # and first and last
-  M <- dcast(D.geweke, Parameter + Chain ~ part, value.var="m")
-  N <- dcast(D.geweke, Parameter + Chain ~ part, value.var="n")
-  SDE0F <- dcast(D.geweke, Parameter + Chain ~ part, value.var="sde0f")
+  M <- D.geweke %>%
+    dplyr::select(-sde0f, -n) %>%
+    ungroup() %>%
+    spread(part, m)
+  N <- D.geweke %>%
+    dplyr::select(-sde0f, -m) %>%
+    ungroup() %>%
+    spread(part, n)
+  SDE0F <- D.geweke %>%
+    dplyr::select(-m, -n) %>%
+    ungroup() %>%
+    spread(part, sde0f)
   # Reorganize the z scores
   Z <- data.frame(Parameter=M$Parameter, Chain=M$Chain,
     z= (M$first - M$last) /

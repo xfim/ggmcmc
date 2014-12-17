@@ -15,11 +15,11 @@ ggs_histogram <- function(D, family=NA, bins=30) {
   if (!is.na(family)) {
     D <- get_family(D, family=family)
   }
-  # Manually generate the histogram by parameter, based on the total number of
-  # bins
-  l <- unlist(dlply(D, .(Parameter), here(summarize), calc.bin(value, bins)), recursive=FALSE)
-  ds <- ldply(l, data.frame)
-  dl <- as.numeric(table(ds$`.id`))
+  # Manually generate the histogram by parameter, based on the total number of bins
+  ds <- D %>%
+    group_by(Parameter) %>%
+    do(calc.bin(.$value, bins))
+  dl <- as.numeric(table(ds$Parameter))
   # There may be cases of parameters with slightly different numbers of bins,
   # and therefore a Parameter-by-Parameter approach is needed
   ds <- cbind(Parameter=gl.unq(attributes(D)$nParameters, dl, labels=levels(D$Parameter)), ds)

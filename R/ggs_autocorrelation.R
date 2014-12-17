@@ -17,7 +17,7 @@ ac <- function(x, nLags) {
   for (i in 2:nLags) {
     X[,i] <- c(rep(NA, i-1), x[1:(length(x)-i+1)])
   }
-  X <- (cor(X, use="pairwise.complete.obs")[,1])
+  X <- data.frame(Lag=1:nLags, Autocorrelation=cor(X, use="pairwise.complete.obs")[,1])
   return(X)
 }
 
@@ -45,10 +45,12 @@ ggs_autocorrelation <- function(D, family=NA, nLags=50) {
     nLags <- nIter
   }
 
-  wc.ac <- ddply(D, c("Parameter", "Chain"), here(summarise), .inform=TRUE,
-    Autocorrelation=ac(value, nLags), 
-    Lag=1:nLags,
-    .parallel=attributes(D)$parallel)
+  # No way to make the following use summarize(), as of dplyr 0.3
+  # https://github.com/hadley/dplyr/issues/154
+  # Temporary workaround using dplyr 0.2 and do()
+  wc.ac <- D %>%
+    group_by(Parameter, Chain) %>%
+    do(ac(.$value, nLags))
 
   # Manage multiple chains
   if (attributes(D)$nChains <= 1) {

@@ -10,7 +10,7 @@
 #' @export
 #' @examples
 #' data(samples)
-#' ggs_traceplot(ggs(S, parallel=FALSE))
+#' ggs_traceplot(ggs(S))
 ggs_traceplot <- function(D, family=NA, original_burnin=TRUE, original_thin=TRUE) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {

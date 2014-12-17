@@ -70,6 +70,7 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, plot=NULL,
     # Arrange manually the plots to fit in the pages
     # Create a new variable that sets each parameter in a specified page number
     # Preserve the attributes of the original object
+    D.original <- D
     old.atrib <- attributes(D)
     n.pages <- ceiling(n.param / param_page)
     parameters <- sort(unique(D$Parameter))
@@ -87,7 +88,7 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, plot=NULL,
     # The following lines would be ideal, but they don't work yet
     #ddply(D, .variables="page", .fun=function(x) {
     #  print(ggs_density(x))
-    #}, .parallel=TRUE)
+    #})
     #ddply(D, .(page), .fun=ggs_histogram(D))
 
     # So just do it manually
@@ -103,29 +104,59 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, plot=NULL,
 
     if (is.null(plot) | length(grep("density", plot)) > 0) {
       cat("Plotting density plots\n")
-      for (p in 1:n.pages) print(ggs_density(D[D$page==p,]))
+      for (p in 1:n.pages) {
+        Dsub <- D[D$page==p,]
+        Dsub$Parameter <- as.factor(as.character(Dsub$Parameter))
+        attr(Dsub, "nChains") <- attributes(D)$nChains
+        print(ggs_density(Dsub))
+      }
     }
 
     if (is.null(plot) | length(grep("traceplot", plot)) > 0) {
       cat("Plotting traceplots\n")
-      for (p in 1:n.pages) print(ggs_traceplot(D[D$page==p,]))
+      for (p in 1:n.pages) {
+        Dsub <- D[D$page==p,]
+        Dsub$Parameter <- as.factor(as.character(Dsub$Parameter))
+        attr(Dsub, "nChains") <- attributes(D)$nChains
+        attr(Dsub, "nThin") <- attributes(D)$nThin
+        attr(Dsub, "nBurnin") <- attributes(D)$nBurnin
+        print(ggs_traceplot(Dsub))
+      }
     }
 
     if (is.null(plot) | length(grep("running", plot)) > 0) {
       cat("Plotting running means\n")
-      for (p in 1:n.pages) print(ggs_running(D[D$page==p,]))
+      for (p in 1:n.pages) {
+        Dsub <- D[D$page==p,]
+        Dsub$Parameter <- as.factor(as.character(Dsub$Parameter))
+        attr(Dsub, "nChains") <- attributes(D)$nChains
+        attr(Dsub, "nThin") <- attributes(D)$nThin
+        attr(Dsub, "nBurnin") <- attributes(D)$nBurnin
+        print(ggs_running(Dsub))
+      }
     }
 
     if (is.null(plot) | length(grep("compare_partial", plot)) > 0) {
       cat("Plotting comparison of partial and full chain\n")
-      for (p in 1:n.pages) print(ggs_compare_partial(D[D$page==p,]))
+      for (p in 1:n.pages) {
+        Dsub <- D[D$page==p,]
+        Dsub$Parameter <- as.factor(as.character(Dsub$Parameter))
+        attr(Dsub, "nChains") <- attributes(D)$nChains
+        print(ggs_compare_partial(Dsub))
+      }
     }
 
     if (is.null(plot) | length(grep("autocorrelation", plot)) > 0) {
       cat("Plotting autocorrelation plots\n")
-      for (p in 1:n.pages) print(ggs_autocorrelation(D[D$page==p,]))
+      for (p in 1:n.pages) {
+        Dsub <- D[D$page==p,]
+        Dsub$Parameter <- as.factor(as.character(Dsub$Parameter))
+        attr(Dsub, "nIterations") <- attributes(D)$nIterations
+        attr(Dsub, "nChains") <- attributes(D)$nChains
+        print(ggs_autocorrelation(Dsub))
+      }
     }
-
+    D <- D.original
   }
 
   ##

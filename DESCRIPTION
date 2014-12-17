@@ -10,8 +10,8 @@ Version: 0.5.1
 Maintainer: Xavier Fernández i Marín <xavier.fim@gmail.com>
 Author: Xavier Fernández i Marín <xavier.fim@gmail.com>
 Depends:
-    plyr,
-    reshape2,
+    dplyr,
+    tidyr,
     ggplot2
 Suggests:
     foreach,

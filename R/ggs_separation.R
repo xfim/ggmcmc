@@ -20,16 +20,19 @@ ggs_separation <- function(D, outcome, fully_bayesian=FALSE, minimalist=FALSE) {
   # Calculate the prediction bands
   if (fully_bayesian) {
   } else {
-    S <- ddply(D, .(Parameter), summarize,
-      low=quantile(value, 0.025),
-      median=quantile(value, 0.5),
-      high=quantile(value, 0.975),
-      .parallel=attributes(D)$parallel)
+    q <- data.frame(
+      qs=c("low", "median", "high"),
+      q=c(0.025, 0.5, 0.975))
+    S <- D %>%
+      group_by(Parameter) %>%
+      do(data.frame(qs=q$qs, q=quantile(.$value, prob=q$q))) %>%
+      ungroup() %>%
+      spread(qs, q)
   }
-  S <- merge(S, data.frame(Observed=outcome, Parameter=unique(D$Parameter)))
   # Sort the observations by predicted value
-  S <- S[order(S$median),]
-  S <- cbind(S, id=1:dim(S)[1])
+  S <- inner_join(S, data_frame(Observed=outcome, Parameter=unique(D$Parameter)), by="Parameter") %>%
+    arrange(median) %>%
+    mutate(id=1:dim(S)[1])
   # Calculate expected number of events
   if (fully_bayesian) {
   } else {

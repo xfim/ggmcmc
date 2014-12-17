@@ -18,9 +18,11 @@ ggs_crosscorrelation <- function(D, family=NA, absolute_scale=TRUE) {
   if (attributes(D)$nParameters <= 1) {
     stop("Can't calculate crosscorrelations with a single chain")
   } 
-  X <- dcast(D, Iteration + Chain ~ Parameter)
+  X <- spread(D, Parameter, value)
   # Chain management is not easy
-  bc.cc <- melt(cor(as.matrix(X[,-c(1, 2), drop=FALSE])))
+  bc.cc <- as.data.frame.table(
+    cor(as.matrix(X[,-c(1, 2), drop=FALSE])),
+    responseName="value")
   # Diagonals are avoided
   bc.cc$value[bc.cc$Var1==bc.cc$Var2] <- NA
   # Plot
