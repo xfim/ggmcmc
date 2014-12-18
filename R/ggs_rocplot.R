@@ -25,9 +25,8 @@ roc_calc <- function(R) {
 #' @return A \code{ggplot} object
 #' @export
 #' @examples
-#' \dontrun{
-#' ggs_rocplot(S, outcome=y)
-#' }
+#' data(binary)
+#' ggs_rocplot(ggs(s.binary, family="mu"), outcome=y.binary)
 ggs_rocplot <- function(D, outcome, fully_bayesian=FALSE) {
   # Create a single object that stores the predicted 'value' and the observed 'Outcome'
   D.observed <- tbl_df(data.frame(Observed=outcome, Parameter=unique(D$Parameter)))

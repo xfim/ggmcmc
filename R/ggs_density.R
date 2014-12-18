@@ -8,8 +8,8 @@
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
-#' data(samples)
-#' ggs_density(ggs(S))
+#' data(linear)
+#' ggs_density(ggs(s))
 ggs_density <- function(D, family=NA, rug=FALSE) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {

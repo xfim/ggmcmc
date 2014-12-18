@@ -9,8 +9,8 @@
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
-#' data(samples)
-#' ggs_running(ggs(S))
+#' data(linear)
+#' ggs_running(ggs(s))
 ggs_running <- function(D, family=NA, original_burnin=TRUE, original_thin=TRUE) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {

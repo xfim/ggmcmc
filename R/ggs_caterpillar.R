@@ -13,9 +13,9 @@
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
-#' data(samples)
-#' ggs_caterpillar(ggs(S))
-#' ggs_caterpillar(list(A=ggs(S), B=ggs(S))) # silly example duplicating the same model
+#' data(linear)
+#' ggs_caterpillar(ggs(s))
+#' ggs_caterpillar(list(A=ggs(s), B=ggs(s))) # silly example duplicating the same model
 ggs_caterpillar <- function(D, family=NA, X=NA, 
   thick_ci=c(0.05, 0.95), thin_ci=c(0.025, 0.975),
   line=NA, horizontal=TRUE, model_labels=NULL) {

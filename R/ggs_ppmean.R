@@ -1,4 +1,4 @@
-#' Posterior predictive plot comparing the outcome vs the posterior means.
+#' Posterior predictive plot comparing the outcome mean vs the distribution of the predicted posterior means.
 #'
 #' Histogram with the distribution of the predicted posterior means, compared with the mean of the observed outcome.
 #'
@@ -10,10 +10,8 @@
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
-#' \dontrun{
-#' data(samples)
-#' ggs_ppmean(ggs(S, family="y"), outcome="y")
-#' }
+#' data(linear)
+#' ggs_ppmean(ggs(s.y.rep), outcome=y)
 ggs_ppmean <- function(D, outcome, family=NA, bins=30) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {

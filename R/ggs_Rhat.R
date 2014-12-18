@@ -10,8 +10,8 @@
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
-#' data(samples)
-#' ggs_Rhat(ggs(S))
+#' data(linear)
+#' ggs_Rhat(ggs(s))
 ggs_Rhat <- function(D, family=NA, scaling=1.5) {
   if (attributes(D)$nChains<2) {
     stop("At least two chains are required")

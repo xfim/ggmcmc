@@ -8,8 +8,8 @@
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
-#' data(samples)
-#' ggs_histogram(ggs(S))
+#' data(linear)
+#' ggs_histogram(ggs(s))
 ggs_histogram <- function(D, family=NA, bins=30) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {

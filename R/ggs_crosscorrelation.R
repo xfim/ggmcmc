@@ -8,8 +8,8 @@
 #' @return a \code{ggplot} object.
 #' @export
 #' @examples
-#' data(samples)
-#' ggs_crosscorrelation(ggs(S))
+#' data(linear)
+#' ggs_crosscorrelation(ggs(s))
 ggs_crosscorrelation <- function(D, family=NA, absolute_scale=TRUE) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {

@@ -31,8 +31,8 @@ ac <- function(x, nLags) {
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
-#' data(samples)
-#' ggs_autocorrelation(ggs(S))
+#' data(linear)
+#' ggs_autocorrelation(ggs(s))
 ggs_autocorrelation <- function(D, family=NA, nLags=50) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {

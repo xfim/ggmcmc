@@ -9,8 +9,8 @@
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
-#' data(samples)
-#' ggs_compare_partial(ggs(S))
+#' data(linear)
+#' ggs_compare_partial(ggs(s))
 ggs_compare_partial <- function(D, family=NA, partial=0.1, rug=FALSE) {
   # Check that partial is a percentage
   if (partial <= 0 | partial >=1 | !is.numeric(partial)) {

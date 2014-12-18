@@ -14,8 +14,8 @@
 #' @param ... Other options passed to the pdf device.
 #' @export
 #' @examples
-#' data(samples)
-#' ggmcmc(ggs(S))  # Directly from a coda object
+#' data(linear)
+#' ggmcmc(ggs(s))  # Directly from a coda object
 ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, plot=NULL,
   param_page=5, width=7, height=10, ...) {
   # Manage subsetting a family of parameters

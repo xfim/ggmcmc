@@ -9,8 +9,8 @@
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
-#' data(samples)
-#' ggs_traceplot(ggs(S))
+#' data(linear)
+#' ggs_traceplot(ggs(s))
 ggs_traceplot <- function(D, family=NA, original_burnin=TRUE, original_thin=TRUE) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {

@@ -10,8 +10,8 @@
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
-#' data(samples)
-#' ggs_geweke(ggs(S))
+#' data(linear)
+#' ggs_geweke(ggs(s))
 ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {
