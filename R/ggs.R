@@ -169,7 +169,7 @@ ggs_chain <- function(s) {
   d <- data.frame(Iteration=iter, as.matrix(unclass(s)), check.names=FALSE)
   D <- d %>% gather(Parameter, value, -Iteration)
 
-  # Return the modified data frame as a tbl_df to be used by plyr
+  # Return the modified data frame as a tbl_df to be used by dplyr
   D <- tbl_df(D)
   return(D)
 }
