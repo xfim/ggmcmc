@@ -2,7 +2,7 @@
 #'
 #' Internal function used by the graphical functions to get only some of the parameters that follow a given regular expression.
 #'
-#' @param D Data frame with the data arranged and ready to be used by the rest of the ggmcmc functions. The dataframe has four columns, namely: Iteration, Parameter, value and Chain, and seven attributes: nChains, nParameters, nIterations, nBurnin, nThin and description.
+#' @param D Data frame with the data arranged and ready to be used by the rest of the ggmcmc functions. The dataframe has four columns, namely: Iteration, Parameter, value and Chain, and six attributes: nChains, nParameters, nIterations, nBurnin, nThin and description.
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc).
 #' @return D Data frame that is a subset of the given D dataset.
 get_family <- function(D, family=NA) {
@@ -29,6 +29,8 @@ get_family <- function(D, family=NA) {
 #'
 #' Compute the Spectral Density Estimate at Zero Frequency for a given chain.
 #'
+#' Internal function to compute the Spectral Density Estimate at Zero Frequency for a given chain used by \code{\link{ggs_geweke}}.
+#'
 #' @param x A time series
 #' @return A vector with the spectral density estimate at zero frequency
 #' @export
@@ -45,8 +47,9 @@ sde0f <- function(x) {
 
 #' Calculate binwidths by parameter, based on the total number of bins
 #'
-#' Compute the minimal elements to recreate a histogram manually by defining the
-#' total number of bins
+#' Compute the minimal elements to recreate a histogram manually by defining the total number of bins.
+#'
+#' Internal function to compute the minimal elements to recreate a histogram manually by defining the total number of bins, used by \code{\link{ggs_histogram}} \code{\link{ggs_ppmean}} and \code{\link{ggs_ppsd}}.
 #'
 #' @param x any vector or variable
 #' @param bins the number of requested bins
@@ -67,7 +70,9 @@ calc_bin <- function(x, bins=bins) {
 
 #' Generate a factor with unequal number of repetitions
 #'
-#' Generate a factor with levels of unequal length
+#' Generate a factor with levels of unequal length.
+#'
+#' Internal function to generate a factor with levels of unequal length, used by \code{\link{ggs_histogram}}.
 #'
 #' @param n number of levels
 #' @param k number of repetitions
