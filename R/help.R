@@ -7,7 +7,7 @@
 #' results against observed variables.
 #'
 #' @references \url{http://xavier-fim.net/packages/ggmcmc}.
-#' @import plyr ggplot2 reshape2
+#' @import ggplot2 dplyr tidyr
 #' @docType package
 #' @name ggmcmc
 #' @aliases ggmcmc ggmcmc-package
