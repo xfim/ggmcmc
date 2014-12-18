@@ -25,7 +25,7 @@ get_family <- function(D, family=NA) {
   return(D=D.sub)
 }
 
-#' Spectral Density Estimate at Zero Frequency
+#' Spectral Density Estimate at Zero Frequency.
 #'
 #' Compute the Spectral Density Estimate at Zero Frequency for a given chain.
 #'
@@ -45,7 +45,7 @@ sde0f <- function(x) {
   return(v0)
 }
 
-#' Calculate binwidths by parameter, based on the total number of bins
+#' Calculate binwidths by parameter, based on the total number of bins.
 #'
 #' Compute the minimal elements to recreate a histogram manually by defining the total number of bins.
 #'
@@ -68,7 +68,7 @@ calc_bin <- function(x, bins=bins) {
   }
 }
 
-#' Generate a factor with unequal number of repetitions
+#' Generate a factor with unequal number of repetitions.
 #'
 #' Generate a factor with levels of unequal length.
 #'
@@ -86,4 +86,33 @@ gl_unq <- function (n, k, labels=1:n) {
   }
   x <- factor(x, levels=1:n, labels=labels)
   return(x)
+}
+
+#' Calculate Credible Intervals (wide and narrow).
+#'
+#' Generate a data frame with the limits of two credible intervals. Function used by \code{\link{ggs_caterpillar}}. "low" and "high" refer to the wide interval, whereas "Low" and "High" refer to the narrow interval. "median" is self-explanatory and is used to draw a dot in caterpillar plots. The data frame generated is of wide format, suitable for ggplot2::geom_segment().
+#'
+#' @param D Data frame whith the simulations or list of data frame with simulations. If a list of data frames with simulations is passed, the names of the models are the names of the objects in the list.
+#' @param thick_ci Vector of length 2 with the quantiles of the thick band for the credible interval
+#' @param thin_ci Vector of length 2 with the quantiles of the thin band for the credible interval
+#' @return A data frame tbl with the Parameter names and 5 variables with the limits of the credibal intervals (thin and thick), ready to be used to produce caterpillar plots.
+#' @export
+#' @examples
+#' data(linear)
+#' ci(ggs(s))
+ci <- function (D, thick_ci=c(0.05, 0.95), thin_ci=c(0.025, 0.975)) {
+  # See ggs_autocorrelation.R
+  # No way to make the following use summarize(), as of dplyr 0.3
+  # https://github.com/hadley/dplyr/issues/154
+  # Temporary workaround using dplyr 0.2 and do()
+  q <- data.frame(
+    qs=c("low", "Low", "median", "High", "high"),
+    q=c(thin_ci[1], thick_ci[1], 0.5, thick_ci[2], thin_ci[2]))
+  X <- D %>%
+    group_by(Parameter) %>%
+    do(data.frame(qs=q$qs, q=quantile(.$value, prob=q$q))) %>%
+    ungroup() %>%
+    spread(qs, q) %>%
+    select(Parameter, low, Low, median, High, high)
+  return(X)
 }

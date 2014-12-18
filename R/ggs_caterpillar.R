@@ -47,15 +47,7 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
   # http://stackoverflow.com/questions/6955128/object-not-found-error-with-ddply-inside-a-function
   # One of the solutions, not elegant, is to assign qs globally (as well as
   # locally  for further commands in this function
-
-  # See ggs_autocorrelation.R
-  # No way to make the following use summarize(), as of dplyr 0.3
-  # https://github.com/hadley/dplyr/issues/154
-  # Temporary workaround using dplyr 0.2 and do()
-  q <- data.frame(
-    qs=c("thin.low", "thick.low", "median", "thick.high", "thin.high"),
-    q=c(thin_ci[1], thick_ci[1], 0.5, thick_ci[2], thin_ci[2]))
-  
+ 
   # Multiple models or a single model
   if (!is.data.frame(D)) { # D is a list, and so multiple models are passed
     multi <- TRUE # used later in plot call
@@ -68,21 +60,12 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
       if (length(names(D)!=0)) model.label <- names(D)[i]                   # get model labels from named list
 
       # Transform list elements into wide dfs with thick and thin limits
-      dcm <- rbind_list(dcm, D[[i]] %>%
-        group_by(Parameter) %>%
-        do(data.frame(qs=q$qs, q=quantile(.$value, prob=q$q))) %>%
-        ungroup() %>%
-        spread(qs, q) %>%
-        mutate(Model=model.label))
+      dcm <- rbind_list(dcm, ci(D[[i]]) %>% mutate(Model=model.label))
     }
 
   } else if (is.data.frame(D)) { # D is a data frame, and so a single model is passed
     multi <-  FALSE
-    dcm <- D %>%
-      group_by(Parameter) %>%
-      do(data.frame(qs=q$qs, q=quantile(.$value, prob=q$q))) %>%
-      ungroup() %>%
-      spread(qs, q)
+    dcm <- ci(D)
   }
 
   #
@@ -90,14 +73,14 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
   #
   if (!x.present) {
     f <- ggplot(dcm, aes(x=median, y=reorder(Parameter, median))) + geom_point(size=3) +
-      geom_segment(aes(x=thick.low, xend=thick.high, yend=reorder(Parameter, median)), size=1.5) +
-      geom_segment(aes(x=thin.low, xend=thin.high, yend=reorder(Parameter, median)), size=0.5) +
+      geom_segment(aes(x=Low, xend=High, yend=reorder(Parameter, median)), size=1.5) +
+      geom_segment(aes(x=low, xend=high, yend=reorder(Parameter, median)), size=0.5) +
       xlab("HPD") + ylab("Parameter")
   } else {
     dcm <- merge(dcm, X)
     f <- ggplot(dcm, aes_string(x="median", y=x.name)) + geom_point(size=3) +
-      geom_segment(aes_string(x="thick.low", xend="thick.high", yend=x.name), size=1.5) +
-      geom_segment(aes_string(x="thin.low", xend="thin.high", yend=x.name), size=0.5) +
+      geom_segment(aes_string(x="Low", xend="High", yend=x.name), size=1.5) +
+      geom_segment(aes_string(x="low", xend="high", yend=x.name), size=0.5) +
       xlab("HPD") + ylab(x.name)
   }
 
