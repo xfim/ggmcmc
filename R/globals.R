@@ -10,12 +10,14 @@ if (base::getRversion() >= "2.15.1") {
     "part_chain", # for ggs_compare_partial
     "Var1", "Var2", # for ggs_crosscorrelation
     "n", "z", "part", "g", # for ggs_geweke
-    "k", # for gl.unq (with 'n')
+    "k", # for gl_unq (with 'n')
     "sd", # for ggs_ppsd
     "x", "width", # for ggs_histogram
     "Posterior predictive mean", "Posterior predictive standard deviation", # for ggs_ppmean and ggs_ppsd
-    "Specificity", "Sensitivity", # for ggs_rocplot()
+    "Specificity", "Sensitivity", "Observed", # for ggs_rocplot()
     "low", "high", "y", # for ggs_separation()
-    "m" # for ggs_geweke, ggs_running, ggs_ppmean
+    "m", # for ggs_geweke, ggs_running, ggs_ppmean
+    "qs", # for ggs_caterpillar(), ggs_separation()
+    "." # for several do() calls in ggs_histogram, ggs_autocorrelation, ggs_caterpillar, ggs_separation
   ))
 }
