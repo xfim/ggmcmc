@@ -6,7 +6,7 @@ if (base::getRversion() >= "2.15.1") {
     "nIterations", # for ggs object attributes
     "wa", "Rhat", # from ggs_Rhat
     "Lag", "Autocorrelation", # from ggs_autocorrelation
-    "thick.low", "thick.high", "thin.low", "thin.high", # from ggs_caterpillar
+    "low", "Low", "median", "High", "high", # for ci() in ggs_caterpillar
     "part_chain", # for ggs_compare_partial
     "Var1", "Var2", # for ggs_crosscorrelation
     "n", "z", "part", "g", # for ggs_geweke
