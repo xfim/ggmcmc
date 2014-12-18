@@ -52,7 +52,7 @@ sde0f <- function(x) {
 #' @param bins the number of requested bins
 #' @return A data frame with the x location, the width of the bars and the number of observations at each x location.
 #' @export
-calc.bin <- function(x, bins=bins) {
+calc_bin <- function(x, bins=bins) {
   mn <- min(x)
   mx <- max(x)
   bw <- (mx-mn)/bins
@@ -74,7 +74,7 @@ calc.bin <- function(x, bins=bins) {
 #' @param labels optional vector of labels
 #' @return A factor
 #' @export
-gl.unq <- function (n, k, labels=1:n) {
+gl_unq <- function (n, k, labels=1:n) {
   x <- NULL
   for (i in 1:n) {
     x <- append(x, rep(i, length.out=k[i]))

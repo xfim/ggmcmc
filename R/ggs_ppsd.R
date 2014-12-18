@@ -31,7 +31,7 @@ ggs_ppsd <- function(D, outcome, family=NA, bins=30) {
     summarize(sd=sd(value))
   sd <- sd(outcome, na.rm=TRUE)
   # Calculate binwidths
-  ppSDbw <- calc.bin(ppSD$sd, bins=bins)
+  ppSDbw <- calc_bin(ppSD$sd, bins=bins)
   names(ppSDbw)[names(ppSDbw)=="x"] <- "Posterior predictive standard deviation"
   # Plot
   f <- ggplot(ppSDbw, aes(x=`Posterior predictive standard deviation`, y=count, width=width)) +

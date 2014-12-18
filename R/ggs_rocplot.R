@@ -5,7 +5,7 @@
 #' @param R data frame with the 'value' (predicted probability) and the observed 'Outcome'.
 #' @return A data frame with the Sensitivity and the Specificity.
 #' @export
-roc.calc <- function(R) {
+roc_calc <- function(R) {
   value <- R$value
   Observed <- R$Observed
   point <- seq(0, 1, length.out=dim(R)[1])
@@ -40,10 +40,10 @@ ggs_rocplot <- function(D, outcome, fully_bayesian=FALSE) {
       summarize(value=quantile(value, 0.5))
   }
   roc.df <- left_join(D.predicted, D.observed, by="Parameter")
-  # Compute the roc curve using the roc.calc function
+  # Compute the roc curve using the roc_calc function
   # As of dplyr 0.2 cbind must be used.
   # Later on, this may change with cbind_list
-  roc.df <- cbind(roc.df, roc.calc(dplyr::select(roc.df, value, Observed)))
+  roc.df <- cbind(roc.df, roc_calc(dplyr::select(roc.df, value, Observed)))
   # Sort it to be sure that the figure is plotted nicely
   roc.df <- tbl_df(roc.df) %>%
     filter(Sensitivity, Specificity)

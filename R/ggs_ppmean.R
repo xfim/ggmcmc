@@ -31,7 +31,7 @@ ggs_ppmean <- function(D, outcome, family=NA, bins=30) {
     summarize(m=mean(value))
   m <- mean(outcome, na.rm=TRUE)
   # Calculate binwidths
-  ppMbw <- calc.bin(ppM$m, bins=bins)
+  ppMbw <- calc_bin(ppM$m, bins=bins)
   names(ppMbw)[names(ppMbw)=="x"] <- "Posterior predictive mean"
   # Plot
   f <- ggplot(ppMbw, aes(x=`Posterior predictive mean`, y=count, width=width)) +
