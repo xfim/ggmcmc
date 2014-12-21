@@ -11,13 +11,14 @@
 #' @param param_page Numerical, number of parameters to plot for each page. Defaults to 5.
 #' @param width Width of the pdf display, in inches. Defaults to 7.
 #' @param height Height of the pdf display, in inches. Defaults to 10.
+#' @param simplify_traceplot Numerical. A percentage of iterations to keep in the time series. It is an option intended only for the purpose of saving time and resources when doing traceplots. It is not a thin operation, because it is not regular. It must be used with care.
 #' @param ... Other options passed to the pdf device.
 #' @export
 #' @examples
 #' data(linear)
 #' ggmcmc(ggs(s))  # Directly from a coda object
 ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, plot=NULL,
-  param_page=5, width=7, height=10, ...) {
+  param_page=5, width=7, height=10, simplify_traceplot=NULL, ...) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {
     D <- get_family(D, family=family)
@@ -48,7 +49,7 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, plot=NULL,
 
     if (is.null(plot) | length(grep("traceplot", plot)) > 0) {
       cat("Plotting traceplots\n")
-      print(ggs_traceplot(D))
+      print(ggs_traceplot(D, simplify=simplify_traceplot))
     }
 
     if (is.null(plot) | length(grep("running", plot)) > 0) {
@@ -120,7 +121,7 @@ ggmcmc <- function(D, file="ggmcmc-output.pdf", family=NA, plot=NULL,
         attr(Dsub, "nChains") <- attributes(D)$nChains
         attr(Dsub, "nThin") <- attributes(D)$nThin
         attr(Dsub, "nBurnin") <- attributes(D)$nBurnin
-        print(ggs_traceplot(Dsub))
+        print(ggs_traceplot(Dsub, simplify=simplify_traceplot))
       }
     }
 
