@@ -138,21 +138,25 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
     # Change the names of the parameters if par_labels argument has been passed
     if (class(par_labels)=="data.frame") {
       if (length(which(c("Parameter", "Label") %in% names(par_labels))) == 2) {
+        aD <- attributes(D)
         levels(D$Parameter)[which(levels(D$Parameter) %in% par_labels$Parameter)] <-
           as.character(par_labels$Label[
             match(levels(D$Parameter)[which(levels(D$Parameter) %in% par_labels$Parameter)], par_labels$Parameter)])
+        D <- left_join(D, data.frame(Parameter=par_labels$Label, ParameterOriginal=par_labels$Parameter),
+          by="Parameter") %>%
+          select(Iteration, Chain, Parameter, value, ParameterOriginal)
         # Keep the rest of the variables passed if the data frame has more than Parameter and Label
         if (dim(par_labels)[2] > 2) {
           aD <- attributes(D)
           D <- left_join(D, select(tbl_df(par_labels), -Parameter), by=c("Parameter"="Label"))
-          # Unfortunately, the attributes are not inherited, so they have to be manually passed again
-          attr(D, "nChains") <- aD$nChains
-          attr(D, "nParameters") <- aD$nParameters
-          attr(D, "nIterations") <- aD$nIterations
-          attr(D, "nBurnin") <- aD$nBurnin
-          attr(D, "nThin") <- aD$nThin
-          attr(D, "description") <- aD$description
         }
+        # Unfortunately, the attributes are not inherited, so they have to be manually passed again
+        attr(D, "nChains") <- aD$nChains
+        attr(D, "nParameters") <- aD$nParameters
+        attr(D, "nIterations") <- aD$nIterations
+        attr(D, "nBurnin") <- aD$nBurnin
+        attr(D, "nThin") <- aD$nThin
+        attr(D, "description") <- aD$description
       } else {
         stop("par_labels must include at least columns called 'Parameter' and 'Label'.")
       }
