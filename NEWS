@@ -1,3 +1,60 @@
+Version 0.6
+------------------------------
+
+MAJOR CHANGES
+
+- Include data and samples from models in order to facilitate examples
+
+  linear: MCMC output from a linear regression model with dummy data.
+
+  logit: MCMC output from a logit regression model with dummy data.
+
+  radon: MCMC output and other description variables for a hierarchical /
+  multilevel model based on radon example at Gelman & Hill.
+
+- Major revision of the code moving plyr to dplyr and reshape2 to tidyr
+
+  The main object from ggs() is no more a data frame, but a tbl_df.
+
+  Deleted the possibility of parallelization. It is not (yet) implemented in
+  dplyr, but in any case, dplyr is clearly faster than plyr.
+
+- New function ci() that calculates credible intervals for a ggs() object.
+
+- When using par_labels, not only the columns "Parameter" and "Label" are
+  considered, but also the resulting ggs() object contains other columns present
+  in par_labels and the old Parameter name. This allows mainly ggs_caterpillar()
+  (but also other functions) to use facets or colors, fills, etc.
+
+- New argument "simplify" in ggs_traceplot() or "simplify_traceplot" in ggmcmc()
+  that allows to keep only a percentage of random chains, so that the size of the
+  plot (and the time taken) is reduced considerably. But use it with care, because
+  then the chain is no more complete.
+
+- Homogenize function names, using underscores "_" everywhere, instead of dots
+  ".", in calc_bin(), gl_unq() and roc_calc().
+
+
+
+MINOR CHANGES
+
+- When selecting a family of parameters, maintain parameter ordering for
+  multipage outputs.
+
+- par_labels had a bug that produced wrong reordering of labels, and levels of
+parameters were incorrectly sorted. Although it is a minor change, the mistake
+was severe.
+
+- Labels in x-axis in crosscorrelation matrix are better aligned and more
+  legible.
+
+- Solve scaling issues in Rhat. Introduce a meaningful default.
+
+- Better examples for ggs_separation() and ggs_rocplot().
+
+- Documentation improved for internal functions.
+
+
 Version 0.5.1
 ------------------------------
 
