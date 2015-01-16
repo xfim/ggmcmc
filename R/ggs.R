@@ -50,7 +50,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
         colClasses="numeric", check.names=FALSE))
       D <- rbind_list(D,
         gather(samples.c, Parameter) %>%
-        mutate(Iteration=rep(1:(dim(samples.c)[1]), dim(samples.c)[2]), Chain=i) %>%
+        dplyr::mutate(Iteration=rep(1:(dim(samples.c)[1]), dim(samples.c)[2]), Chain=i) %>%
         dplyr::select(Iteration, Chain, Parameter, value))
     }
     # Exclude, by default, lp parameter and other auxiliar ones
@@ -76,7 +76,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
           s <- S
         }
         # Process a single chain
-        D <- mutate(ggs_chain(s), Chain=1) %>%
+        D <- dplyr::mutate(ggs_chain(s), Chain=1) %>%
           dplyr::select(Iteration, Chain, Parameter, value)
         # Get information from mcpar (burnin period, thinning)
         nBurnin <- (attributes(s)$mcpar[1])-(1*attributes(s)$mcpar[3])
@@ -85,7 +85,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
         # Process multiple chains
         for (l in 1:lS) {
           s <- S[l][[1]]
-          D <- rbind_list(D, mutate(ggs_chain(s), Chain=l))
+          D <- rbind_list(D, dplyr::mutate(ggs_chain(s), Chain=l))
         }
         D <- dplyr::select(D, Iteration, Chain, Parameter, value)
         # Get information from mcpar (burnin period, thinning). Taking the last
@@ -144,11 +144,11 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
             match(levels(D$Parameter)[which(levels(D$Parameter) %in% par_labels$Parameter)], par_labels$Parameter)])
         D <- left_join(D, data.frame(Parameter=par_labels$Label, ParameterOriginal=par_labels$Parameter),
           by="Parameter") %>%
-          select(Iteration, Chain, Parameter, value, ParameterOriginal)
+          dplyr::select(Iteration, Chain, Parameter, value, ParameterOriginal)
         # Keep the rest of the variables passed if the data frame has more than Parameter and Label
         if (dim(par_labels)[2] > 2) {
           aD <- attributes(D)
-          D <- left_join(D, select(tbl_df(par_labels), -Parameter), by=c("Parameter"="Label"))
+          D <- left_join(D, dplyr::select(tbl_df(par_labels), -Parameter), by=c("Parameter"="Label"))
         }
         # Unfortunately, the attributes are not inherited, so they have to be manually passed again
         attr(D, "nChains") <- aD$nChains

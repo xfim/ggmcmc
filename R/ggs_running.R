@@ -19,14 +19,14 @@ ggs_running <- function(D, family=NA, original_burnin=TRUE, original_thin=TRUE) 
   # Calculate the mean of the chain
   dm.m <- D %>%
     group_by(Parameter, Chain) %>%
-    summarize(m=mean(value))
+    dplyr::summarize(m=mean(value))
   # Calculate the running mean
   # Force the object to be sorted by Parameter, and hence avoid 'rm' calculation
   # to be wrong
   dm.rm <- D %>%
-    arrange(Parameter, Iteration) %>%
+    dplyr::arrange(Parameter, Iteration) %>%
     group_by(Parameter, Chain) %>%
-    mutate(rm=cumsum(value) / Iteration)
+    dplyr::mutate(rm=cumsum(value) / Iteration)
   # Plot
   f <- ggplot(dm.rm, aes(x=Iteration, y=rm, colour=as.factor(Chain))) +
     geom_line() +

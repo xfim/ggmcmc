@@ -27,13 +27,13 @@ ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE) {
   # Take subsequences of the chains
   window.1 <- 1:trunc(attributes(D)$nIterations * frac1)
   window.2 <- trunc(attributes(D)$nIterations * frac2):attributes(D)$nIterations
-  D.geweke.first <- mutate(filter(D, Iteration <= max(window.1)), part="first")
-  D.geweke.last <- mutate(filter(D, Iteration <= max(window.2)), part="last")
+  D.geweke.first <- dplyr::mutate(dplyr::filter(D, Iteration <= max(window.1)), part="first")
+  D.geweke.last <- dplyr::mutate(dplyr::filter(D, Iteration <= max(window.2)), part="last")
   D.geweke <- rbind_list(D.geweke.first, D.geweke.last)
   # Compute means, spectral densities and N's
   D.geweke <- D.geweke %>%
     group_by (Parameter, Chain, part) %>%
-    summarize(m=mean(value), sde0f=sde0f(value), n=n())
+    dplyr::summarize(m=mean(value), sde0f=sde0f(value), n=n())
   # Cast the dataframe in pieces to have the data arranged by parameter, chain
   # and first and last
   M <- D.geweke %>%

@@ -25,8 +25,8 @@ ggs_compare_partial <- function(D, family=NA, partial=0.1, rug=FALSE) {
   # Add more rows to the original dataframe according to the desired size of the
   # comparison
   D.comp <- rbind_list(
-    mutate(D, part_chain="Complete"),
-    mutate(filter(D, Iteration > (n.samples-trunc(n.samples * partial))), part_chain="Partial"))
+    dplyr::mutate(D, part_chain="Complete"),
+    dplyr::mutate(dplyr::filter(D, Iteration > (n.samples-trunc(n.samples * partial))), part_chain="Partial"))
 
   # Generate the plot
   f <- ggplot(D.comp, aes(x=value, fill=part_chain, colour=part_chain), group=Chain) + 

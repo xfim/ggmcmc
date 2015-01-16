@@ -36,7 +36,7 @@ ggs_rocplot <- function(D, outcome, fully_bayesian=FALSE) {
   } else {
     D.predicted <- D %>%
       group_by(Parameter, Chain) %>%
-      summarize(value=quantile(value, 0.5))
+      dplyr::summarize(value=quantile(value, 0.5))
   }
   roc.df <- left_join(D.predicted, D.observed, by="Parameter")
   # Compute the roc curve using the roc_calc function
@@ -45,7 +45,7 @@ ggs_rocplot <- function(D, outcome, fully_bayesian=FALSE) {
   roc.df <- cbind(roc.df, roc_calc(dplyr::select(roc.df, value, Observed)))
   # Sort it to be sure that the figure is plotted nicely
   roc.df <- tbl_df(roc.df) %>%
-    filter(Sensitivity, Specificity)
+    dplyr::filter(Sensitivity, Specificity)
   # Plot differently if it's a fully Bayesian figure or not
   if (fully_bayesian) {
     # Start plotting

@@ -30,8 +30,8 @@ ggs_separation <- function(D, outcome, fully_bayesian=FALSE, minimalist=FALSE) {
   }
   # Sort the observations by predicted value
   S <- inner_join(S, data_frame(Observed=outcome, Parameter=unique(D$Parameter)), by="Parameter") %>%
-    arrange(median) %>%
-    mutate(id=1:dim(S)[1])
+    dplyr::arrange(median) %>%
+    dplyr::mutate(id=1:dim(S)[1])
   # Calculate expected number of events
   if (fully_bayesian) {
   } else {

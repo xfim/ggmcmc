@@ -25,25 +25,25 @@ ggs_Rhat <- function(D, family=NA, scaling=1.5) {
   # Compute between-sequence variance using psi.. and psi.j
   psi.dot <- D %>%
     group_by(Parameter, Chain) %>%
-    summarize(psi.dot=mean(value))
+    dplyr::summarize(psi.dot=mean(value))
   psi.j <- D%>%
     group_by(Parameter) %>%
-    summarize(psi.j=mean(value))
+    dplyr::summarize(psi.j=mean(value))
   b.df <- inner_join(psi.dot, psi.j, by="Parameter")
   B <- b.df %>%
     group_by(Parameter) %>%
-    summarize(B=var(psi.j-psi.dot)*attributes(D)$nIterations)
+    dplyr::summarize(B=var(psi.j-psi.dot)*attributes(D)$nIterations)
   B <- unique(B)
   # Compute within-sequence variance using s2j
   s2j <- D %>%
     group_by(Parameter, Chain) %>%
-    summarize(s2j=var(value))
+    dplyr::summarize(s2j=var(value))
   W <- s2j %>%
     group_by(Parameter) %>%
-    summarize(W=mean(s2j))
+    dplyr::summarize(W=mean(s2j))
   # Merge BW and compute the weighted average (wa, var.hat+) and the Rhat
   BW <- inner_join(B, W, by="Parameter") %>%
-    mutate(
+    dplyr::mutate(
       wa= (((attributes(D)$nIterations-1)/attributes(D)$nIterations )* W) +
         ((1/ attributes(D)$nIterations)*B),
       Rhat=sqrt(wa/W))
