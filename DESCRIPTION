@@ -1,6 +1,5 @@
 Package: ggmcmc
-Title: Graphical tools for analyzing Markov Chain Monte Carlo simulations from
-    Bayesian inference.
+Title: Tools for Analyzing MCMC Simulations from Bayesian Inference
 Description: ggmcmc is a tool for assessing and diagnosing convergence of
     Markov Chain Monte Carlo simulations, as well as for graphically display
     results from full MCMC analysis. The package also facilitates the graphical
