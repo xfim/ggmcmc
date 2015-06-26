@@ -7,6 +7,7 @@
 #' @param ... Arguments to be passed to \code{ggpairs}, including geom's \code{aes} (see examples)
 #' @return A \code{ggpairs} object that creates a plot matrix consisting of univariate density plots on the diagonal, correlation estimates in upper triangular elements, and scatterplots in lower triangular elements.
 #' @export
+#' @importFrom GGally ggpairs
 #' @examples
 #' data(linear)
 #' 
