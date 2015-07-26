@@ -11,7 +11,8 @@ Author: Xavier Fernández i Marín <xavier.fim@gmail.com>
 Depends:
     dplyr,
     tidyr,
-    ggplot2
+    ggplot2, 
+    GGally
 Suggests:
     coda
 License: GPL-2
@@ -27,6 +28,7 @@ Collate:
     'ggs_histogram.R'
     'ggs_running.R'
     'ggs_traceplot.R'
+    'ggs_pairs.R'
     'data.R'
     'help.R'
     'functions.R'
