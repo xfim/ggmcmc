@@ -92,7 +92,7 @@ gl_unq <- function (n, k, labels=1:n) {
 #'
 #' Generate a data frame with the limits of two credible intervals. Function used by \code{\link{ggs_caterpillar}}. "low" and "high" refer to the wide interval, whereas "Low" and "High" refer to the narrow interval. "median" is self-explanatory and is used to draw a dot in caterpillar plots. The data frame generated is of wide format, suitable for ggplot2::geom_segment().
 #'
-#' @param D Data frame whith the simulations or list of data frame with simulations. If a list of data frames with simulations is passed, the names of the models are the names of the objects in the list.
+#' @param D Data frame whith the simulations.
 #' @param thick_ci Vector of length 2 with the quantiles of the thick band for the credible interval
 #' @param thin_ci Vector of length 2 with the quantiles of the thin band for the credible interval
 #' @return A data frame tbl with the Parameter names and 5 variables with the limits of the credibal intervals (thin and thick), ready to be used to produce caterpillar plots.
