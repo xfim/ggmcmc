@@ -142,7 +142,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
         levels(D$Parameter)[which(levels(D$Parameter) %in% par_labels$Parameter)] <-
           as.character(par_labels$Label[
             match(levels(D$Parameter)[which(levels(D$Parameter) %in% par_labels$Parameter)], par_labels$Parameter)])
-        D <- left_join(D, data.frame(Parameter=par_labels$Label, ParameterOriginal=par_labels$Parameter),
+        D <- dplyr::left_join(D, data.frame(Parameter=par_labels$Label, ParameterOriginal=par_labels$Parameter),
           by="Parameter") %>%
           dplyr::select(Iteration, Chain, Parameter, value, ParameterOriginal)
         if (class(D$Parameter) == "character") {
@@ -158,7 +158,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
         # Keep the rest of the variables passed if the data frame has more than Parameter and Label
         if (dim(par_labels)[2] > 2) {
           aD <- attributes(D)
-          D <- left_join(D, dplyr::select(tbl_df(par_labels), -Parameter), by=c("Parameter"="Label"))
+          D <- dplyr::left_join(D, dplyr::select(tbl_df(par_labels), -Parameter), by=c("Parameter"="Label"))
           if (class(D$Parameter) == "character") {
             D$Parameter <- factor(D$Parameter)
           }

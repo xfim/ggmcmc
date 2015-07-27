@@ -39,15 +39,15 @@ ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE) {
   M <- D.geweke %>%
     dplyr::select(-sde0f, -n) %>%
     ungroup() %>%
-    spread(part, m)
+    tidyr::spread(part, m)
   N <- D.geweke %>%
     dplyr::select(-sde0f, -m) %>%
     ungroup() %>%
-    spread(part, n)
+    tidyr::spread(part, n)
   SDE0F <- D.geweke %>%
     dplyr::select(-m, -n) %>%
     ungroup() %>%
-    spread(part, sde0f)
+    tidyr::spread(part, sde0f)
   # Reorganize the z scores
   Z <- data.frame(Parameter=M$Parameter, Chain=M$Chain,
     z= (M$first - M$last) /

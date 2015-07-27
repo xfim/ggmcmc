@@ -39,7 +39,7 @@ ggs_pairs <- function(D, family=NA, ...) {
     stop("Two or more parameters are required to make a pairs plot")
   }
   # Format data for GGally::ggpairs
-  D_wide <- D %>% spread(Parameter, value)
+  D_wide <- D %>% tidyr::spread(Parameter, value)
   bracket_names <- names(D_wide)
   names(D_wide) <- gsub("\\[|]|,", ".", names(D_wide))
   D_wide$Chain <- factor(D_wide$Chain)

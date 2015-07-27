@@ -38,7 +38,7 @@ ggs_rocplot <- function(D, outcome, fully_bayesian=FALSE) {
       group_by(Parameter, Chain) %>%
       dplyr::summarize(value=quantile(value, 0.5))
   }
-  roc.df <- left_join(D.predicted, D.observed, by="Parameter")
+  roc.df <- dplyr::left_join(D.predicted, D.observed, by="Parameter")
   # Compute the roc curve using the roc_calc function
   # As of dplyr 0.2 cbind must be used.
   # Later on, this may change with cbind_list

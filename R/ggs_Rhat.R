@@ -29,7 +29,7 @@ ggs_Rhat <- function(D, family=NA, scaling=1.5) {
   psi.j <- D%>%
     group_by(Parameter) %>%
     dplyr::summarize(psi.j=mean(value))
-  b.df <- inner_join(psi.dot, psi.j, by="Parameter")
+  b.df <- dplyr::inner_join(psi.dot, psi.j, by="Parameter")
   B <- b.df %>%
     group_by(Parameter) %>%
     dplyr::summarize(B=var(psi.j-psi.dot)*attributes(D)$nIterations)
@@ -42,7 +42,7 @@ ggs_Rhat <- function(D, family=NA, scaling=1.5) {
     group_by(Parameter) %>%
     dplyr::summarize(W=mean(s2j))
   # Merge BW and compute the weighted average (wa, var.hat+) and the Rhat
-  BW <- inner_join(B, W, by="Parameter") %>%
+  BW <- dplyr::inner_join(B, W, by="Parameter") %>%
     dplyr::mutate(
       wa= (((attributes(D)$nIterations-1)/attributes(D)$nIterations )* W) +
         ((1/ attributes(D)$nIterations)*B),

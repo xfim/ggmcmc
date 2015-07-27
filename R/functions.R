@@ -112,11 +112,11 @@ ci <- function (D, thick_ci=c(0.05, 0.95), thin_ci=c(0.025, 0.975)) {
     group_by(Parameter) %>%
     do(data.frame(qs=q$qs, q=quantile(.$value, prob=q$q))) %>%
     ungroup() %>%
-    spread(qs, q) %>%
+    tidyr::spread(qs, q) %>%
     dplyr::select(Parameter, low, Low, median, High, high)
   # Recover the rest of the variables that can come with the par_labels
   if (dim(D)[2] > 4) {
-    X <- left_join(X, unique(dplyr::select(D, -Iteration, -Chain, -value)), by="Parameter")
+    X <- dplyr::left_join(X, unique(dplyr::select(D, -Iteration, -Chain, -value)), by="Parameter")
   }
   return(X)
 }
