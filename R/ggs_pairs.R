@@ -45,8 +45,8 @@ ggs_pairs <- function(D, family=NA, ...) {
   D_wide$Chain <- factor(D_wide$Chain)
   par_cols <- !(bracket_names %in% c("Iteration", "Chain"))
   # Plot
-  res <- ggpairs(D_wide, 
-                 columnLabels = bracket_names[par_cols], 
-                 columns = which(par_cols), ...)
-  res
+  f <- ggpairs(D_wide, 
+    columnLabels = bracket_names[par_cols], 
+    columns = which(par_cols), ...)
+  return(f)
 }
