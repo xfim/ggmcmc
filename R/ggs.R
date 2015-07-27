@@ -145,12 +145,25 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
         D <- left_join(D, data.frame(Parameter=par_labels$Label, ParameterOriginal=par_labels$Parameter),
           by="Parameter") %>%
           dplyr::select(Iteration, Chain, Parameter, value, ParameterOriginal)
+        if (class(D$Parameter) == "character") {
+          D$Parameter <- factor(D$Parameter)
+        }
+        # Unfortunately, the attributes are not inherited in left_join(), so they have to be manually passed again
+        attr(D, "nChains") <- aD$nChains
+        attr(D, "nParameters") <- aD$nParameters
+        attr(D, "nIterations") <- aD$nIterations
+        attr(D, "nBurnin") <- aD$nBurnin
+        attr(D, "nThin") <- aD$nThin
+        attr(D, "description") <- aD$description
         # Keep the rest of the variables passed if the data frame has more than Parameter and Label
         if (dim(par_labels)[2] > 2) {
           aD <- attributes(D)
           D <- left_join(D, dplyr::select(tbl_df(par_labels), -Parameter), by=c("Parameter"="Label"))
+          if (class(D$Parameter) == "character") {
+            D$Parameter <- factor(D$Parameter)
+          }
         }
-        # Unfortunately, the attributes are not inherited, so they have to be manually passed again
+        # Unfortunately, the attributes are not inherited in left_join(), so they have to be manually passed again (for second time).
         attr(D, "nChains") <- aD$nChains
         attr(D, "nParameters") <- aD$nParameters
         attr(D, "nIterations") <- aD$nIterations
