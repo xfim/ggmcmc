@@ -32,8 +32,8 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
     for (l in 1:nChains) {
       sdf <- as.data.frame(S@sim$samples[[l]])
       sdf$Iteration <- 1:dim(sdf)[1]
-      s <- gather(sdf, Parameter, value, -Iteration) %>%
-        mutate(Chain = l) %>%
+      s <- tidyr::gather(sdf, Parameter, value, -Iteration) %>%
+        dplyr::mutate(Chain = l) %>%
         dplyr::select(Iteration, Chain, Parameter, value)
       D <- rbind_list(D, s)
     }
@@ -64,7 +64,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
       samples.c <- tbl_df(read.table(S[[i]], sep=",", header=TRUE,
         colClasses="numeric", check.names=FALSE))
       D <- rbind_list(D,
-        gather(samples.c, Parameter) %>%
+        tidyr::gather(samples.c, Parameter) %>%
         dplyr::mutate(Iteration=rep(1:(dim(samples.c)[1]), dim(samples.c)[2]), Chain=i) %>%
         dplyr::select(Iteration, Chain, Parameter, value))
     }
@@ -212,7 +212,7 @@ ggs_chain <- function(s) {
 
   # Prepare the dataframe
   d <- data.frame(Iteration=iter, as.matrix(unclass(s)), check.names=FALSE)
-  D <- d %>% gather(Parameter, value, -Iteration)
+  D <- d %>% tidyr::gather(Parameter, value, -Iteration)
 
   # Return the modified data frame as a tbl_df to be used by dplyr
   D <- tbl_df(D)
