@@ -1,3 +1,33 @@
+Version 0.7
+------------------------------
+
+MAJOR CHANGES
+
+  - Added new function ggs_pairs() (thanks to Max Joseph) that produces
+  scatterplot matrices of parameters, helping with posterior correlation.
+  Library GGally is now a dependency.
+
+  - ggs() is now able to process warmup (burnin) samples from stan, and so the
+  argument "inc_warmup" now does something useful.
+
+
+MINOR CHANGES
+
+  - ci() does not allow lists of data frames, so change it accordingly in the
+  help file (thanks to Alex Zvoleff).
+
+  - Solve minor issues with par_labels.
+
+  - Solve minor issue with ggs_crosscorrelation not showing correctly par_labels
+  (thanks to Juste).
+
+  - Add a small example to the documentation about the use of the family
+  argument in ggs().
+
+  - Better specify the origin of dplyr::* functions, to avoid collisions with
+  other packages.
+
+
 Version 0.6
 ------------------------------
 
