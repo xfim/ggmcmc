@@ -26,20 +26,32 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
   # Manage stan output first because it is firstly converted into an mcmc.list
   #
   if (class(S)=="stanfit") {
-    if (inc_warmup) warning("inc_warmup must be 'FALSE', so it is ignored.")
-    D <- as.data.frame.table(as.array(S), responseName="value")
-    names(D)[1:3] <- c("Iteration", "Chain", "Parameter")
-    D$Chain <- as.integer(gsub("chain:", "", D$Chain))
-    D$Iteration <- as.integer(D$Iteration)
+    # Extract chain by chain
+    nChains <- S@sim$chains
+    D <- NULL
+    for (l in 1:nChains) {
+      sdf <- as.data.frame(S@sim$samples[[l]])
+      sdf$Iteration <- 1:dim(sdf)[1]
+      s <- gather(sdf, Parameter, value, -Iteration) %>%
+        mutate(Chain = l) %>%
+        dplyr::select(Iteration, Chain, Parameter, value)
+      D <- rbind_list(D, s)
+    }
+    if (!inc_warmup) {
+      D <- dplyr::filter(D, Iteration > S@sim$warmup)
+      D$Iteration <- D$Iteration - S@sim$warmup
+      nBurnin <- S@sim$warmup
+    } else {
+      nBurnin <- 0
+    }
     # Exclude, by default, lp parameter
     if (!stan_include_auxiliar) {
-      D <- subset(D, Parameter!="lp__") # delete lp__
+      D <- dplyr::filter(D, Parameter!="lp__") # delete lp__
       D$Parameter <- factor(as.character(D$Parameter))
     }
-    nBurnin <- S@sim$warmup
     nThin <- S@sim$thin
     mDescription <- S@model_name
-    processed <- TRUE  # whether the object has been processed or not
+    processed <- TRUE
     D <- tbl_df(D)
   }
   #
@@ -96,6 +108,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
         nBurnin <- (attributes(s)$mcpar[1])-(1*attributes(s)$mcpar[3])
         nThin <- attributes(s)$mcpar[3]
       }
+      D <- dplyr::arrange(D, Parameter, Chain, Iteration)
     }
     # Set several attributes to the object, to avoid computations afterwards
     # Number of chains
