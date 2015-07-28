@@ -18,7 +18,7 @@ ggs_crosscorrelation <- function(D, family=NA, absolute_scale=TRUE) {
   if (attributes(D)$nParameters <= 1) {
     stop("Can't calculate crosscorrelations with a single chain")
   } 
-  X <- tidyr::spread(select(D, Iteration, Chain, Parameter, value), Parameter, value)
+  X <- tidyr::spread(dplyr::select(D, Iteration, Chain, Parameter, value), Parameter, value)
 
   # Chain management is not easy
   bc.cc <- as.data.frame.table(
