@@ -18,6 +18,9 @@ if (base::getRversion() >= "2.15.1") {
     "low", "high", "y", # for ggs_separation()
     "m", # for ggs_geweke, ggs_running, ggs_ppmean
     "qs", # for ggs_caterpillar(), ggs_separation()
-    "." # for several do() calls in ggs_histogram, ggs_autocorrelation, ggs_caterpillar, ggs_separation
+    ".", # for several do() calls in ggs_histogram, ggs_autocorrelation, ggs_caterpillar, ggs_separation
+    "ar", "cor", "quantile", "reorder", "var", # from stats
+    "pdf", "dev.off", # from grDevices, for ggmcmc()
+    "read.table" # from utils, for ggs()
   ))
 }
