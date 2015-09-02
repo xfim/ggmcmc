@@ -1,7 +1,7 @@
 bibentry("misc",
-   title = "{ggmcmc}: Graphical tools for analyzing Markov Chain Monte Carlo simulations from Bayesian inference",
+   title = "{ggmcmc}: Tools for Analyzing MCMC Simulations from Bayesian Inference",
    author = person("Xavier Fernández i Marín"),
    url    = "http://xavier-fim.net/packages/ggmcmc",
 
-   mheader = "To cite ggmcmc in publications use:"
+   mheader = "To cite ggmcmc in publications please use:"
 )

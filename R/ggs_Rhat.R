@@ -23,26 +23,26 @@ ggs_Rhat <- function(D, family=NA, scaling=1.5) {
   # The computations follow BDA, pg 296-297, and the notation tries to be
   # consistent with it
   # Compute between-sequence variance using psi.. and psi.j
-  psi.dot <- D %>%
-    group_by(Parameter, Chain) %>%
+  psi.dot <- D tidyr::%>%
+    group_by(Parameter, Chain) tidyr::%>%
     dplyr::summarize(psi.dot=mean(value))
-  psi.j <- D%>%
-    group_by(Parameter) %>%
+  psi.j <- D tidyr::%>%
+    group_by(Parameter) tidyr::%>%
     dplyr::summarize(psi.j=mean(value))
   b.df <- dplyr::inner_join(psi.dot, psi.j, by="Parameter")
-  B <- b.df %>%
-    group_by(Parameter) %>%
+  B <- b.df tidyr::%>%
+    group_by(Parameter) tidyr::%>%
     dplyr::summarize(B=var(psi.j-psi.dot)*attributes(D)$nIterations)
   B <- unique(B)
   # Compute within-sequence variance using s2j
-  s2j <- D %>%
-    group_by(Parameter, Chain) %>%
+  s2j <- D tidyr::%>%
+    group_by(Parameter, Chain) tidyr::%>%
     dplyr::summarize(s2j=var(value))
-  W <- s2j %>%
-    group_by(Parameter) %>%
+  W <- s2j tidyr::%>%
+    group_by(Parameter) tidyr::%>%
     dplyr::summarize(W=mean(s2j))
   # Merge BW and compute the weighted average (wa, var.hat+) and the Rhat
-  BW <- dplyr::inner_join(B, W, by="Parameter") %>%
+  BW <- dplyr::inner_join(B, W, by="Parameter") tidyr::%>%
     dplyr::mutate(
       wa= (((attributes(D)$nIterations-1)/attributes(D)$nIterations )* W) +
         ((1/ attributes(D)$nIterations)*B),

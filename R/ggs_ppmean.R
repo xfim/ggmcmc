@@ -24,8 +24,8 @@ ggs_ppmean <- function(D, outcome, family=NA, bins=30) {
     stop("The length of the outcome must be equal to the number of Parameters of the ggs object.")
   }
   # Calculate the posterior predictive means at each iteration
-  ppM <- D %>%
-    group_by(Iteration) %>%
+  ppM <- D tidyr::%>%
+    group_by(Iteration) tidyr::%>%
     dplyr::summarize(m=mean(value))
   m <- mean(outcome, na.rm=TRUE)
   # Calculate binwidths

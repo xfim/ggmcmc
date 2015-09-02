@@ -31,22 +31,22 @@ ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE) {
   D.geweke.last <- dplyr::mutate(dplyr::filter(D, Iteration <= max(window.2)), part="last")
   D.geweke <- rbind_list(D.geweke.first, D.geweke.last)
   # Compute means, spectral densities and N's
-  D.geweke <- D.geweke %>%
-    group_by (Parameter, Chain, part) %>%
+  D.geweke <- D.geweke tidyr::%>%
+    group_by (Parameter, Chain, part) tidyr::%>%
     dplyr::summarize(m=mean(value), sde0f=sde0f(value), n=n())
   # Cast the dataframe in pieces to have the data arranged by parameter, chain
   # and first and last
-  M <- D.geweke %>%
-    dplyr::select(-sde0f, -n) %>%
-    ungroup() %>%
+  M <- D.geweke tidyr::%>%
+    dplyr::select(-sde0f, -n) tidyr::%>%
+    ungroup() tidyr::%>%
     tidyr::spread(part, m)
-  N <- D.geweke %>%
-    dplyr::select(-sde0f, -m) %>%
-    ungroup() %>%
+  N <- D.geweke tidyr::%>%
+    dplyr::select(-sde0f, -m) tidyr::%>%
+    ungroup() tidyr::%>%
     tidyr::spread(part, n)
-  SDE0F <- D.geweke %>%
-    dplyr::select(-m, -n) %>%
-    ungroup() %>%
+  SDE0F <- D.geweke tidyr::%>%
+    dplyr::select(-m, -n) tidyr::%>%
+    ungroup() tidyr::%>%
     tidyr::spread(part, sde0f)
   # Reorganize the z scores
   Z <- data.frame(Parameter=M$Parameter, Chain=M$Chain,
