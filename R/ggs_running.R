@@ -17,15 +17,15 @@ ggs_running <- function(D, family=NA, original_burnin=TRUE, original_thin=TRUE) 
     D <- get_family(D, family=family)
   }
   # Calculate the mean of the chain
-  dm.m <- D tidyr::%>%
-    group_by(Parameter, Chain) tidyr::%>%
+  dm.m <- D %>%
+    group_by(Parameter, Chain) %>%
     dplyr::summarize(m=mean(value))
   # Calculate the running mean
   # Force the object to be sorted by Parameter, and hence avoid 'rm' calculation
   # to be wrong
-  dm.rm <- D tidyr::%>%
-    dplyr::arrange(Parameter, Iteration) tidyr::%>%
-    group_by(Parameter, Chain) tidyr::%>%
+  dm.rm <- D %>%
+    dplyr::arrange(Parameter, Iteration) %>%
+    group_by(Parameter, Chain) %>%
     dplyr::mutate(rm=cumsum(value) / Iteration)
   # Plot
   f <- ggplot(dm.rm, aes(x=Iteration, y=rm, colour=as.factor(Chain))) +

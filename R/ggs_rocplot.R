@@ -34,8 +34,8 @@ ggs_rocplot <- function(D, outcome, fully_bayesian=FALSE) {
   if (fully_bayesian) {
     D.predicted <- D
   } else {
-    D.predicted <- D tidyr::%>%
-      group_by(Parameter, Chain) tidyr::%>%
+    D.predicted <- D %>%
+      group_by(Parameter, Chain) %>%
       dplyr::summarize(value=quantile(value, 0.5))
   }
   roc.df <- dplyr::left_join(D.predicted, D.observed, by="Parameter")
@@ -44,7 +44,7 @@ ggs_rocplot <- function(D, outcome, fully_bayesian=FALSE) {
   # Later on, this may change with cbind_list
   roc.df <- cbind(roc.df, roc_calc(dplyr::select(roc.df, value, Observed)))
   # Sort it to be sure that the figure is plotted nicely
-  roc.df <- tbl_df(roc.df) tidyr::%>%
+  roc.df <- tbl_df(roc.df) %>%
     dplyr::filter(Sensitivity, Specificity)
   # Plot differently if it's a fully Bayesian figure or not
   if (fully_bayesian) {
