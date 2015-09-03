@@ -49,8 +49,8 @@ ggs_autocorrelation <- function(D, family=NA, nLags=50) {
   # https://github.com/hadley/dplyr/issues/154
   # Temporary workaround using dplyr 0.2 and do()
   wc.ac <- D %>%
-    group_by(Parameter, Chain) %>%
-    do(ac(.$value, nLags))
+    dplyr::group_by(Parameter, Chain) %>%
+    dplyr::do(ac(.$value, nLags))
 
   # Manage multiple chains
   if (attributes(D)$nChains <= 1) {

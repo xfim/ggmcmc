@@ -60,7 +60,7 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
       if (length(names(D)!=0)) model.label <- names(D)[i]                   # get model labels from named list
 
       # Transform list elements into wide dfs with thick and thin limits
-      dcm <- rbind_list(dcm, ci(D[[i]]) %>%
+      dcm <- dplyr::bind_rows(dcm, ci(D[[i]]) %>%
         dplyr::mutate(Model=model.label))
     }
 

@@ -25,7 +25,7 @@ ggs_ppsd <- function(D, outcome, family=NA, bins=30) {
   }
   # Calculate the posterior predictive means at each iteration
   ppSD <- D %>%
-    group_by(Iteration) %>%
+    dplyr::group_by(Iteration) %>%
     dplyr::summarize(sd=sd(value))
   sd <- sd(outcome, na.rm=TRUE)
   # Calculate binwidths

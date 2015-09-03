@@ -23,13 +23,13 @@ ggs_separation <- function(D, outcome, fully_bayesian=FALSE, minimalist=FALSE) {
       qs=c("low", "median", "high"),
       q=c(0.025, 0.5, 0.975))
     S <- D %>%
-      group_by(Parameter) %>%
-      do(data.frame(qs=q$qs, q=quantile(.$value, prob=q$q))) %>%
-      ungroup() %>%
+      dplyr::group_by(Parameter) %>%
+      dplyr::do(data.frame(qs=q$qs, q=quantile(.$value, prob=q$q))) %>%
+      dplyr::ungroup() %>%
       tidyr::spread(qs, q)
   }
   # Sort the observations by predicted value
-  S <- dplyr::inner_join(S, data_frame(Observed=outcome, Parameter=unique(D$Parameter)), by="Parameter") %>%
+  S <- dplyr::inner_join(S, dplyr::data_frame(Observed=outcome, Parameter=unique(D$Parameter)), by="Parameter") %>%
     dplyr::arrange(median) %>%
     dplyr::mutate(id=1:dim(S)[1])
   # Calculate expected number of events

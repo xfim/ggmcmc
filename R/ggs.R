@@ -35,7 +35,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
       s <- tidyr::gather(sdf, Parameter, value, -Iteration) %>%
         dplyr::mutate(Chain = l) %>%
         dplyr::select(Iteration, Chain, Parameter, value)
-      D <- rbind_list(D, s)
+      D <- dplyr::bind_rows(D, s)
     }
     if (!inc_warmup) {
       D <- dplyr::filter(D, Iteration > S@sim$warmup)
@@ -52,7 +52,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
     nThin <- S@sim$thin
     mDescription <- S@model_name
     processed <- TRUE
-    D <- tbl_df(D)
+    D <- dplyr::tbl_df(D)
   }
   #
   # Manage csv files than contain stan samples
@@ -61,9 +61,9 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
   if (class(S)=="list") {
     D <- NULL
     for (i in 1:length(S)) {
-      samples.c <- tbl_df(read.table(S[[i]], sep=",", header=TRUE,
+      samples.c <- dplyr::tbl_df(read.table(S[[i]], sep=",", header=TRUE,
         colClasses="numeric", check.names=FALSE))
-      D <- rbind_list(D,
+      D <- dplyr::bind_rows(D,
         tidyr::gather(samples.c, Parameter) %>%
         dplyr::mutate(Iteration=rep(1:(dim(samples.c)[1]), dim(samples.c)[2]), Chain=i) %>%
         dplyr::select(Iteration, Chain, Parameter, value))
@@ -100,7 +100,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
         # Process multiple chains
         for (l in 1:lS) {
           s <- S[l][[1]]
-          D <- rbind_list(D, dplyr::mutate(ggs_chain(s), Chain=l))
+          D <- dplyr::bind_rows(D, dplyr::mutate(ggs_chain(s), Chain=l))
         }
         D <- dplyr::select(D, Iteration, Chain, Parameter, value)
         # Get information from mcpar (burnin period, thinning). Taking the last
@@ -174,7 +174,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
         # Keep the rest of the variables passed if the data frame has more than Parameter and Label
         if (dim(par_labels)[2] > 2) {
           aD <- attributes(D)
-          D <- dplyr::left_join(D, dplyr::select(tbl_df(par_labels), -Parameter), by=c("Parameter"="Label"))
+          D <- dplyr::left_join(D, dplyr::select(dplyr::tbl_df(par_labels), -Parameter), by=c("Parameter"="Label"))
           if (class(D$Parameter) == "character") {
             D$Parameter <- factor(D$Parameter)
           }
@@ -216,6 +216,6 @@ ggs_chain <- function(s) {
     tidyr::gather(Parameter, value, -Iteration)
 
   # Return the modified data frame as a tbl_df to be used by dplyr
-  D <- tbl_df(D)
+  D <- dplyr::tbl_df(D)
   return(D)
 }

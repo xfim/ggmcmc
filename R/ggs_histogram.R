@@ -17,8 +17,8 @@ ggs_histogram <- function(D, family=NA, bins=30) {
   }
   # Manually generate the histogram by parameter, based on the total number of bins
   ds <- D %>%
-    group_by(Parameter) %>%
-    do(calc_bin(.$value, bins))
+    dplyr::group_by(Parameter) %>%
+    dplyr::do(calc_bin(.$value, bins))
   dl <- as.numeric(table(ds$Parameter))
   # There may be cases of parameters with slightly different numbers of bins,
   # and therefore a Parameter-by-Parameter approach is needed

@@ -24,7 +24,7 @@ ggs_compare_partial <- function(D, family=NA, partial=0.1, rug=FALSE) {
   n.samples <- max(D$Iteration)
   # Add more rows to the original dataframe according to the desired size of the
   # comparison
-  D.comp <- rbind_list(
+  D.comp <- dplyr::bind_rows(
     dplyr::mutate(D, part_chain="Complete"),
     dplyr::mutate(dplyr::filter(D, Iteration > (n.samples-trunc(n.samples * partial))), part_chain="Partial"))
 

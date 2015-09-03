@@ -109,9 +109,9 @@ ci <- function (D, thick_ci=c(0.05, 0.95), thin_ci=c(0.025, 0.975)) {
     qs=c("low", "Low", "median", "High", "high"),
     q=c(thin_ci[1], thick_ci[1], 0.5, thick_ci[2], thin_ci[2]))
   X <- D %>%
-    group_by(Parameter) %>%
-    do(data.frame(qs=q$qs, q=quantile(.$value, prob=q$q))) %>%
-    ungroup() %>%
+    dplyr::group_by(Parameter) %>%
+    dplyr::do(data.frame(qs=q$qs, q=quantile(.$value, prob=q$q))) %>%
+    dplyr::ungroup() %>%
     tidyr::spread(qs, q) %>%
     dplyr::select(Parameter, low, Low, median, High, high)
   # Recover the rest of the variables that can come with the par_labels

@@ -20,7 +20,7 @@ ggs_traceplot <- function(D, family=NA, original_burnin=TRUE, original_thin=TRUE
   if (!is.null(simplify)) {
     if (simplify > 0 & simplify < 1) {
       aD <- attributes(D)
-      D <- sample_frac(D, simplify)
+      D <- dplyr::sample_frac(D, simplify)
       # Unfortunately, the attributes are not inherited, so they have to be manually passed again
       attr(D, "nChains") <- aD$nChains
       attr(D, "nParameters") <- aD$nParameters

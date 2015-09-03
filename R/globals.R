@@ -21,6 +21,8 @@ if (base::getRversion() >= "2.15.1") {
     ".", # for several do() calls in ggs_histogram, ggs_autocorrelation, ggs_caterpillar, ggs_separation
     "ar", "cor", "quantile", "reorder", "var", # from stats
     "pdf", "dev.off", # from grDevices, for ggmcmc()
+    "count", # for ggs_histogram(), for ggs_ppmean(), for ggs_ppsd()
+    "id", # for ggs_separation()
     "read.table" # from utils, for ggs()
   ))
 }
