@@ -1,3 +1,26 @@
+Version 0.7.2
+------------------------------
+
+MINOR CHANGES
+
+  - Solve revdep issue with tidyr-0.3 due to unqualified imports of "%>%, and
+  use explicit calls to dplyr and tidyr in all functions taken from those packages.
+
+  - Improve citation.
+
+  - Improve the text of the package description.
+
+  - Add BugReports fields and include another URL.
+
+
+Version 0.7.1
+------------------------------
+
+MINOR CHANGES
+  
+  - Minor changes to pass CRAN checks.
+
+
 Version 0.7
 ------------------------------
 
