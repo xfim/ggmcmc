@@ -11,8 +11,9 @@ Author: Xavier Fernández i Marín <xavier.fim@gmail.com>
 Depends:
     dplyr,
     tidyr (>= 0.3.1),
-    ggplot2, 
-    GGally
+    ggplot2
+Imports:
+  GGally (> 0.5.0)
 Suggests:
     coda
 License: GPL-2
