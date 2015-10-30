@@ -9,6 +9,7 @@
 #' @export
 #' @importFrom GGally ggpairs
 #' @examples
+#' library(GGally)
 #' data(linear)
 #'
 #' # default ggpairs plot

@@ -20,6 +20,7 @@ A \code{ggpairs} object that creates a plot matrix consisting of univariate dens
 Pairs style plots to evaluate posterior correlations among parameters.
 }
 \examples{
+library(GGally)
 data(linear)
 
 # default ggpairs plot
