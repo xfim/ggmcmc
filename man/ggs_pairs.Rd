@@ -20,26 +20,27 @@ A \code{ggpairs} object that creates a plot matrix consisting of univariate dens
 Pairs style plots to evaluate posterior correlations among parameters.
 }
 \examples{
+library(GGally)
 data(linear)
 
 # default ggpairs plot
 ggs_pairs(ggs(s))
 
 # change alpha transparency of points
-ggs_pairs(ggs(s), lower=list(params=c(alpha=.2)))
+ggs_pairs(ggs(s), lower=list(continuous = wrap("points", alpha = 0.2)))
 
 # with too many points, try contours instead
 ggs_pairs(ggs(s), lower=list(continuous="density"))
 
 # histograms instead of univariate densities on diagonal
-ggs_pairs(ggs(s), diag=list(continuous="bar"))
+ggs_pairs(ggs(s), diag=list(continuous="barDiag"))
 
 # coloring results according to chains
-ggs_pairs(ggs(s), color="Chain")
+ggs_pairs(ggs(s), mapping = aes(color = Chain))
 
 # custom points on lower panels, black contours on upper panels
 ggs_pairs(ggs(s),
-  upper=list(continuous="density", params=c(color="black")),
-  lower=list(params=c(alpha=.2, shape=1)))
+  upper=list(continuous = wrap("density", color = "black")),
+  lower=list(continuous = wrap("points", alpha = 0.2, shape = 1)))
 }
 
