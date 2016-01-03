@@ -74,7 +74,7 @@ ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE) {
   if (!is.na(shadow_limit)) {
     gw <- data.frame(x=c(-2, 2, 2, -2), y=c(rep(0, 2), rep(attributes(D)$nParameters+1, 2)), g='A')
     f <- f + geom_polygon(data=gw, aes(x=x, y=y, group=g, colour="black", linetype=NA),
-      alpha=0.2, show_guide=FALSE)
+      alpha=0.2, show.legend=FALSE)
   }
   # Correct legend
   f <- f +
