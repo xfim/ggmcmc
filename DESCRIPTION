@@ -5,7 +5,7 @@ Description: Tools for assessing and diagnosing convergence of
     results from full MCMC analysis. The package also facilitates the graphical
     interpretation of models by providing flexible functions to plot the
     results against observed variables.
-Version: 0.7.2
+Version: 0.7.3
 Maintainer: Xavier Fernández i Marín <xavier.fim@gmail.com>
 Author: Xavier Fernández i Marín <xavier.fim@gmail.com>
 Depends:
@@ -13,7 +13,7 @@ Depends:
     tidyr (>= 0.3.1),
     ggplot2
 Imports:
-  GGally (> 0.5.0)
+    GGally (>= 0.5.0)
 Suggests:
     coda
 License: GPL-2
@@ -42,3 +42,4 @@ Collate:
     'ggs_ppmean.R'
     'ggs_ppsd.R'
     'ggs_rocplot.R'
+RoxygenNote: 5.0.1

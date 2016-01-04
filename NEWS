@@ -3,6 +3,21 @@ Version 0.7.2
 
 MINOR CHANGES
 
+  - Updated examples for ggs_pairs() to work with newer version of GGally.
+
+  - GGally is imported instead of depends.
+
+  - Specify a certain version of tidyr (0.3.1 needed)
+
+  - Add a check that "Parameter" is a factor, which is not granted with the
+  development version of tidyr as of 04/01/2016.
+
+
+Version 0.7.2
+------------------------------
+
+MINOR CHANGES
+
   - Solve revdep issue with tidyr-0.3 due to unqualified imports of "%>%, and
   use explicit calls to dplyr and tidyr in all functions taken from those packages.
 
