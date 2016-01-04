@@ -109,6 +109,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
         nThin <- attributes(s)$mcpar[3]
       }
       D <- dplyr::arrange(D, Parameter, Chain, Iteration)
+      D$Parameter <- factor(as.character(D$Parameter))
     }
     # Set several attributes to the object, to avoid computations afterwards
     # Number of chains
