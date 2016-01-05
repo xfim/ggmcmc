@@ -28,8 +28,6 @@ ggs_crosscorrelation <- function(D, family=NA, absolute_scale=TRUE, greek=FALSE)
   # Diagonals are avoided
   bc.cc$value[bc.cc$Var1==bc.cc$Var2] <- NA
   # Plot
-  print(bc.cc)
-  print(str(bc.cc))
   f <- ggplot(bc.cc, aes(x=Var1, y=Var2)) +
     geom_tile(aes(fill=value)) +
     xlab("") + ylab("") +
