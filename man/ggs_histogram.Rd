@@ -4,7 +4,7 @@
 \alias{ggs_histogram}
 \title{Histograms of the paramters.}
 \usage{
-ggs_histogram(D, family = NA, bins = 30)
+ggs_histogram(D, family = NA, bins = 30, greek = FALSE)
 }
 \arguments{
 \item{D}{Data frame whith the simulations.}
@@ -12,6 +12,8 @@ ggs_histogram(D, family = NA, bins = 30)
 \item{family}{Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc).}
 
 \item{bins}{integer indicating the total number of bins in which to divide the histogram. Defaults to 30, which is the same as geom_histogram()}
+
+\item{greek}{Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.}
 }
 \value{
 A \code{ggplot} object.

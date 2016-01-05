@@ -6,12 +6,13 @@
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
 #' @param partial Percentage of the chain to compare to. Defaults to the last 10 percent.
 #' @param rug Logical indicating whether a rug must be added to the plot. It is FALSE by default, since in large chains it may use lot of resources and it is not central to the plot.
+#' @param greek Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
 #' data(linear)
 #' ggs_compare_partial(ggs(s))
-ggs_compare_partial <- function(D, family=NA, partial=0.1, rug=FALSE) {
+ggs_compare_partial <- function(D, family=NA, partial=0.1, rug=FALSE, greek=FALSE) {
   # Check that partial is a percentage
   if (partial <= 0 | partial >=1 | !is.numeric(partial)) {
     stop("partial must be a numerical argument and a value greater than zero or less than one")
@@ -32,10 +33,14 @@ ggs_compare_partial <- function(D, family=NA, partial=0.1, rug=FALSE) {
   f <- ggplot(D.comp, aes(x=value, fill=part_chain, colour=part_chain), group=Chain) + 
     geom_density(alpha=0.4)
   # Manage multiple chains
-  if (attributes(D)$nChains <= 1) {
+  if (attributes(D)$nChains <= 1 & !greek) {
     f <- f + facet_wrap(~ Parameter, ncol=1, scales="free")
-  } else {
+  } else if (attributes(D)$nChains <= 1 & greek) {
+    f <- f + facet_wrap(~ Parameter, ncol=1, scales="free", labeller = label_parsed)
+  } else if (attributes(D)$nChains > 1 & !greek) {
     f <- f + facet_wrap(Parameter ~ Chain, ncol=attributes(D)$nChains, scales=c("free"))
+  } else {
+    f <- f + facet_wrap(Parameter ~ Chain, ncol=attributes(D)$nChains, scales=c("free"), labeller = label_parsed)
   }
   f <- f +
     scale_colour_manual(name="Chain length", values=c("black", "aquamarine3")) +

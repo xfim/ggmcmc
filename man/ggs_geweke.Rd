@@ -5,7 +5,7 @@
 \title{Dotplot of the Geweke diagnostic, the standard Z-score}
 \usage{
 ggs_geweke(D, family = NA, frac1 = 0.1, frac2 = 0.5,
-  shadow_limit = TRUE)
+  shadow_limit = TRUE, greek = TRUE)
 }
 \arguments{
 \item{D}{data frame whith the simulations.}
@@ -17,6 +17,8 @@ ggs_geweke(D, family = NA, frac1 = 0.1, frac2 = 0.5,
 \item{frac2}{Numeric, proportion of the last part of the chains selected. Defaults to 0.5.}
 
 \item{shadow_limit, }{logical. When TRUE (the default), a shadowed area between -2 and +2 is drawn.}
+
+\item{greek}{Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.}
 }
 \value{
 A \code{ggplot} object.

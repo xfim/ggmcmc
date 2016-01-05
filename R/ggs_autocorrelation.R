@@ -28,12 +28,13 @@ ac <- function(x, nLags) {
 #' @param D Data frame whith the simulations.
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
 #' @param nLags Integer indicating the number of lags of the autocorrelation plot.
+#' @param greek Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
 #' data(linear)
 #' ggs_autocorrelation(ggs(s))
-ggs_autocorrelation <- function(D, family=NA, nLags=50) {
+ggs_autocorrelation <- function(D, family=NA, nLags=50, greek=FALSE) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {
     D <- get_family(D, family=family)
@@ -55,13 +56,21 @@ ggs_autocorrelation <- function(D, family=NA, nLags=50) {
   # Manage multiple chains
   if (attributes(D)$nChains <= 1) {
     f <- ggplot(wc.ac, aes(x=Lag, y=Autocorrelation)) + 
-      geom_bar(stat="identity", position="identity") +
-      facet_wrap(~ Parameter) + ylim(-1, 1)
+      geom_bar(stat="identity", position="identity") + ylim(-1, 1)
+    if (!greek) {
+      f <- f + facet_wrap(~ Parameter)
+    } else {
+      f <- f + facet_wrap(~ Parameter, labeller = label_parsed)
+    }
   } else {
     f <- ggplot(wc.ac, aes(x=Lag, y=Autocorrelation, colour=as.factor(Chain), fill=as.factor(Chain))) + 
-      geom_bar(stat="identity", position="identity") +
-      facet_grid(Parameter ~ Chain) + ylim(-1, 1) +
+      geom_bar(stat="identity", position="identity") + ylim(-1, 1) +
       scale_fill_discrete(name="Chain") + scale_colour_discrete(name="Chain")
+    if (!greek ) {
+      f <- f + facet_grid(Parameter ~ Chain)
+    } else {
+      f <- f + facet_grid(Parameter ~ Chain, labeller = label_parsed)
+    }
   }
 
  return(f)

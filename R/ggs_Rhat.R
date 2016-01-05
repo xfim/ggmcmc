@@ -7,12 +7,13 @@
 #' @param D Data frame whith the simulations
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc).
 #' @param scaling Value of the upper limit for the x-axis. By default, it is 1.5, to help contextualization of the convergence. When 0 or NA, the axis are not scaled.
+#' @param greek Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
 #' data(linear)
 #' ggs_Rhat(ggs(s))
-ggs_Rhat <- function(D, family=NA, scaling=1.5) {
+ggs_Rhat <- function(D, family=NA, scaling=1.5, greek=FALSE) {
   if (attributes(D)$nChains<2) {
     stop("At least two chains are required")
   }
@@ -51,8 +52,10 @@ ggs_Rhat <- function(D, family=NA, scaling=1.5) {
   BW$Rhat[is.nan(BW$Rhat)] <- NA
   # Plot
   f <- ggplot(BW, aes(x=Rhat, y=Parameter)) + geom_point() +
-    xlab(expression(hat("R"))) +
-    ggtitle("Potential Scale Reduction Factor")
+    xlab(expression(hat("R"))) + ggtitle("Potential Scale Reduction Factor")
+  if (greek) {
+    f <- f + scale_y_discrete(labels = parse(text = as.character(BW$Parameter)))
+  }
   # If scaling, add the scale
   if (!is.na(scaling)) {
     # Use the maximum of Rhat if it is larger than the prespecified value

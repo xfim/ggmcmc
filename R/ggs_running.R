@@ -6,12 +6,13 @@
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc).
 #' @param original_burnin Logical. When TRUE (the default), start the iteration counter in the x-axis at the end of the burnin period.
 #' @param original_thin Logical. When TRUE (the default), take into account the thinning interval in the x-axis.
+#' @param greek Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
 #' data(linear)
 #' ggs_running(ggs(s))
-ggs_running <- function(D, family=NA, original_burnin=TRUE, original_thin=TRUE) {
+ggs_running <- function(D, family=NA, original_burnin=TRUE, original_thin=TRUE, greek=FALSE) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {
     D <- get_family(D, family=family)
@@ -32,10 +33,14 @@ ggs_running <- function(D, family=NA, original_burnin=TRUE, original_thin=TRUE) 
     geom_line() +
     geom_hline(aes(yintercept=m), dm.m, colour="black", alpha=0.5) +
     ylab("Running Mean")
-  if (attributes(D)$nChains <= 1) {
+  if (attributes(D)$nChains <= 1 & !greek) {
     f <- f + facet_wrap(~ Parameter, ncol=1, scales="free")
-  } else {
+  } else if (attributes(D)$nChains <= 1 & greek) {
+    f <- f + facet_wrap(~ Parameter, ncol=1, scales="free", labeller = label_parsed)
+  } else if (attributes(D)$nChains > 1 & !greek) {
     f <- f + facet_grid(Parameter ~ Chain, scales="free")
+  } else {
+    f <- f + facet_grid(Parameter ~ Chain, scales="free", labeller = label_parsed)
   }
   f <- f + scale_colour_discrete(name="Chain")
   # Manage changing the scales using different sets of burnin and thinning

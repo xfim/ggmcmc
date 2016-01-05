@@ -4,7 +4,7 @@
 \alias{ggs_Rhat}
 \title{Dotplot of Potential Scale Reduction Factor (Rhat)}
 \usage{
-ggs_Rhat(D, family = NA, scaling = 1.5)
+ggs_Rhat(D, family = NA, scaling = 1.5, greek = FALSE)
 }
 \arguments{
 \item{D}{Data frame whith the simulations}
@@ -12,6 +12,8 @@ ggs_Rhat(D, family = NA, scaling = 1.5)
 \item{family}{Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc).}
 
 \item{scaling}{Value of the upper limit for the x-axis. By default, it is 1.5, to help contextualization of the convergence. When 0 or NA, the axis are not scaled.}
+
+\item{greek}{Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.}
 }
 \value{
 A \code{ggplot} object.

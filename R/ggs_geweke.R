@@ -7,12 +7,13 @@
 #' @param frac1 Numeric, proportion of the first part of the chains selected. Defaults to 0.1.
 #' @param frac2 Numeric, proportion of the last part of the chains selected. Defaults to 0.5.
 #' @param shadow_limit, logical. When TRUE (the default), a shadowed area between -2 and +2 is drawn.
+#' @param greek Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
 #' data(linear)
 #' ggs_geweke(ggs(s))
-ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE) {
+ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE, greek=TRUE) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {
     D <- get_family(D, family=family)
@@ -80,5 +81,8 @@ ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE) {
   f <- f +
     scale_colour_discrete(name="Chain",
       breaks=as.factor(unique(Z$Chain)), labels=as.factor(unique(Z$Chain)))
+  if (greek) {
+    f <- f + scale_y_discrete(labels = parse(text = levels(Z$Parameter)))
+  }
   return(f)
 }

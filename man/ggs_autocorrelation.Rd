@@ -4,7 +4,7 @@
 \alias{ggs_autocorrelation}
 \title{Plot an autocorrelation matrix}
 \usage{
-ggs_autocorrelation(D, family = NA, nLags = 50)
+ggs_autocorrelation(D, family = NA, nLags = 50, greek = FALSE)
 }
 \arguments{
 \item{D}{Data frame whith the simulations.}
@@ -12,6 +12,8 @@ ggs_autocorrelation(D, family = NA, nLags = 50)
 \item{family}{Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc).}
 
 \item{nLags}{Integer indicating the number of lags of the autocorrelation plot.}
+
+\item{greek}{Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.}
 }
 \value{
 A \code{ggplot} object.

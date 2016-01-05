@@ -4,12 +4,14 @@
 \alias{ggs_pairs}
 \title{Create a plot matrix of posterior simulations}
 \usage{
-ggs_pairs(D, family = NA, ...)
+ggs_pairs(D, family = NA, greek = FALSE, ...)
 }
 \arguments{
 \item{D}{Data frame with the simulations.}
 
 \item{family}{Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc).}
+
+\item{greek}{Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.}
 
 \item{...}{Arguments to be passed to \code{ggpairs}, including geom's \code{aes} (see examples)}
 }

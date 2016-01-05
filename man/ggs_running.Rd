@@ -4,7 +4,8 @@
 \alias{ggs_running}
 \title{Running means of the chains}
 \usage{
-ggs_running(D, family = NA, original_burnin = TRUE, original_thin = TRUE)
+ggs_running(D, family = NA, original_burnin = TRUE, original_thin = TRUE,
+  greek = FALSE)
 }
 \arguments{
 \item{D}{Data frame whith the simulations.}
@@ -14,6 +15,8 @@ ggs_running(D, family = NA, original_burnin = TRUE, original_thin = TRUE)
 \item{original_burnin}{Logical. When TRUE (the default), start the iteration counter in the x-axis at the end of the burnin period.}
 
 \item{original_thin}{Logical. When TRUE (the default), take into account the thinning interval in the x-axis.}
+
+\item{greek}{Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.}
 }
 \value{
 A \code{ggplot} object.

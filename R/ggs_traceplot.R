@@ -7,12 +7,13 @@
 #' @param original_burnin Logical. When TRUE (the default) start the Iteration counter in the x-axis at the end of the burnin period.
 #' @param original_thin Logical. When TRUE (the default) take into account the thinning interval in the x-axis.
 #' @param simplify Numerical. A percentage of iterations to keep in the time series. It is an option intended only for the purpose of saving time and resources when doing traceplots. It is not a thin operation, because it is not regular. It must be used with care.
+#' @param greek Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
 #' data(linear)
 #' ggs_traceplot(ggs(s))
-ggs_traceplot <- function(D, family=NA, original_burnin=TRUE, original_thin=TRUE, simplify=NULL) {
+ggs_traceplot <- function(D, family=NA, original_burnin=TRUE, original_thin=TRUE, simplify=NULL, greek=FALSE) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {
     D <- get_family(D, family=family)
@@ -39,8 +40,12 @@ ggs_traceplot <- function(D, family=NA, original_burnin=TRUE, original_thin=TRUE
     f <- ggplot(D, aes(x=Iteration, y=value, colour=as.factor(Chain))) 
   }
   f <- f + geom_line(alpha=0.7) + 
-    facet_wrap(~ Parameter, ncol=1, scales="free") + 
     scale_colour_discrete(name="Chain")
+  if (!greek) {
+    f <- f + facet_wrap(~ Parameter, ncol=1, scales="free")
+  } else {
+    f <- f + facet_wrap(~ Parameter, ncol=1, scales="free", labeller = label_parsed)
+  }
   # Manage changing the scales using different sets of burnin and thinning
   # Duplicated code chunk in ggs_running()
   t_format <- function(x) {

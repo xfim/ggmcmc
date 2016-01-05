@@ -4,7 +4,7 @@
 \alias{ggs_density}
 \title{Density plots of the chains}
 \usage{
-ggs_density(D, family = NA, rug = FALSE)
+ggs_density(D, family = NA, rug = FALSE, greek = FALSE)
 }
 \arguments{
 \item{D}{Data frame whith the simulations.}
@@ -12,6 +12,8 @@ ggs_density(D, family = NA, rug = FALSE)
 \item{family}{Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc).}
 
 \item{rug}{Logical indicating whether a rug must be added to the plot. It is FALSE by default, since in large chains it may use lot of resources and it is not central to the plot.}
+
+\item{greek}{Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.}
 }
 \value{
 A \code{ggplot} object.
