@@ -77,8 +77,10 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
     f <- ggplot(dcm, aes(x=median, y=reorder(Parameter, median))) + geom_point(size=3) +
       geom_segment(aes(x=Low, xend=High, yend=reorder(Parameter, median)), size=1.5) +
       geom_segment(aes(x=low, xend=high, yend=reorder(Parameter, median)), size=0.5) +
-      scale_y_discrete(labels = parse(text = as.character(dcm$Parameter))) +
       xlab("HPD") + ylab("Parameter")
+    if (greek) {
+      f <- f + scale_y_discrete(labels = parse(text = as.character(dcm$Parameter)))
+    }
   } else {
     dcm <- merge(dcm, X)
     f <- ggplot(dcm, aes_string(x="median", y=x.name)) + geom_point(size=3) +

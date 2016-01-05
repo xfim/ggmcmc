@@ -13,7 +13,7 @@
 #' @examples
 #' data(linear)
 #' ggs_geweke(ggs(s))
-ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE, greek=TRUE) {
+ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE, greek=FALSE) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {
     D <- get_family(D, family=family)
