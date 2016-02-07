@@ -61,13 +61,13 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
       if (length(names(D)!=0)) model.label <- names(D)[i]                   # get model labels from named list
 
       # Transform list elements into wide dfs with thick and thin limits
-      dcm <- dplyr::bind_rows(dcm, ci(D[[i]]) %>%
+      dcm <- dplyr::bind_rows(dcm, ci(D[[i]], thick_ci = thick_ci, thin_ci = thin_ci) %>%
         dplyr::mutate(Model=model.label))
     }
 
   } else if (is.data.frame(D)) { # D is a data frame, and so a single model is passed
     multi <-  FALSE
-    dcm <- ci(D)
+    dcm <- ci(D, thick_ci = thick_ci, thin_ci = thin_ci)
   }
 
   #
