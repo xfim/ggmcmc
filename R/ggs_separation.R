@@ -35,9 +35,7 @@ ggs_separation <- function(D, outcome, fully_bayesian=FALSE, minimalist=FALSE) {
   # Calculate expected number of events
   if (fully_bayesian) {
   } else {
-    N <- length(outcome)
-    perc.obs.events <- length(which(outcome==1)) / N            # percent observed events
-    ene <- length(which(S$median > perc.obs.events))
+    ene <- max(S$id) - sum(S$median)
   }
   # Plot
   f <- ggplot(S, aes(x=id, y=median)) +
