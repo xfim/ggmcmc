@@ -47,7 +47,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
     # Exclude, by default, lp parameter
     if (!stan_include_auxiliar) {
       D <- dplyr::filter(D, Parameter!="lp__") # delete lp__
-      D$Parameter <- factor(as.character(D$Parameter))
+      D$Parameter <- factor(as.character(D$Parameter), levels=custom.sort(D$Parameter))
     }
     nThin <- S@sim$thin
     mDescription <- S@model_name
@@ -71,7 +71,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
     # Exclude, by default, lp parameter and other auxiliar ones
     if (!stan_include_auxiliar) {
       D <- D[grep("__$", D$Parameter, invert=TRUE),]
-      D$Parameter <- factor(as.character(D$Parameter))
+      D$Parameter <- factor(as.character(D$Parameter), levels=custom.sort(D$Parameter))
     }
     nBurnin <- as.integer(gsub("warmup=", "", scan(S[[i]], "", skip=12, nlines=1, quiet=TRUE)[2]))
     nThin <- as.integer(gsub("thin=", "", scan(S[[i]], "", skip=13, nlines=1, quiet=TRUE)[2]))
@@ -108,8 +108,8 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
         nBurnin <- (attributes(s)$mcpar[1])-(1*attributes(s)$mcpar[3])
         nThin <- attributes(s)$mcpar[3]
       }
+      D$Parameter <- factor(as.character(D$Parameter), levels=custom.sort(D$Parameter))
       D <- dplyr::arrange(D, Parameter, Chain, Iteration)
-      D$Parameter <- factor(as.character(D$Parameter))
     }
     # Set several attributes to the object, to avoid computations afterwards
     # Number of chains
@@ -163,7 +163,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
           by="Parameter") %>%
           dplyr::select(Iteration, Chain, Parameter, value, ParameterOriginal)
         if (class(D$Parameter) == "character") {
-          D$Parameter <- factor(D$Parameter)
+          D$Parameter <- factor(D$Parameter, levels=custom.sort(D$Parameter))
         }
         # Unfortunately, the attributes are not inherited in left_join(), so they have to be manually passed again
         attr(D, "nChains") <- aD$nChains
@@ -177,7 +177,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
           aD <- attributes(D)
           D <- dplyr::left_join(D, dplyr::select(dplyr::tbl_df(par_labels), -Parameter), by=c("Parameter"="Label"))
           if (class(D$Parameter) == "character") {
-            D$Parameter <- factor(D$Parameter)
+            D$Parameter <- factor(D$Parameter, levels=custom.sort(D$Parameter))
           }
         }
         # Unfortunately, the attributes are not inherited in left_join(), so they have to be manually passed again (for second time).
@@ -219,4 +219,21 @@ ggs_chain <- function(s) {
   # Return the modified data frame as a tbl_df to be used by dplyr
   D <- dplyr::tbl_df(D)
   return(D)
+}
+
+#' Auxiliary function that sorts Parameter names taking into account numeric values
+#'
+#' @param x a character vector to which we want to sort elements
+#' @return X a character vector sorted with family parametrs first and then numeric values
+custom.sort <- function(x) {
+  x <- as.character(unique(x))
+  family <- gsub("\\[.+\\]", "", x)
+  Families <- sort(unique(family))
+  X <- NULL
+  for (f in Families) {
+    x.family <- x[family == f]
+    x.family <- x.family[order(as.numeric((gsub("]", "", gsub("(.+)\\[", "", x.family)))))]
+    X <- c(X, x.family)
+  }
+  return(X)
 }
