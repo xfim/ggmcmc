@@ -37,10 +37,15 @@ ggs_separation <- function(D, outcome, fully_bayesian=FALSE, minimalist=FALSE) {
   } else {
     ene <- max(S$id) - sum(S$median)
   }
+  # Calculate the polygon for the bars with observed values
+  bars_observed <- dplyr::filter(S, Observed == 1) %>%
+    dplyr::mutate(y1 = 0, y2 = 1)
   # Plot
   f <- ggplot(S, aes(x=id, y=median)) +
-    geom_vline(xintercept=which(S$Observed==1), colour = "red", alpha=0.5, size=0.4)
-  f <- f + geom_line() + geom_ribbon(aes(y=median, ymin =low, ymax=high), alpha = 0.25)
+    geom_rect(data = bars_observed,
+      aes(xmin = id-0.5, xmax = id+0.5, ymin = 0, ymax = 1, group = id),
+      fill = "red", alpha = 0.5)
+  f <- f + geom_line(size = 1) + geom_ribbon(aes(y=median, ymin =low, ymax=high), alpha = 0.25)
   f <- f + xlab("") + scale_x_discrete(breaks=NULL)
   f <- f + theme(legend.position = "none", axis.text.x=element_blank())
   f <- f + geom_point(data=data.frame(ene=ene, y=0), aes(x=ene, y=y), size=3, shape=17)
