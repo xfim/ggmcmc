@@ -232,8 +232,12 @@ custom.sort <- function(x) {
   X <- NULL
   for (f in Families) {
     x.family <- x[family == f]
-    x.family <- x.family[order(as.numeric((gsub("]", "", gsub("(.+)\\[", "", x.family)))))]
-    X <- c(X, x.family)
+    if (length(grep("\\[", x.family)) > 0) {
+      x.family <- x.family[order(as.numeric((gsub("]", "", gsub("(.+)\\[", "", x.family)))))]
+      X <- c(X, x.family)
+    } else {
+      X <- c(X, x.family)
+    }
   }
   return(X)
 }
