@@ -159,8 +159,8 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
         levels(D$Parameter)[which(levels(D$Parameter) %in% par_labels$Parameter)] <-
           as.character(par_labels$Label[
             match(levels(D$Parameter)[which(levels(D$Parameter) %in% par_labels$Parameter)], par_labels$Parameter)])
-        D <- dplyr::left_join(D, data.frame(Parameter=par_labels$Label, ParameterOriginal=par_labels$Parameter),
-          by="Parameter") %>%
+        D <- suppressWarnings(dplyr::left_join(D, data.frame(Parameter=par_labels$Label, ParameterOriginal=par_labels$Parameter),
+          by="Parameter")) %>%
           dplyr::select(Iteration, Chain, Parameter, value, ParameterOriginal)
         if (class(D$Parameter) == "character") {
           D$Parameter <- factor(D$Parameter, levels=custom.sort(D$Parameter))
