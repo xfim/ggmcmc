@@ -1,4 +1,4 @@
- #' Caterpillar plot with thick and thin CI
+#' Caterpillar plot with thick and thin CI
 #'
 #' Caterpillar plots are plotted combining all chains for each parameter.
 #'
