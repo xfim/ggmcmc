@@ -4,6 +4,7 @@
 #' @param outcome vector (or matrix or array) containing the observed outcome variable. Currently only a vector is supported.
 #' @param fully_bayesian logical, FALSE by default. Currently not implemented
 #' @param minimalist logical, FALSE by default. It returns a minimalistic version of the figure with the bare minimum elements, suitable for being used inline as suggested by Greenhill, Ward and Sacks citing Tufte.
+#' @param show_labels logical, FALSE by default. If true it adds the Parameter as the label of the case in the x-axis.
 #'
 #' @return A \code{ggplot} object
 #' @references Greenhill, Ward and Sacks (2011): The separation plot: a new visual method for evaluating the fit of binary models. American Journal of Political Science, vol 55, number 4, pg 991-1002.
@@ -12,7 +13,7 @@
 #' data(binary)
 #' ggs_separation(ggs(s.binary, family="mu"), outcome=y.binary)
 
-ggs_separation <- function(D, outcome, fully_bayesian=FALSE, minimalist=FALSE) {
+ggs_separation <- function(D, outcome, fully_bayesian = FALSE, minimalist = FALSE, show_labels = FALSE) {
   if (fully_bayesian) {
     stop("The fully Bayesian version has not been implemented yet.")
   }
@@ -46,9 +47,16 @@ ggs_separation <- function(D, outcome, fully_bayesian=FALSE, minimalist=FALSE) {
       aes(xmin = id-0.5, xmax = id+0.5, ymin = 0, ymax = 1, group = id),
       fill = "red", alpha = 0.5)
   f <- f + geom_line() + geom_ribbon(aes(y=median, ymin =low, ymax=high), alpha = 0.25)
-  f <- f + xlab("") + scale_x_discrete(breaks=NULL)
+  f <- f + xlab("")
   f <- f + theme(legend.position = "none", axis.text.x=element_blank())
   f <- f + geom_point(data=data.frame(ene=ene, y=0), aes(x=ene, y=y), size=3, shape=17)
+  if (show_labels) {
+    f <- f + scale_x_continuous(breaks = S$id, labels = S$Parameter) +
+      theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
+  } else {
+    f <- f + scale_x_discrete(breaks = NULL)
+  }
   if (minimalist) {
     # Plot a minimalist version of the figure to be used inline as suggested by
     # the authors citing Tufte.
