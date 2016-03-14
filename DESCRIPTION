@@ -17,7 +17,11 @@ Imports:
 Suggests:
     coda,
     knitr,
-    rmarkdown
+    rmarkdown,
+    ggthemes,
+    gridExtra,
+    Cairo,
+    extrafont
 License: GPL-2
 URL: http://xavier-fim.net/packages/ggmcmc, https://github.com/xfim/ggmcmc
 BugReports: https://github.com/xfim/ggmcmc/issues
