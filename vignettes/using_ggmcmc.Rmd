@@ -348,6 +348,17 @@ Lastly, a triangle on the lower side marks the expected number of total successe
 ggs_separation(S.binary, outcome=y.binary)
 ```
 
+The arguments `show_labels` (FALSE by default) and `uncertainty_band` (TRUE by default) allow to control, respectively, whether the Parameter names will be displayed and whether the uncertainty of the predicted values will be shown.
+```{r, separation_arguments, fig.width=10, fig.height=3, fig.cap='Separation plot with parameter labels and without uncertainty band on the predicted values.', fig.margin=FALSE}
+ggs_separation(S.binary, outcome=y.binary,
+  show_labels = TRUE, uncertainty_band = FALSE)
+```
+
+The argument `minimalist` (FALSE by default) allows get a minimal Tufte style inline version of the separation plot.
+```{r, separation_minimalist, fig.width=4, fig.height=1, fig.cap='Separation plot (minimalist version).', fig.margin=TRUE}
+ggs_separation(S.binary, outcome=y.binary, minimalist = TRUE)
+```
+
 # Paired plots
 The package `ggally` provides an easy way to extend `ggmcmc` through the
 `ggs_pairs()` function, which by defaults shows the scatterplots of the pairs of parameters in the `ggs` object, the densities and the crosscorrelations in a single layout.
