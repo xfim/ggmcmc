@@ -1,3 +1,38 @@
+Version 0.8
+------------------------------
+
+MAJOR CHANGES
+
+  - Introduce the possibility to get Greek letters in the plots, as parameter
+  names.
+
+  - Vignettes are added, improving the package documentation.
+
+  - ggs_separation() incorporates new arguments: uncertainty_band (to avoid the
+  uncertainty band of the predicted values), show_labels (to add the
+  Parameter as the label of the case in the x-axis.
+
+
+MINOR CHANGES
+
+  - Solved a bug that passed thick_ci and thin_ci incorrectly in
+  ggs_caterpillar().
+
+  - Parameters are sorted by their natural order following the numerical order
+  inside the family. This helps ggs_separation() and ggs_rocplot(), as they
+  expect observed values in numerical order.
+
+  - Solved a bug with the calculation of the expected number of events in
+  ggs_separation().
+
+  - Added some supressWarnings() to avoid annoying messages when doing some
+  left_join() operations.
+
+  - ggs_separation now plots the observed cases as proportional to the
+  horizontal space, not as simple lines. This makes visualization clearer and
+  more accurate to reality.
+
+
 Version 0.7.2
 ------------------------------
 
