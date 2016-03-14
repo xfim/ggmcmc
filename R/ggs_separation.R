@@ -4,7 +4,8 @@
 #' @param outcome vector (or matrix or array) containing the observed outcome variable. Currently only a vector is supported.
 #' @param fully_bayesian logical, FALSE by default. Currently not implemented
 #' @param minimalist logical, FALSE by default. It returns a minimalistic version of the figure with the bare minimum elements, suitable for being used inline as suggested by Greenhill, Ward and Sacks citing Tufte.
-#' @param show_labels logical, FALSE by default. If true it adds the Parameter as the label of the case in the x-axis.
+#' @param show_labels logical, FALSE by default. If TRUE it adds the Parameter as the label of the case in the x-axis.
+#' @param uncertainty_band logical, TRUE by default. If FALSE it removes the uncertainty band on the predicted values.
 #'
 #' @return A \code{ggplot} object
 #' @references Greenhill, Ward and Sacks (2011): The separation plot: a new visual method for evaluating the fit of binary models. American Journal of Political Science, vol 55, number 4, pg 991-1002.
@@ -13,7 +14,7 @@
 #' data(binary)
 #' ggs_separation(ggs(s.binary, family="mu"), outcome=y.binary)
 
-ggs_separation <- function(D, outcome, fully_bayesian = FALSE, minimalist = FALSE, show_labels = FALSE) {
+ggs_separation <- function(D, outcome, fully_bayesian = FALSE, minimalist = FALSE, show_labels = FALSE, uncertainty_band = TRUE) {
   if (fully_bayesian) {
     stop("The fully Bayesian version has not been implemented yet.")
   }
@@ -46,7 +47,10 @@ ggs_separation <- function(D, outcome, fully_bayesian = FALSE, minimalist = FALS
     geom_rect(data = bars_observed,
       aes(xmin = id-0.5, xmax = id+0.5, ymin = 0, ymax = 1, group = id),
       fill = "red", alpha = 0.5)
-  f <- f + geom_line() + geom_ribbon(aes(y=median, ymin =low, ymax=high), alpha = 0.25)
+  f <- f + geom_line()
+  if (uncertainty_band) {
+    f <- f + geom_ribbon(aes(y=median, ymin =low, ymax=high), alpha = 0.25)
+  }
   f <- f + xlab("")
   f <- f + theme(legend.position = "none", axis.text.x=element_blank())
   f <- f + geom_point(data=data.frame(ene=ene, y=0), aes(x=ene, y=y), size=3, shape=17)
