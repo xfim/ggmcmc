@@ -15,7 +15,9 @@ Depends:
 Imports:
     GGally (>= 0.5.0)
 Suggests:
-    coda
+    coda,
+    knitr,
+    rmarkdown
 License: GPL-2
 URL: http://xavier-fim.net/packages/ggmcmc, https://github.com/xfim/ggmcmc
 BugReports: https://github.com/xfim/ggmcmc/issues
@@ -43,3 +45,4 @@ Collate:
     'ggs_ppsd.R'
     'ggs_rocplot.R'
 RoxygenNote: 5.0.1
+VignetteBuilder: knitr

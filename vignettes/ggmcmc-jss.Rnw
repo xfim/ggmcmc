@@ -1,0 +1,599 @@
+%\VignetteIndexEntry{ggmcmc: Analysis of MCMC Samples and Bayesian Inference}
+%\VignetteEngine{knitr::knitr}
+%\VignetteEncoding{UTF-8}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% HEADER
+\documentclass[nojss]{jss}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage[it,small]{caption}
+\usepackage{lscape}
+\usepackage[nameinlink,capitalize,noabbrev]{cleveref}
+\usepackage{amsmath}
+\usepackage{fancyvrb}
+\usepackage{har2nat}
+\usepackage{natbib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT INFORMATION
+\newcommand{\tcurt}{ggmcmc}
+\newcommand{\tema}{ggmcmc, MCMC, Bayesian inference}
+\newcommand{\aut}{Xavier Fernández-i-Marín}
+\newcommand{\web}{http://xavier-fim.net}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% HEADINGS
+\usepackage{fancyhdr}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% HEADER
+\title{\pkg{ggmcmc}: Analysis of MCMC Samples and Bayesian Inference}
+\Plaintitle{ggmcmc: Analysis of MCMC Samples and Bayesian Inference}
+\author{Xavier Fernández-i-Marín}
+\Plainauthor{Xavier Fernández-i-Marín}
+\Abstract{
+\pkg{ggmcmc} is an \proglang{R} package for analyzing Markov chain Monte Carlo simulations from Bayesian inference.
+  By using a well known example of hierarchical / multilevel modelling, the article reviews the potential uses and options of the package, ranging from classical convergence tests to caterpillar plots or posterior predictive checks.
+}
+\Keywords{\pkg{ggmcmc}, MCMC, Bayesian inference}
+\Plainkeywords{ggmcmc, MCMC, Bayesian inference}
+\Address{
+  \aut \\
+  ESADE Business School\\
+  E-mail: \email{xavier.fernandez3@esade.edu} \\
+  URL: \url{http://xavier-fim.net}}
+
+\begin{document}
+
+<<setup, include=FALSE, echo=FALSE, cache=FALSE>>=
+library(knitr)
+library(Cairo)
+options(prompt = "R> ", continue = "+  ", width = 60, useFancyQuotes = FALSE)
+options(replace.assign=TRUE, width=70)
+opts_chunk$set(fig.path='figure/plot-', fig.align='center', fig.show='hold', pdf=FALSE, dev='cairo_pdf', par=TRUE, out.width='.50\\textwidth', prompt=TRUE, warning=FALSE)
+knit_hooks$set(par=function(before, options, envir) {
+  if (before && options$fig.show!='none') {
+    par(mar=c(4,4,.1,.1), cex.lab=.95, cex.axis=.9,mgp=c(2,.7,0), tcl=-.3)
+  }
+}, crop=hook_pdfcrop)
+knit_theme$set("print")
+@
+
+\section{Introduction}
+This article presents \pkg{ggmcmc}, an \proglang{R} package with graphical tools for analyzing Markov chain Monte Carlo (MCMC) simulations from Bayesian inference.
+
+The article is organized as follows: Section~\ref{s:why} presents the motives for developing the package and the basic logic of its design and implementation.
+In order to have some data to plot, a dataset and sampled values from posterior distributions of a varying intercepts - varying slopes model are presented in Section~\ref{s:get_radon}.
+The \code{ggs()} function used to prepare data for \pkg{ggmcmc} is presented in Section~\ref{s:ggs}.
+The \code{ggmcmc()} wrapper that writes all plots into a pdf file is reviewed in Section~\ref{s:ggmcmc}.
+Section~\ref{s:ggs_functions} explains how to use the individual functions and what to expect from them in terms of convergence.
+Brief explanations of the potential uses of the \code{family} argument for selecting groups of parameters and the \code{par\_label} argument for changing parameter names are performed in Section~\ref{s:beyond}.
+The capacities of the caterpillar plots facilities in \pkg{ggmcmc} are reviewed in Section~\ref{s:caterpillar}.
+Section~\ref{s:pp} presents functions to perform model check and posterior predictive comparisons.
+Section~\ref{s:combining} shows several examples of the potential extensions of the package, either alone or in combination with other packages and Section~\ref{s:final} concludes.
+
+\pkg{ggmcmc} is under development.
+The latest version and the discussions about its future can be followed at \url{http://github.com/xfim/ggmcmc}.
+
+
+\section[Why ggmcmc]{Why \pkg{ggmcmc}?}
+\label{s:why}
+\pkg{ggplot2}, based on the grammar of graphics~\cite{wilkinson:2005:grammar}, empowers \proglang{R} users by allowing them to flexibly create graphics~\cite{wickham:2009:ggplot2}.
+Based on this idea, \pkg{ggmcmc} brings the design and implementation of \pkg{ggplot2} to MCMC diagnostics, allowing users of Bayesian inference to have better and more flexible visual diagnostic tools.
+
+Markov chain Monte Carlo methods are used to generate samples from a probability distribution.
+They are widely used nowadays in many aspects of optimization and numerical integration, and are specially suitable for being used in sampling from posterior distributions in Bayesian inference.
+A key issue in MCMC is whether the chain has converged and is actually sampling from the target distribution.
+There is not a single infallible test of convergence, but many formal and informal ways to assess non-convergence.
+
+There are currently two general-purpose packages for convergence analysis and diagnostics in \proglang{R}: \pkg{coda}~\cite{coda} and \pkg{boa}~\cite{boa}.
+\pkg{boa} was last updated in 2008 and is less complex than \pkg{coda}, which is still maintained and considered to be the reference package.
+\pkg{coda} relies on the class \code{mcmc} to produce its results, which is the \emph{de facto} standard class for MCMC objects in \proglang{R}.
+
+\pkg{ggmcmc} combines elements of those general-purpose MCMC analysis packages with \pkg{ggplot2}.
+\pkg{ggplot2} is based on the idea that the input of any graphic is a data frame mapped to aesthetic attributes (colour, size) of geometric objects (points, lines).
+Therefore, in order to create a graphic the three components must be supplied: a data frame, at least one aesthetic attribute and at least one geometric object.
+The flexibility comes from the fact that it is very easy to extend basic graphics by including more aesthetic elements and geometric objects, and even faceting the figure to generate the same plot for different subsets of the dataset \cite[p.~3]{wickham:2009:ggplot2}.
+
+The implementation of \pkg{ggmcmc} follows this scheme and is based on a function (\code{ggs()}) that transforms the original input (time series of sampled values for different parameters and chains) into a data frame that is used for all graphing functions.
+The plotting functions do any necessary transformation to the samples and return a \code{ggplot} object, which can be plotted directly into the working device or simply stored as an object, as any other \code{ggplot} object.
+Getting \code{ggplot} objects as the output of the plotting functions has a positive side effect: while the defaults in \pkg{ggmcmc} have been carefully chosen, the user later can tweak any graph by adding other geometric figures, layers of data, contextual information (titles, axis) or applying themes.
+
+To sum up, the implementation is driven by the following steps:
+\begin{enumerate}
+  \item Convert any input into a data frame using \code{ggs()}, producing a tidy object~\cite{wickham:2014:tidy}.
+  \item Make all plotting functions (\code{ggs_*())} work with the \code{ggs} object and produce a \code{ggplot} object.
+  \item Let the user post-process the resulting default \code{ggplot} object.
+\end{enumerate}
+
+Compared to \pkg{coda}, \pkg{ggmcmc} does not use a specific class for its objects, but instead relies on a general-purpose object, the data frame, as the basis for all the operations.
+This approach also allows \pkg{ggmcmc} to work well with other tools designed to work with data frames, such as \pkg{dplyr} and \pkg{tidyr} (which, in fact, are \pkg{ggmcmc} dependencies).
+Another advantage of \pkg{ggmcmc} is that it is relatively easy to convert any output of a sampling software into a data frame, which gives \pkg{ggmcmc} a lot of flexibility to be able to import samples from different software.
+
+In addition to the need of good tools for convergence check, which is already covered by other packages in \proglang{R}, MCMC is usually used in conjunction with hierarchical (multilevel) models in Bayesian inference, and there is not a versatile tool to process such samples in an easy and flexible way.
+\pkg{ggmcmc} aims also to provide functions to inspect batches of parameters in hierarchical models, to do posterior predictive checks and other model fit figures.
+
+\section[Get samples from Gelman and Hill radon example]{Get samples from Gelman \& Hill radon example}
+\label{s:get_radon}
+In order to show show the potential of \pkg{ggmcmc} with real data and a well-known dataset, this section briefly presents \citeasnoun{gelman:hill:2006}'s example of radon and floor measurements for 919 houses from 85 counties in Minnesota.
+The model is a varying intercepts and slopes with group-level predictors presented in Chapter 17.2
+The model is a varying intercepts and slopes specification introduced in Section 13.1 (pages 280--283) and presented in \proglang{BUGS/JAGS} notation in Section 17.1 (page 401).
+Equation~\ref{eqn:vivs375_radon} presents the equation with the model definition.
+\begin{equation}
+  \begin{aligned}
+    y_{i} & \sim \mathcal{N}(\hat{y}_{i}, \sigma) \\
+    \hat{y}_{i} & = \alpha_{j} + X\beta_{j} \\
+    \alpha_{j} & \sim \mathcal{N}(\theta_{\alpha}, \sigma_{\alpha}) \\
+    \beta{j} & \sim \mathcal{N}(\theta_{\beta}, \sigma_{\beta}) \\
+    \theta_{\alpha} & \sim \mathcal{N}(0, 1000) \\
+    \theta_{\beta} & \sim \mathcal{N}(0, 1000) \\
+    \sigma_{\alpha} & \sim \mathcal{U}(0, 100) \\
+    \sigma_{\beta} & \sim \mathcal{U}(0, 100)
+  \end{aligned}
+  \label{eqn:vivs375_radon}
+\end{equation}
+The radon measurement ($y_{i}$) is explained by varying intercepts ($\alpha_{j}$)  and varying slopes ($\beta_{j}$) associated with a single covariate (soil uranium).
+
+\pkg{ggmcmc} contains a list (\code{radon}) with several objects from this model sampled using \proglang{JAGS}: \code{s.radon} is an \code{mcmc} object containing samples of 2 chains of length 1000 thinned by 50 (resulting in only 20 samples)) for all 175 parameters (batches of $\alpha$ and $\beta$, and $\theta_{\alpha}$ and also $\theta_{\beta}$, $\sigma_{\alpha}$, $\sigma_{\beta}$ and $\sigma_{y}$).
+\code{s.radon.short} contains only 4 parameters for pedagogical purposes: $\alpha[1:2]$ and $\beta[1:2]$, but the chains have not been thinned.
+This is the object that will be employed in the first part of the article.
+
+<<message=FALSE, warning=FALSE, eval=FALSE>>=
+library("ggmcmc")
+data("radon")
+s.radon.short <- radon$s.radon.short
+@
+<<load_development_package, include=FALSE, echo=FALSE, message=FALSE, warning=FALSE>>=
+library("devtools")
+load_all("~/est/packages/ggmcmc")
+data("radon")
+s.radon.short <- radon$s.radon.short
+@
+
+
+\section[Importing MCMC samples into ggmcmc using ggs()]{Importing MCMC samples into \pkg{ggmcmc} using \code{ggs()}}
+\label{s:ggs}
+
+The \code{s.radon.short} object is right now a list of arrays of an \code{mcmc} class.
+Each element in the list is a chain, and each matrix is defined by the number of iterations (rows) and the number of parameters (columns).
+In order to work with \pkg{ggplot2} and to follow the rules of the grammar of graphics, data must be converted into a data frame.
+This is achieved with \code{ggs()}:
+<<ggs>>=
+S <- ggs(s.radon.short)
+@
+
+\code{ggs()} produces a data frame object with four variables, namely:
+\begin{itemize}
+\item \textbf{Iteration} Number of iteration.
+\item \textbf{Chain} Number of the chain.
+\item \textbf{Parameter} Name of the parameter.
+\item \textbf{value} value sampled.
+\end{itemize}
+
+More specifically, \code{ggs()} produces a \code{tbl_df}, which is a data frame wrapper in \pkg{dplyr} that improves printing data frames. In this case, calling the object produces a compact view of its contents.
+<<ggs_contents>>=
+S
+@
+
+A \code{ggs} object is generally around twice the size of a \code{mcmc} object (list of matrices), because the iteration number, the number of the chain and the name of the parameter are stored in the resulting object in a less compact way than in \code{mcmc}.
+But this duplication of information gives much more flexibility to the package, in the sense that the transformation is done only once and then the resulting object is suitable and ready for the rest of the plotting functions.
+The resulting object is tidy~\cite{wickham:2014:tidy}.
+
+In addition to producing a data frame, \code{ggs()} also stores some attributes in the data frame, which will be later used by the rest of the functions.
+This speeds up the package performing expensive operations once and caching the results.
+<<echo=TRUE, eval=FALSE>>=
+str(S)
+@
+<<echo=FALSE, eval=TRUE>>=
+str(S, width=70, strict.width="cut")
+@
+
+
+In addition to \proglang{JAGS} output mentioned above, \code{ggs()} can incorporate MCMC outputs from several sources:
+\begin{description}
+  \item[\proglang{JAGS}] which produces objects of class \code{mcmc.list} \cite{jags}.
+  \item[\pkg{MCMCpack}] which produces objects of class \code{mcmc} \cite{mcmcpack}.
+  \item[\pkg{rstan}] which produces objects of class \code{stanfit} \cite{stan}.
+  \item[\proglang{Stan} running alone] when \proglang{Stan} runs from the command line it produces csv files \cite{stan}.
+\end{description}
+
+\section[Using ggmcmc()]{Using \code{ggmcmc()}}
+\label{s:ggmcmc}
+\code{ggmcmc()} is a wrapper to several plotting functions that allows to create very easily a report of the diagnostics in a single pdf file.
+This output can then be used to inspect the results more comfortably than using the plots that appear in the screen.
+<<eval=FALSE>>=
+ggmcmc(S)
+@
+
+By default, \code{ggmcmc()} produces a file called \code{ggmcmc-output.pdf} with 5 parameters in each page, although those default values can be easily changed.
+<<eval=FALSE>>=
+ggmcmc(S, file = "model_simple-diag.pdf", param_page = 2)
+@
+
+It is also possible to specify \code{NULL} as a filename, and this allows the user to control the device.
+It is possible to combine other plots by first opening a pdf device (\code{pdf(file = "new.pdf")}), sending other plots, running and the \code{ggmcmc(S, file = NULL)} call, and finally closing the device (\code{dev.off()}).
+
+It is also possible to ask \code{ggmcmc()} to dump only one or some of the plots, using their names as in the functions, without \code{ggs\_}.
+This option can also be used to dump only one type of plots and get the advantage of having multiple pages in the output.
+<<eval=FALSE>>=
+ggmcmc(S, plot = c("density", "running", "caterpillar"))
+@
+
+The usual procedure with \pkg{coda} nowadays is that once the model has been running, the user interactively does some convergence tests, mostly concentrating in the traceplots and density plots in a sequential way.
+The idea of having a single pdf file with all the graphics is that, in addition to running the MCMC simulations and waiting for the result, the user can also run \code{ggmcmc} to produce all the convergence plots for review at a later stage, going back and forward in the pages, comparing the behaviour of traceplots with the autocorrelations or crosscorrelations.
+All the material is in a single file and there is no need to go back and forth interactively.
+
+\section{Using individual functions}
+\label{s:ggs_functions}
+
+We can also use the functions interactively.
+The parameter to be plotted is the data frame that results from the application of the \code{ggs()} function to the original source object that \proglang{JAGS} or other software produces.
+
+\subsection{Histograms, density plots and comparison of windows of the chain}
+Histograms with the posterior distributions can be obtained with \code{ggs_histogram()} (Figure~\ref{fig:histogram_density_part}, left).
+The figure combines the values of all the chains.
+Although it is not specifically a convergence plot, it is useful for providing a quick look on the distribution of the values and the shape of the posterior.
+<<eval=FALSE>>=
+ggs_histogram(S)
+@
+
+<<histogram_density_part, fig.width=12, fig.height=8, echo=FALSE, out.width='0.8\\textwidth', fig.cap='left) Histogram with the distribution of the posterior values combining all chains by parameter; middle) Density plots.; right) Density plots comparing the whole chain (black) with only the last part (green).', message=FALSE, warning=FALSE>>=
+require(gridExtra)
+f1 <- ggs_histogram(S) + ggtitle("ggs_histogram()")
+f2 <- ggs_density(S) + ggtitle("ggs_density()")
+f3 <- ggs_compare_partial(S) + ggtitle("ggs_compare_partial()")
+grid.arrange(f1, f2, f3, ncol = 3)
+@
+
+
+Similar to the histogram, the density plot (Figure~\ref{fig:histogram_density_part}, middle) also allows for a quick inspection of the distribution of the posterior.
+However, \code{ggs_density()} produces overlapped density plots with different colors by chain, which allows comparing the target distribution by chains and whether each chain has converged in a similar space.
+<<eval=FALSE>>=
+ggs_density(S)
+@
+
+Based on the idea of overlapping densities, \code{ggs_compare_partial} produces overlapped density plots that compare the last part of the chain (by default, the last 10\% of the values, in green) with the whole chain (black) (Figure~\ref{fig:histogram_density_part}, right).
+Ideally, the initial and final parts of the chain have to be sampling in the same target distribution, so the overlapped densities should be similar.
+Notice that the overlapping densities belong to the same chain, so each column of the plot refers to one chain.
+<<eval=FALSE>>=
+ggs_compare_partial(S)
+@
+
+\subsection{Traceplots, running means and autocorrelations}
+A classical traceplot with the time series of the chain is obtained by \code{ggs_traceplot()} (Figure~\ref{fig:traceplots_running_means_autocorrelation}, left).
+A traceplot is an essential plot for assessing convergence and diagnosing chain problems.
+It shows the time series of the sampling process and the expected outcome is to produce ``white noise''.
+In other words, one of the signals of lack of convergence is to find tendencies in the time series, so in this case the objective is to get a traceplot that looks purely random.
+Besides being a good tool to assess within-chain convergence, the fact that different colors are employed for each of the chains facilitates the comparison between chains.
+<<eval=FALSE>>=
+ggs_traceplot(S)
+@
+
+In addition to the traceplots, a plot with the running mean of the chains is very useful to find within-chain convergence issues.
+A time series of the running mean of the chain (Figure~\ref{fig:traceplots_running_means_autocorrelation}, middle) is obtained by \code{ggs_running()}, and allows to check whether the chain is slowly or quickly approaching its target distribution.
+A horizontal line with the mean of the chain facilitates the comparison.
+Using the same scale in the vertical axis also allows comparing convergence between chains.
+The expected output is a line that quickly approaches the overall mean, and all chains should have the same mean (easily assessed through the comparison of the three horizontal lines).
+<<eval=FALSE>>=
+ggs_running(S)
+@
+
+<<traceplots_running_means_autocorrelation, fig.width=12, fig.height=8, echo=FALSE, out.width='0.8\\textwidth', fig.cap='left) Traceplots with the time series of the chains; middle) Running means; right) Autocorrelation plots.', message=FALSE, warning=FALSE>>=
+require(gridExtra)
+f1 <- ggs_traceplot(S) + ggtitle("ggs_traceplot()")
+f2 <- ggs_running(S) + ggtitle("ggs_running()")
+f3 <- ggs_autocorrelation(S) + ggtitle("ggs_autocorrelation()")
+grid.arrange(f1, f2, f3, ncol = 3)
+@
+
+
+A more formal assessment of the quality of the chain can be obtained by inspecting the autocorrelation plots of the chains (Figure~\ref{fig:traceplots_running_means_autocorrelation}, right) using \code{ggs_autocorrelation()}).
+The expected outcome is a bar at one in the first lag, but no autocorrelation beyond the first lag.
+While autocorrelation is not \emph{per se} a signal of lack of convergence, it may indicate some misbehaviour in several chains or parameters, or indicate that a chain needs more time to converge.
+The easiest way to solve issues with autocorrelation is by thinning the chain.
+The thinning interval can be very easily extracted from the autocorrelation plot.
+By default, the autocorrelation axis is bounded between -1 and 1, so all subplots are comparable.
+The argument \code{nLags} allows to specify the number of lags to plot, which defaults to 50.
+<<eval=FALSE>>=
+ggs_autocorrelation(S)
+@
+
+\subsection{Crosscorrelation plot}
+In order to diagnose potential problems of convergence due to highly correlated parameters, \code{ggs_crosscorrelation()} produces a tile plot (Figure~\ref{fig:crosscorrelation}, left) with the correlations between all pairs of parameters.
+<<eval=FALSE>>=
+ggs_crosscorrelation(S)
+@
+
+<<crosscorrelation, fig.width=10, fig.height=4, out.width='0.6\\textwidth', fig.cap='Tile plots with the crosscorrelations of the parameters in a relative scale (left) or absolute scale (right)', echo=FALSE>>=
+f1 <- ggs_crosscorrelation(S) + ggtitle("Absolute scale")
+f2 <- ggs_crosscorrelation(S, absolute_scale = FALSE) + ggtitle("Relative scale")
+grid.arrange(f1, f2, ncol = 2)
+@
+
+The argument \code{absolute\_scale} allows to specify whether the scale should be between -1 and +1 or the range of the parameter.
+The default is to use an absolute scale, which shows the crosscorrelation problems in overall perspective.
+But with cases where there is not a severe problem of crosscorrelation between parameters it may help to use relative scales in order to see the most problematic parameters.
+<<eval=FALSE>>=
+ggs_crosscorrelation(S, absolute_scale = FALSE)
+@
+
+\subsection[Formal diagnostics: Potential Scale Reduction Factor and Geweke]{Formal diagnostics: Potential Scale Reduction Factor ($\hat{R}$) and Geweke}
+
+Amongst the formal diagnostics of chain convergence, \pkg{ggmcmc} provides the Potential Scale Reduction Factor and the Geweke diagnostic.
+
+The Potential Scale Reduction Factor ($\hat{R}$)~\cite[296--297]{gelman:bayesian:2003} relies on different chains for the same parameter, by comparing the between-chain variation with the within-chain variation.
+It is expected to be close to 1.
+A dotplot with its values (Figure~\ref{fig:Rhat_geweke}, left) is produced with the  \code{ggs\_Rhat()} function.
+<<Rhat, eval=FALSE>>=
+ggs_Rhat(S)
+@
+By default, the function scales the axis so that there is an upper limit at 1.5 (or higher, if higher values are present), to contextualize the results.
+The argument \code{scaling} allows to change or eliminate this default (by setting it to \code{NA}).
+
+
+By contrast the Geweke z-score diagnostic ~\cite{geweke:1992} focuses on the comparison of the first part of the chain with its last part.
+It is in fact a frequentist comparison of means, and the expected outcome is to have 95 percent of the values between -2 and 2 (Figure~\ref{fig:Rhat_geweke}, right)
+It can be by obtained with the \code{ggs\_geweke()} function.
+By default, the area between -2 and 2 is shadowed for a quicker inspection of problematic chains.
+<<eval=FALSE>>=
+ggs_geweke(S)
+@
+<<Rhat_geweke, fig.width=10, fig.height=4, out.width='.8\\textwidth', fig.cap='left) Dotplot with the Potential Scale Reduction Factor. right) Dotplot with the Geweke z-scores. For this model there is no evidence of non-convergence, as $\\hat{R}$ are very close to 1 and z-scores are between -2 and 2.', echo=FALSE>>=
+f1 <- ggs_Rhat(S)
+f2 <- ggs_geweke(S)
+grid.arrange(f1, f2, ncol = 2)
+@
+
+The overall idea is to provide multiple tools, so that a combination of them gives a precise indication of lack of convergence and, more importantly, provides hints on how to fix it.
+
+\section{Beyond basic options}
+\label{s:beyond}
+In order to illustrate more advanced features of \pkg{ggmcmc}, the object with the full posterior densities of $\alpha$ and $\beta$ will be used, instead of the short version used so far.
+<<>>=
+S.full <- ggs(radon$s.radon)
+@
+
+\subsection{Select a family of parameters}
+\label{ss:family}
+Suppose that the object with the results of a model contains several families of parameters (say, \code{beta}, \code{theta}, \code{sigma}) and that only one of the families you want to use the previous functions but only with one of the families.
+The argument \code{family} can be used to tell \pkg{ggmcmc} to use only certain parameters.
+Figure~\ref{fig:density_family_par_labels} (left) shows a density plot similar to Figure~\ref{fig:histogram_density_part} (middle), but with only the parameters that belong to the \code{sigma} family:
+<<eval=FALSE>>=
+ggs_density(S.full, family = "sigma")
+@
+
+The character string provided to \code{family} can be any \proglang{R} regular expression.
+In cases of having multidimensional arrays of parameters (say, \code{theta[1,1]} or \code{theta[10, 5]}), the elements in the 4th row can be plotted using \code{family = "theta\textbackslash\textbackslash[4,.\textbackslash\textbackslash]"}.
+Regular expressions are a very powerful set of tools to manage the names of the parameters.
+Covering the full range of options provided by regular expressions is out of the scope of this article.
+For most of the cases in the context that \pkg{ggmcmc} is used the only issues to remind are the double-backslash in front of the the square bracket that indicates the dimension of a family of parameters, and the use of the \emph{hat} (\code{\textasciicircum}) to distinguish between \code{\textasciicircum theta} and \code{sigma.theta}.
+
+
+\subsection{Change parameter labels}
+\label{ss:labels}
+By default, \code{ggs} objects use the parameter names provided by the MCMC software.
+But it is possible to change it when treating the samples with the \code{ggs()} function using the argument \code{par\_labels}.
+\code{par\_labels} requires a data frame with at least two columns.
+One named \emph{Parameter} with the corresponding names of the parameters that are to be changed and another named \emph{Label} with the new parameter labels (Figure~\ref{fig:density_family_par_labels}, right).
+<<eval=FALSE>>=
+P <- data.frame(
+  Parameter = c("sigma.alpha", "sigma.beta", "sigma.y"),
+  Label = c("Intercept (sd)", "Covariate (sd)", "Outcome (sd)"))
+ggs_density(ggs(radon$s.radon, par_labels = P, family = "sigma"))
+@
+<<density_family_par_labels, fig.width=8, fig.height=6, out.width='.80\\textwidth', fig.cap='left) Density plot with a restricted number of parameters controlled by the argument \\code{family}; right) Density plot with the parameters having different labels using the argument \\code{par\\_labels}. Notice that the first two parameters in each column show signals of non-convergence.', echo=FALSE>>=
+f1 <- ggs_density(S.full, family = "sigma") + ggtitle("family")
+P <- data.frame(
+  Parameter = c("sigma.alpha", "sigma.beta", "sigma.y"),
+  Label = c("Intercept (sd)", "Covariate (sd)", "Outcome (sd)"))
+f2 <- ggs_density(ggs(radon$s.radon, par_labels = P, family = "sigma")) + ggtitle("par_labels")
+grid.arrange(f1, f2, ncol = 2)
+@
+
+The combination of the arguments \code{family} and \code{par_labels} gives high control over the final plots, and substantially aid interpretation.
+However, it must be noticed that selecting a family of parameters can be done either when converting the output of the MCMC software using the \code{ggs()} function, or inside the \code{ggs_*()} individual functions.
+But using the \code{par_labels} argument is only done through the \code{ggs()} call.
+
+\section{Caterpillar plots}
+\label{s:caterpillar}
+
+Caterpillar plots provide a sense of the distribution of the parameters, using their name as a label.
+\code{ggs_caterpillar()} produces caterpillar plots of the highest posterior densities (HPD) of the parameters produces.
+By default thick lines represent 90\% of the HPD and thin lines represent 95\% of the HPD.
+
+The following code creates a data set with the matches between the parameter names for the intercepts (\code{alpha[1]:alpha[85]}) and their substantial meaning (labels for counties) and then it passes this data frame as an argument to the \code{ggs()} function that converts the original samples in \proglang{JAGS} into a proper object ready for being used by all \code{ggs_*()} functions.
+<<caterpillar_preparation>>=
+L.radon.intercepts <- data.frame(
+  Parameter = paste("alpha[", radon$counties$id.county, "]", sep = ""),
+  Label = radon$counties$County)
+head(L.radon.intercepts)
+S.full <- ggs(radon$s.radon,
+  par_labels = L.radon.intercepts, family = "^alpha")
+@
+
+Figure~\ref{fig:caterpillar} (left) shows \code{ggs_caterpillar()} with the previously created \code{ggs()} object containing the varying intercepts and labeled with parameter names, and is produced by:
+<<eval=FALSE>>=
+ggs_caterpillar(S.full)
+@
+
+\code{ggs\_caterpillar()} can also be used to plot continuous variables.
+This feature is very useful when plotting the varying slopes or intercepts of several groups in multilevel modelling against a continuous feature of such groups.
+
+Plot continuous variables by passing a data frame (\code{X}) with two columns. One column with the \code{Parameter} name and the other with its \code{value}.
+Notice that when used against a continuous variable it is more convenient to use vertical lines instead of the default horizontal lines (Figure~\ref{fig:caterpillar}, right).
+
+
+<<eval=FALSE>>=
+Z <- data.frame(
+  Parameter = paste("alpha[", radon$counties$id.county, "]", sep = ""),
+  value = radon$counties$uranium)
+ggs_caterpillar(ggs(radon$s.radon, family = "^alpha"),
+  X = Z, horizontal = FALSE)
+@
+
+<<caterpillar, out.width='.80\\textwidth', fig.width=12, fig.height=8, fig.cap='Caterpillar plot for the varying intercepts. Dots represent medians, and thick and thin lines represent  90 and the 95\\% of the Highest Posterior Density regions, respectively. left) Plain caterpillar plot with labels of the parameters, showing Clay and Lake as the counties with highest and lowest $\\alpha$ intercept, respectively; right) Caterpillar plot against continuous values (uranium levels) using the argument \\code{par\\_labels}, suggesting a tendency of higher $\\alpha$ intercepts with increasing uranium levels.', echo=FALSE>>=
+f1 <- ggs_caterpillar(S.full)
+Z <- data.frame(
+  Parameter = paste("alpha[", radon$counties$id.county, "]", sep = ""),
+  value = radon$counties$uranium)
+f2 <- ggs_caterpillar(ggs(radon$s.radon, family = "^alpha"), X = Z, horizontal = FALSE)
+grid.arrange(f1, f2, ncol = 2)
+@
+
+
+Another feature of caterpillar plots is the possibility to plot two different models, and be able to easily compare between them.
+A list of two \code{ggs()} objects must be provided.
+
+It is also worth mentioning that \code{ggs_caterpillar()} uses the function \code{ci()} to calculate the credible intervals (see a concrete example in Section~\ref{ss:beyond_basic}).
+
+
+\section{Posterior predictive checks and model fit}
+\label{s:pp}
+\pkg{ggmcmc} includes several functions to check model fit and perform posterior predictive checks.
+As to version 0.6, only outcomes in uni-dimensional vectors are allowed.
+The outcomes can be continuous or binary, and different functions take care of them.
+The main input for the functions is also a \code{ggs} object, but in this case it must only contain the predicted values.
+$\hat{y}_{i}$ are the expected values in the context of the radon example.
+They can also be sampled and converted into a \code{ggs} object using the argument \code{family}.
+
+In order to illustrate posterior predictive checks, samples from a faked dataset will be used.
+\pkg{ggmcmc} contains samples from a linear model with an intercept and a covariate (object \code{s}), where \code{s.y.rep} are posterior predictive samples from a dataset replicated from the original, but without the original outcome ($y$).
+<<sample_mu>>=
+data("linear")
+S.y.rep <- ggs(s.y.rep)
+y.observed <- y
+@
+
+\subsection{Continuous outcomes}
+For continuous outcomes, \code{ggs\_ppmean()} (posterior predictive means) presents a histogram with the means of the posterior predictive values at each iteration, and a vertical line showing the location of the sample mean.
+This allows comparing the sample mean with the means of the posterior and check if there are substantial deviances (Figure~\ref{fig:ppmean_ppsd}, right).
+<<eval=FALSE>>=
+ggs_ppmean(S.y.rep, outcome = y.observed)
+@
+
+\code{ggs\_ppsd()} (posterior predictive standard deviations) is the same idea as \code{ggs\_ppmean()} but with standard deviations (Figure~\ref{fig:ppmean_ppsd}, left).
+<<eval=FALSE>>=
+ggs_ppsd(S.y.rep, outcome = y.observed)
+@
+<<ppmean_ppsd, out.width='.60\\textwidth', fig.width=8, fig.height=4, fig.cap='Histograms of the posterior predictive distributions of the mean (left) and standard deviation (right) of the replicated datasets, against the vertical lines showing the mean and standard deviations of the data, respectively.', echo=FALSE>>=
+f1 <- ggs_ppmean(S.y.rep, outcome = y.observed)
+f2 <- ggs_ppsd(S.y.rep, outcome = y.observed)
+grid.arrange(f1, f2, ncol = 2)
+@
+
+\subsection{Binary outcomes}
+In order to illustrate the functions suitable for binary outcomes a new dataset must be simulated, and samples of parameters from a simple logistic regression model must be obtained.
+\pkg{ggmcmc} also contains samples from such a model, in the dataset \code{data("binary")}.
+Again, arrange the samples as a \code{ggs} object
+<<>>=
+data("binary")
+S.binary <- ggs(s.binary, family="mu")
+@
+
+The ROC (receiver operating characteristic) curve is shown in Figure~\ref{fig:roc}:
+<<roc, out.width='0.5\\textwidth', fig.width=6, fig.height=5, fig.cap='ROC (receiver operating characteristic) curve.'>>=
+ggs_rocplot(S.binary, outcome = y.binary)
+@
+
+The \code{ggs\_rocplot()} is not fully Bayesian by default.
+This means that the predicted probabilities by observation are reduced to their median values across iterations from the beginning.
+Only information relative to the chain is kept.
+If a fully Bayesian version is desired, the argument \code{fully_bayesian = TRUE} has to be set up.
+Use it with care, because it is very demanding in terms of CPU and memory.
+
+The separation plot \cite{greenhill:2011:separation} is obtained by \code{ggs\_separation()}.
+The separation plot (Figure~\ref{fig:separation}) conveys information useful to assess goodness of fit of a model with binary outcomes (and also with ordered categories).
+The horizontal axis orders the values by increasing predicted probability.
+The observed successes (ones) have a darker color than observed failures (or zeros).
+Therefore, a perfect model would have the lighter colors in the right hand side, separated from darker colors.
+The black horizontal line represents the predicted probabilities of success for each of the observations, which allows to easily evaluate whether there is a strong or a weak separation between successes and failures predicted by the model.
+Lastly, a triangle on the lower side marks the expected number of total successes (events) predicted by the model.
+
+<<separation, out.width='0.7\\textwidth', fig.width=6, fig.height=2, fig.cap='Separation plot.'>>=
+ggs_separation(S.binary, outcome = y.binary)
+@
+
+<<separation_minimalist, out.width='0.3\\textwidth', fig.width=5, fig.height=1, fig.cap='Separation plot. Minimalist version to be used inline.', include=FALSE, echo=TRUE, crop=TRUE>>=
+ggs_separation(S.binary, outcome = y.binary, minimal = TRUE)
+@
+A minimalist version of the separation plot to be used inline (\includegraphics[width=0.2\textwidth]{figure/plot-separation_minimalist-1.pdf}) is also available with:
+<<eval=FALSE, echo=TRUE>>=
+ggs_separation(S.binary, outcome = y.binary, minimal = TRUE)
+@
+
+\section[Using ggplot2 with ggmcmc]{Using \pkg{ggplot2} with \pkg{ggmcmc}}
+\label{s:combining}
+
+\subsection{Aesthetic variations}
+The combination of \pkg{ggmcmc} with the package \pkg{ggthemes} allows using pre-specified \pkg{ggplot2} themes, like \code{theme_tufte} (that is based on a minimal ink principle by \citeasnoun{tufte:1983:visual}), \code{theme_economist} (that replicates the aesthetic appearance of \emph{The Economist} magazine), or \code{thema_stata} (that produces \proglang{Stata} graph schemes), amongst others.
+
+In addition to \pkg{ggthemes}, \pkg{ggmcmc} can also work well with \pkg{gridExtra}, a package that allows combining several \pkg{ggplot} objects in a single layout.
+
+<<combination_aesthetics, out.width='0.6\\textwidth', fig.width=10, fig.cap='Combination of the aestheticaly-driven options that complement \\pkg{ggplot2}: \\pkg{ggthemes} and \\pkg{gridExtra}.'>>=
+library("gridExtra")
+library("ggthemes")
+f1 <- ggs_traceplot(ggs(s, family = "^beta\\[[1234]\\]")) +
+  theme_tufte()
+f2 <- ggs_density(ggs(s, family = "^beta\\[[1234]\\]")) +
+  theme_solarized(light = FALSE)
+grid.arrange(f1, f2, ncol = 2, nrow = 1)
+@
+
+
+\subsection{Beyond default plots}
+\label{ss:beyond_basic}
+Once the sampled values are stored in a tidy way in the \code{ggs()} object, it is trivial to reshape the object in order to extend the capabilities of the package.
+The following example shows how to extract the medians of the posteriors of intercepts and slopes so that a simple scatterplot to check their correlation can be produced using plain \pkg{ggplot2} functions.
+First, extract the credible intervals (including the median) of the parameters that start with \code{alpha} or \code{beta}, and using the pipe operator, keep only the variables ``Parameter'' and ``median''.
+<<>>=
+ci.median <- ci(ggs(radon$s.radon, family = "^alpha|^beta")) %>%
+  dplyr::select(Parameter, median)
+@
+Then, generate a data frame that maps the parameter names with their labels and also specifies whether the parameter is an intercept or a slope.
+<<>>=
+L.radon <- data.frame(
+  Parameter = c(
+    paste("alpha[", radon$counties$id.county, "]", sep = ""),
+    paste("beta[", radon$counties$id.county, "]", sep = "")),
+  Label = rep(radon$counties$County, 2),
+  Uranium = rep(radon$counties$uranium, 2),
+  Location = rep(radon$counties$ns.location, 2),
+  Coefficient = gl(2, length(radon$counties$id.county),
+    labels = c("Intercept", "Slope")))
+@
+
+Finally, merge the medians and the parameter names, reshaping the resulting object into a wide format.
+<<message=FALSE>>=
+radon.median <- left_join(ci.median, L.radon) %>%
+  dplyr::select(Label, Coefficient, median) %>%
+  tidyr::spread(Coefficient, median)
+head(radon.median)
+@
+
+The resulting object can be very easily passed to standard \pkg{ggplot2} functions.
+In the following case (Figure~\ref{fig:ggplot_intercepts_slopes}), a scatterplot with the medians of the posteriors of intercepts and slopes is produced.
+A data frame (\code{radon.median}) is provided to the main \pkg{ggplot2} function (\code{ggplot}) along with a description of the aesthetic elements (x and y axis), with the geometrical element desired (points) added later on (\code{+ geom_point()}).
+<<ggplot_intercepts_slopes, fig.width=4, fig.height=4, out.width='0.25\\textwidth', fig.cap='Scatterplot with the medians of the posteriors of intercepts and slopes for the radon data example.', fig.pos='htbp', crop=TRUE>>=
+ggplot(radon.median, aes(x = Intercept, y = Slope)) + geom_point()
+@
+
+\subsection{Beyond default options}
+Another option is to extend \code{ggs_caterpillar()} using facets with variables passed through \code{par_labels}, or adding other variables to the aesthetics.
+Figure~\ref{fig:extension_facets_aes} shows a caterpillar plot of the intercepts, with facets on the North/South location and using a color scale to emphasize the uranium level by county.
+<<extension_facets_aes, fig.width=12, out.width='0.8\\textwidth', fig.cap='Caterpillar plot of the varying intercepts faceted by North/South location and using county\'s uranium level as color indicator.'>>=
+ggs_caterpillar(ggs(radon$s.radon, par_labels = L.radon, family = "^alpha")) +
+  facet_wrap(~ Location, scales = "free") +
+  aes(color = Uranium)
+@
+
+\section{Concluding remarks}
+\label{s:final}
+The article has provided an introduction to the potential uses of \pkg{ggmcmc} for analyzing MCMC samples from Bayesian inference.
+We have covered the basic principles of the package, based on the transformation of samples into a \emph{tidy} version, a data frame.
+We have also shown the functions used for classical convergence tests, as well as the use of caterpillar plots for substantial interpretation of the results.
+Finally, we have briefly introduced potential extensions to the package by combining it with other tools from the \pkg{ggplot2} ecosystem.
+
+
+\section*{Acknowledgements}
+I would like to thank code contributions and ideas from Zachary M. Jones (\url{http://www.zmjones.com/}, Julien Cornebise (\url{http://www.cornebise.com/julien/}), and ideas from Dieter Menne (\url{http://www.menne-biomed.de/}) and Bill Dixon.
+
+\bibliography{bibliography}
+\end{document}
