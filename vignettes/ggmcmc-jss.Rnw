@@ -141,13 +141,6 @@ library("ggmcmc")
 data("radon")
 s.radon.short <- radon$s.radon.short
 @
-<<load_development_package, include=FALSE, echo=FALSE, message=FALSE, warning=FALSE>>=
-library("devtools")
-load_all("~/est/packages/ggmcmc")
-data("radon")
-s.radon.short <- radon$s.radon.short
-@
-
 
 \section[Importing MCMC samples into ggmcmc using ggs()]{Importing MCMC samples into \pkg{ggmcmc} using \code{ggs()}}
 \label{s:ggs}
