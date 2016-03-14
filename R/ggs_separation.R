@@ -2,7 +2,6 @@
 #'
 #' @param D Data frame whith the simulations. Notice that only the fitted / expected posterior outcomes are needed, and so either the previous call to ggs() should have limited the family of parameters to only pass the fitted / expected values. See the example below.
 #' @param outcome vector (or matrix or array) containing the observed outcome variable. Currently only a vector is supported.
-#' @param fully_bayesian logical, FALSE by default. Currently not implemented
 #' @param minimalist logical, FALSE by default. It returns a minimalistic version of the figure with the bare minimum elements, suitable for being used inline as suggested by Greenhill, Ward and Sacks citing Tufte.
 #' @param show_labels logical, FALSE by default. If TRUE it adds the Parameter as the label of the case in the x-axis.
 #' @param uncertainty_band logical, TRUE by default. If FALSE it removes the uncertainty band on the predicted values.
@@ -14,31 +13,22 @@
 #' data(binary)
 #' ggs_separation(ggs(s.binary, family="mu"), outcome=y.binary)
 
-ggs_separation <- function(D, outcome, fully_bayesian = FALSE, minimalist = FALSE, show_labels = FALSE, uncertainty_band = TRUE) {
-  if (fully_bayesian) {
-    stop("The fully Bayesian version has not been implemented yet.")
-  }
+ggs_separation <- function(D, outcome, minimalist = FALSE, show_labels = FALSE, uncertainty_band = TRUE) {
   # Calculate the prediction bands
-  if (fully_bayesian) {
-  } else {
-    q <- data.frame(
-      qs=c("low", "median", "high"),
-      q=c(0.025, 0.5, 0.975))
-    S <- D %>%
-      dplyr::group_by(Parameter) %>%
-      dplyr::do(data.frame(qs=q$qs, q=quantile(.$value, prob=q$q))) %>%
-      dplyr::ungroup() %>%
-      tidyr::spread(qs, q)
-  }
+  q <- data.frame(
+    qs=c("low", "median", "high"),
+    q=c(0.025, 0.5, 0.975))
+  S <- D %>%
+    dplyr::group_by(Parameter) %>%
+    dplyr::do(data.frame(qs=q$qs, q=quantile(.$value, prob=q$q))) %>%
+    dplyr::ungroup() %>%
+    tidyr::spread(qs, q)
   # Sort the observations by predicted value
   S <- dplyr::inner_join(S, dplyr::data_frame(Observed=outcome, Parameter=unique(D$Parameter)), by="Parameter") %>%
     dplyr::arrange(median) %>%
     dplyr::mutate(id=1:dim(S)[1])
   # Calculate expected number of events
-  if (fully_bayesian) {
-  } else {
-    ene <- max(S$id) - sum(S$median)
-  }
+  ene <- max(S$id) - sum(S$median)
   # Calculate the polygon for the bars with observed values
   bars_observed <- dplyr::filter(S, Observed == 1) %>%
     dplyr::mutate(y1 = 0, y2 = 1)
