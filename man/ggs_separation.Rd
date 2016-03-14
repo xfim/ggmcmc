@@ -4,16 +4,19 @@
 \alias{ggs_separation}
 \title{Separation plot for models with binary response variables}
 \usage{
-ggs_separation(D, outcome, fully_bayesian = FALSE, minimalist = FALSE)
+ggs_separation(D, outcome, minimalist = FALSE, show_labels = FALSE,
+  uncertainty_band = TRUE)
 }
 \arguments{
 \item{D}{Data frame whith the simulations. Notice that only the fitted / expected posterior outcomes are needed, and so either the previous call to ggs() should have limited the family of parameters to only pass the fitted / expected values. See the example below.}
 
 \item{outcome}{vector (or matrix or array) containing the observed outcome variable. Currently only a vector is supported.}
 
-\item{fully_bayesian}{logical, FALSE by default. Currently not implemented}
-
 \item{minimalist}{logical, FALSE by default. It returns a minimalistic version of the figure with the bare minimum elements, suitable for being used inline as suggested by Greenhill, Ward and Sacks citing Tufte.}
+
+\item{show_labels}{logical, FALSE by default. If TRUE it adds the Parameter as the label of the case in the x-axis.}
+
+\item{uncertainty_band}{logical, TRUE by default. If FALSE it removes the uncertainty band on the predicted values.}
 }
 \value{
 A \code{ggplot} object
