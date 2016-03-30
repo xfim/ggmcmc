@@ -8,12 +8,12 @@
 \usage{
 ggmcmc(D, file = "ggmcmc-output.pdf", family = NA, plot = NULL,
   param_page = 5, width = 7, height = 10, simplify_traceplot = NULL,
-  ...)
+  dev_type_html = "png", ...)
 }
 \arguments{
 \item{D}{Data frame whith the simulations, previously arranged using \code{\link{ggs}}}
 
-\item{file}{Character vector with the name of the file to create. Defaults to "ggmcmc-output.pdf". When NULL, no pdf device is opened or closed. This allows the user to work with an opened pdf (or other) device.}
+\item{file}{Character vector with the name of the file to create. Defaults to "ggmcmc-output.pdf". When NULL, no pdf device is opened or closed. This allows the user to work with an opened pdf (or other) device. When the file has an html file extension the output is an Rmarkdown report with the figures embedded in the html file.}
 
 \item{family}{Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc).}
 
@@ -26,6 +26,8 @@ ggmcmc(D, file = "ggmcmc-output.pdf", family = NA, plot = NULL,
 \item{height}{Height of the pdf display, in inches. Defaults to 10.}
 
 \item{simplify_traceplot}{Numerical. A percentage of iterations to keep in the time series. It is an option intended only for the purpose of saving time and resources when doing traceplots. It is not a thin operation, because it is not regular. It must be used with care.}
+
+\item{dev_type_html}{Character. Character vector indicating the type of graphical device for the html output. By default, png. See RMarkdown.}
 
 \item{...}{Other options passed to the pdf device.}
 }
