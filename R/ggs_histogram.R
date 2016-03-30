@@ -19,11 +19,11 @@ ggs_histogram <- function(D, family=NA, bins=30, greek=FALSE) {
   # Manually generate the histogram by parameter, based on the total number of bins
   ds <- D %>%
     dplyr::group_by(Parameter) %>%
-    dplyr::do(calc_bin(.$value, bins))
+    dplyr::do(calc_bin(.$value, bins)) %>%
+    ungroup()
   dl <- as.numeric(table(ds$Parameter))
   # There may be cases of parameters with slightly different numbers of bins,
   # and therefore a Parameter-by-Parameter approach is needed
-  ds <- cbind(Parameter=gl_unq(attributes(D)$nParameters, dl, labels=levels(D$Parameter)), ds)
   # Plot
   f <- ggplot(ds, aes(x=x, y=count, width=width)) + 
     geom_bar(stat="identity", position="identity") +

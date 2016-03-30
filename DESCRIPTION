@@ -9,7 +9,7 @@ Version: 0.8
 Maintainer: Xavier Fernández i Marín <xavier.fim@gmail.com>
 Author: Xavier Fernández i Marín <xavier.fim@gmail.com>
 Depends:
-    dplyr,
+    dplyr (> 0.4.3),
     tidyr (>= 0.3.1),
     ggplot2
 Imports:
