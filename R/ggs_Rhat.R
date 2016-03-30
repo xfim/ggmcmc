@@ -52,7 +52,7 @@ ggs_Rhat <- function(D, family=NA, scaling=1.5, greek=FALSE) {
   BW$Rhat[is.nan(BW$Rhat)] <- NA
   # Plot
   f <- ggplot(BW, aes(x=Rhat, y=Parameter)) + geom_point() +
-    xlab(expression(hat("R"))) + ggtitle("Potential Scale Reduction Factor")
+    xlab(expression(hat("R"))) + ggtitle("Potential Scale Reduction Factors")
   if (greek) {
     f <- f + scale_y_discrete(labels = parse(text = as.character(BW$Parameter)))
   }
