@@ -38,6 +38,10 @@ ggmcmc <- function(D, file = "ggmcmc-output.pdf", family = NA, plot = NULL,
     cat("File extension not known")
     stop()
   }
+  if (!(dev_type_html == "png" | dev_type_html == "svg")) {
+    cat("Device type is not known")
+    stop()
+  }
 
   t0 <- proc.time()
   if (output.html) {
@@ -54,44 +58,64 @@ ggmcmc <- function(D, file = "ggmcmc-output.pdf", family = NA, plot = NULL,
       "output:\n  html_document:\n    toc: yes\n    self_contained: TRUE\n    dev: ",
       dev_type_html,
       "\n---\n\n",
-      "```{r echo=FALSE}\nlibrary(ggmcmc)\nload('tmp-ggmcmc.RData')\n```\n",
-      sep = ""))#,
-      #file = file.rendered)
+      "```{r echo=FALSE}\nlibrary(ggmcmc)\n",
+      "load('tmp-ggmcmc.RData')\n",
+      sep = ""))
+    if (dev_type_html == "png") {
+      cat("library(knitr)\nopts_chunk$set(dev='png', dev.args=list(type='cairo'), dpi=72)\n")
+    }
+    if (dev_type_html == "svg") {
+    }
+    cat("```\n")
 
     ## Pass the ggs() object in a temporal file
     tmp.data <- "tmp-ggmcmc.RData"
     save(D, file = tmp.data)
 
+    # Calculate the heights of the figures
+    # 227 is the maximum. With 228 does not work (neither with cairo-png)
+    message.height.display <- FALSE
+    height.extended <- ratio * attributes(D)$nParameters
+    if (height.extended > 227) {
+      height.extended <- 227
+      message.height.display <- TRUE
+    }
+    height.lightly.extended <- (3 + 0.2 * attributes(D)$nParameters)
+    if (height.lightly.extended > 227) {
+      height.lightly.extended <- 227
+      message.height.display <- TRUE
+    }
+
     # Write the contents
     # Simply print each plot separately
     if (is.null(plot) | length(grep("histogram", plot)) > 0) {
       cat("\n# Histograms\n")
-      cat(paste("```{r histograms, echo = FALSE, fig.height = ", ratio * attributes(D)$nParameters , "}\nggs_histogram(D)\n```\n\n", sep = ""))
+      cat(paste("```{r histograms, echo = FALSE, fig.height = ", height.extended, "}\nggs_histogram(D)\n```\n\n", sep = ""))
     }
 
     if (is.null(plot) | length(grep("density", plot)) > 0) {
       cat("\n# Density plots\n")
-      cat(paste("```{r density, echo = FALSE, fig.height = ", ratio * attributes(D)$nParameters , "}\nggs_density(D)\n```\n\n", sep = ""))
+      cat(paste("```{r density, echo = FALSE, fig.height = ", height.extended, "}\nggs_density(D)\n```\n\n", sep = ""))
     }
 
     if (is.null(plot) | length(grep("traceplot", plot)) > 0) {
       cat("\n# Traceplots\n")
-      cat(paste("```{r traceplot, echo = FALSE, fig.height = ", ratio * attributes(D)$nParameters , "}\nggs_traceplot(D, simplify = ", simplify_traceplot, ")\n```\n\n", sep = ""))
+      cat(paste("```{r traceplot, echo = FALSE, fig.height = ", height.extended, "}\nggs_traceplot(D, simplify = ", simplify_traceplot, ")\n```\n\n", sep = ""))
     }
 
     if (is.null(plot) | length(grep("running", plot)) > 0) {
       cat("\n# Running means\n")
-      cat(paste("```{r running, echo = FALSE, fig.height = ", ratio * attributes(D)$nParameters , "}\nggs_running(D)\n```\n\n", sep = ""))
+      cat(paste("```{r running, echo = FALSE, fig.height = ", height.extended, "}\nggs_running(D)\n```\n\n", sep = ""))
     }
 
     if (is.null(plot) | length(grep("compare_partial", plot)) > 0) {
       cat("\n# Comparison of partial and full chain\n")
-      cat(paste("```{r compare_partial, echo = FALSE, fig.height = ", ratio * attributes(D)$nParameters , "}\nggs_compare_partial(D)\n```\n\n", sep = ""))
+      cat(paste("```{r compare_partial, echo = FALSE, fig.height = ", height.extended, "}\nggs_compare_partial(D)\n```\n\n", sep = ""))
     }
 
     if (is.null(plot) | length(grep("autocorrelation", plot)) > 0) {
       cat("\n# Autocorrelation\n")
-      cat(paste("```{r autocorrelation, echo = FALSE, fig.height = ", ratio * attributes(D)$nParameters , "}\nggs_autocorrelation(D)\n```\n\n", sep = ""))
+      cat(paste("```{r autocorrelation, echo = FALSE, fig.height = ", height.extended, "}\nggs_autocorrelation(D)\n```\n\n", sep = ""))
     }
 
     if (attributes(D)$nParameters > 1) {                    # only in case of more than one parameter
@@ -104,13 +128,13 @@ ggmcmc <- function(D, file = "ggmcmc-output.pdf", family = NA, plot = NULL,
     if (attributes(D)$nChain > 1) {                         # only in case of multiple chains
       if (is.null(plot) | length(grep("Rhat", plot)) > 0) {
         cat("\n# Potential Scale Reduction Factors\n")
-        cat(paste("```{r rhat, echo = FALSE, fig.height = ", (3 + 0.2 * attributes(D)$nParameters), "}\nggs_Rhat(D)\n```\n\n", sep = ""))
+        cat(paste("```{r rhat, echo = FALSE, fig.height = ", height.lightly.extended, "}\nggs_Rhat(D)\n```\n\n", sep = ""))
       }
     }
 
     if (is.null(plot) | length(grep("geweke", plot)) > 0) {
       cat("\n# Geweke Diagnostics\n")
-      cat(paste("```{r geweke, echo = FALSE, fig.height = ", (3 + 0.2 * attributes(D)$nParameters), "}\nggs_geweke(D)\n```\n\n", sep = ""))
+      cat(paste("```{r geweke, echo = FALSE, fig.height = ", height.lightly.extended, "}\nggs_geweke(D)\n```\n\n", sep = ""))
     }
 
     if (is.null(plot) | length(grep("caterpillar", plot)) > 0) {
@@ -126,7 +150,7 @@ ggmcmc <- function(D, file = "ggmcmc-output.pdf", family = NA, plot = NULL,
       for (f in unique(Parameter.family)) {
         if (n.family.members[f] > 1) {
           cat(paste("\n## ", f, "\n", sep = ""))
-          cat(paste("```{r caterpillar_", f, ", echo = FALSE, fig.height = ", (3 + 0.2 * attributes(D)$nParameters), "}\nggs_caterpillar(D, family='^", f, "\\\\[', horizontal = TRUE) + labs(title=f)\n```\n\n", sep = ""))
+          cat(paste("```{r caterpillar_", f, ", echo = FALSE, fig.height = ", (2 + 0.2 * n.family.members[f]), "}\nggs_caterpillar(D, family='^", f, "\\\\[', horizontal = TRUE) + labs(title=f)\n```\n\n", sep = ""))
         }
       }
     }
@@ -139,6 +163,11 @@ ggmcmc <- function(D, file = "ggmcmc-output.pdf", family = NA, plot = NULL,
     ## Close the files and clean the intermediate files
     file.remove(file.rendered)
     file.remove(tmp.data)
+
+    # Display messagges
+    if (message.height.display) {
+      cat("The number of parameters is larger than the limits of the png display\nsuitable for displaying them correctly.\nMaybe the results are not very satisfying.\n\n")
+    }
   }
 
   if (output.pdf) {
@@ -322,5 +351,5 @@ ggmcmc <- function(D, file = "ggmcmc-output.pdf", family = NA, plot = NULL,
       dev.off()
     }
   }
-  cat(paste("Time taken to generate the report: ", (proc.time() - t0)[1], " seconds.\n", sep = ""))
+  cat(paste("Time taken to generate the report: ", signif((proc.time() - t0)[1], 2), " seconds.\n", sep = ""))
 }
