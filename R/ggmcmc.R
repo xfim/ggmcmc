@@ -166,7 +166,7 @@ ggmcmc <- function(D, file = "ggmcmc-output.pdf", family = NA, plot = NULL,
 
     # Display messagges
     if (message.height.display) {
-      cat("The number of parameters is larger than the limits of the png display\nsuitable for displaying them correctly.\nMaybe the results are not very satisfying.\n\n")
+      cat("The number of parameters is larger than the limits of the device area\nsuitable for displaying them correctly.\nMaybe the results are not very satisfying.\n\n")
     }
   }
 
