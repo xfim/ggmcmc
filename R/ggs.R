@@ -170,8 +170,10 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
         levels(D$Parameter)[which(levels(D$Parameter) %in% par_labels$Parameter)] <-
           as.character(par_labels$Label[
             match(levels(D$Parameter)[which(levels(D$Parameter) %in% par_labels$Parameter)], par_labels$Parameter)])
-        D <- suppressWarnings(dplyr::left_join(D, data.frame(Parameter=par_labels$Label, ParameterOriginal=par_labels$Parameter),
-          by="Parameter")) %>%
+        L <- dplyr::tbl_df(data.frame(Parameter = par_labels$Label, ParameterOriginal = par_labels$Parameter)) %>%
+          mutate(Parameter = as.character(Parameter)) # dplyr chrashes as of 160428 development version if Parameter is factor
+        D <- suppressWarnings(dplyr::left_join(D, L, by = "Parameter"))
+        D <- D %>%
           dplyr::select(Iteration, Chain, Parameter, value, ParameterOriginal)
         if (class(D$Parameter) == "character") {
           D$Parameter <- factor(D$Parameter, levels=custom.sort(D$Parameter))
@@ -186,7 +188,11 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
         # Keep the rest of the variables passed if the data frame has more than Parameter and Label
         if (dim(par_labels)[2] > 2) {
           aD <- attributes(D)
-          D <- suppressWarnings(dplyr::left_join(D, dplyr::select(dplyr::tbl_df(par_labels), -Parameter), by=c("Parameter"="Label")))
+          L.noParameter <- dplyr::tbl_df(par_labels) %>%
+            dplyr::select(-Parameter) %>%
+            dplyr::mutate(Label = as.character(Label))
+          print(str(L.noParameter))
+          D <- suppressWarnings(dplyr::left_join(D, L.noParameter, by=c("Parameter" = "Label")))
           if (class(D$Parameter) == "character") {
             D$Parameter <- factor(D$Parameter, levels=custom.sort(D$Parameter))
           }
