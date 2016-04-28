@@ -191,7 +191,6 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
           L.noParameter <- dplyr::tbl_df(par_labels) %>%
             dplyr::select(-Parameter) %>%
             dplyr::mutate(Label = as.character(Label))
-          print(str(L.noParameter))
           D <- suppressWarnings(dplyr::left_join(D, L.noParameter, by=c("Parameter" = "Label")))
           if (class(D$Parameter) == "character") {
             D$Parameter <- factor(D$Parameter, levels=custom.sort(D$Parameter))
