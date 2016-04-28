@@ -186,7 +186,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
         # Keep the rest of the variables passed if the data frame has more than Parameter and Label
         if (dim(par_labels)[2] > 2) {
           aD <- attributes(D)
-          D <- dplyr::left_join(D, dplyr::select(dplyr::tbl_df(par_labels), -Parameter), by=c("Parameter"="Label"))
+          D <- suppressWarnings(dplyr::left_join(D, dplyr::select(dplyr::tbl_df(par_labels), -Parameter), by=c("Parameter"="Label")))
           if (class(D$Parameter) == "character") {
             D$Parameter <- factor(D$Parameter, levels=custom.sort(D$Parameter))
           }
