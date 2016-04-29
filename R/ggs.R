@@ -58,7 +58,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
     # Exclude, by default, lp parameter
     if (!stan_include_auxiliar) {
       D <- dplyr::filter(D, Parameter!="lp__") # delete lp__
-      D$Parameter <- factor(as.character(D$Parameter), levels=custom.sort(D$Parameter))
+      D$Parameter <- factor(D$Parameter, levels=custom.sort(D$Parameter))
     }
     nThin <- S@sim$thin
     mDescription <- S@model_name
@@ -82,7 +82,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
     # Exclude, by default, lp parameter and other auxiliar ones
     if (!stan_include_auxiliar) {
       D <- D[grep("__$", D$Parameter, invert=TRUE),]
-      D$Parameter <- factor(as.character(D$Parameter), levels=custom.sort(D$Parameter))
+      D$Parameter <- factor(D$Parameter, levels=custom.sort(D$Parameter))
     }
     nBurnin <- as.integer(gsub("warmup=", "", scan(S[[i]], "", skip=12, nlines=1, quiet=TRUE)[2]))
     nThin <- as.integer(gsub("thin=", "", scan(S[[i]], "", skip=13, nlines=1, quiet=TRUE)[2]))
@@ -119,7 +119,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
         nBurnin <- (attributes(s)$mcpar[1])-(1*attributes(s)$mcpar[3])
         nThin <- attributes(s)$mcpar[3]
       }
-      D$Parameter <- factor(as.character(D$Parameter), levels=custom.sort(D$Parameter))
+      D$Parameter <- factor(D$Parameter, levels=custom.sort(D$Parameter))
       D <- dplyr::arrange(D, Parameter, Chain, Iteration)
     }
     # Set several attributes to the object, to avoid computations afterwards
@@ -242,7 +242,7 @@ ggs_chain <- function(s) {
 #' @param x a character vector to which we want to sort elements
 #' @return X a character vector sorted with family parametrs first and then numeric values
 custom.sort <- function(x) {
-  x <- as.character(unique(x))
+  x <- sort(as.character(unique(x)))
   family <- gsub("\\[.+\\]", "", x)
   Families <- sort(unique(family))
   X <- NULL
@@ -251,13 +251,14 @@ custom.sort <- function(x) {
     if (length(grep("\\[", x.family)) > 0) {
       index <- gsub("]", "", gsub("(.+)\\[", "", x.family))
       if (length(grep(",", index) > 0)) { # multiple dimensional object
-        idl <- data.frame(index = index, matrix(unlist(strsplit(index, ",")), nrow = length(index), byrow = TRUE))
-        for (c in 2:(dim(idl)[2])) { # convert Xs' into numeric values
+        idl <- data.frame(x.family = x.family, index = index, 
+          matrix(unlist(strsplit(index, ",")), nrow = length(index), byrow = TRUE))
+        for (c in 3:(dim(idl)[2])) { # convert Xs' into numeric values
           idl[,c] <- as.numeric(as.character(idl[,c]))
         }
-        command <- paste("arrange(idl,", paste(names(idl)[-(names(idl)=="index")], collapse=","), ")", sep="")
+        command <- paste("dplyr::arrange(idl,", paste(names(idl)[-(c(1, 2))], collapse=","), ")", sep="")
         idl <- eval(parse(text = command))
-        x.family <- idl$index
+        x.family <- as.character(idl$x.family)
       } else {
         x.family <- x.family[order(as.numeric((gsub("]", "", gsub("(.+)\\[", "", x.family)))))]
       }
