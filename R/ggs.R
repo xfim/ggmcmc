@@ -249,7 +249,18 @@ custom.sort <- function(x) {
   for (f in Families) {
     x.family <- x[family == f]
     if (length(grep("\\[", x.family)) > 0) {
-      x.family <- x.family[order(as.numeric((gsub("]", "", gsub("(.+)\\[", "", x.family)))))]
+      index <- gsub("]", "", gsub("(.+)\\[", "", x.family))
+      if (length(grep(",", index) > 0)) { # multiple dimensional object
+        idl <- data.frame(index = index, matrix(unlist(strsplit(index, ",")), nrow = length(index), byrow = TRUE))
+        for (c in 2:(dim(idl)[2])) { # convert Xs' into numeric values
+          idl[,c] <- as.numeric(as.character(idl[,c]))
+        }
+        command <- paste("arrange(idl,", paste(names(idl)[-(names(idl)=="index")], collapse=","), ")", sep="")
+        idl <- eval(parse(text = command))
+        x.family <- idl$index
+      } else {
+        x.family <- x.family[order(as.numeric((gsub("]", "", gsub("(.+)\\[", "", x.family)))))]
+      }
       X <- c(X, x.family)
     } else {
       X <- c(X, x.family)
