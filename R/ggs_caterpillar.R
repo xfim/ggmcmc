@@ -79,7 +79,7 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
       geom_segment(aes(x=low, xend=high, yend=reorder(Parameter, median)), size=0.5) +
       xlab("HPD") + ylab("Parameter")
     if (greek) {
-      f <- f + scale_y_discrete(labels = parse(text = as.character(dcm$Parameter)))
+      f <- f + scale_y_discrete(labels = parse(text = as.character(dcm$Parameter[order(dcm$median)])))
     }
   } else {
     dcm <- merge(dcm, X)
