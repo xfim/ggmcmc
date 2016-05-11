@@ -97,13 +97,13 @@ In addition to `JAGS` output mentioned above, `ggs()` is capable to automaticall
 
 * **`JAGS`** which produces objects of class `mcmc.list` [@jags].
 * **`MCMCpack`** which produces objects of class `mcmc` [@mcmcpack].
-* **`rstan`** which produces objects of class `stanfit` [@stan].
+* **`rstan`**, **`rstanarm`** and **`brms`** which produce, respectively, objects of classes `stanfit` [@stan], `stanreg` [@stanreg] and `brmsfit` [@brms].
 * **`Stan` running alone** when `Stan` runs from the command line it produces csv files [@stan].
 
 
 
 # Using ggmcmc()
-`ggmcmc()` is a wrapper to several plotting functions that allows to create very easily a report of the diagnostics in a single pdf file.
+`ggmcmc()` is a wrapper to several plotting functions that allows to create very easily a report of the diagnostics in a single PDF or HTML file.
 This output can then be used to inspect the results more comfortably than using the plots that appear in the screen.
 ```{r, eval=FALSE}
 ggmcmc(S)
@@ -115,13 +115,22 @@ ggmcmc(S, file="model_simple-diag.pdf", param_page=2)
 ```
 
 It is also possible to specify `NULL` as a filename, and this allows the user to control the device.
-So it is possible to combine other plots by first opening a pdf device (`pdf(file="new.pdf")`), send other plots and the `ggmcmc(S, file=NULL)` call, and finally close the device (`dev.off()`).
+So it is possible to combine other plots by first opening a PDF device (`pdf(file="new.pdf")`), send other plots and the `ggmcmc(S, file=NULL)` call, and finally close the device (`dev.off()`).
 
 It is also possible to ask `ggmcmc()` to dump only one or some of the plots, using their names as in the functions, without `ggs_`.
 This option can also be used to dump only one type of plots and get the advantage of having multiple pages in the output.
 ```{r, eval=FALSE}
 ggmcmc(S, plot=c("density", "running", "caterpillar"))
 ```
+
+An HTML report can be obtained by using a filename with HTML extension.
+By default the HTML report contains PNG figures, but vectorial SVG can also be
+obtained by using the `dev_type_html` argument.
+The following code will generate an HTML report with SVG figures.
+```{r, eval=FALSE}
+ggmcmc(S, file = "model_simple.html", dev_type_html = "svg")
+```
+
 
 
 # Using individual functions
@@ -369,6 +378,14 @@ scatterplots, but contours instead.
 ggs_pairs(S, lower = list(continuous = "density"))
 ```
 
+# Greek letters
+In Bayesian inference it is common to use Greek letters for the parameters, and
+ggmcmc allows to use the original Greek letters instead of their names in
+English, by using the `greek = TRUE` parameter in all the functions.
+Then, a repetition of the histogram using Greek letters can be obtained by:
+```{r histogram_greek, fig.cap='Histogram (ggs\\_histogram()) with parameter names using Greek letters.', fig.width=6, fig.height=6, fig.margin=TRUE, warning=FALSE}
+ggs_histogram(S, greek = TRUE)
+```
 
 # Aesthetic variations
 The combination of `ggmcmc` with the package `ggthemes` allows using pre-specified `ggplot2` themes, like `theme_tufte` (that is based on a minimal ink principle by [@tufte:1983:visual], `theme_economist` (that replicates the aesthetic appearance of _The Economist_ magazine), or `thema_stata` (that produces `Stata` graph schemes), amongst others.
@@ -412,7 +429,7 @@ The development of `ggmcmc` (track changes, propose improvements, report bugs) c
 
 
 # Acknowledgements
-I would like to thank code contributions and ideas from [Zachary M. Jones][zachary], [Julien Cornebise][julien], [Max Joseph][maxjoseph], and ideas from [Dieter Menne][dieter] and Bill Dixon.
+I would like to thank code contributions and ideas from [Zachary M. Jones][zachary], [Julien Cornebise][julien], [Max Joseph][maxjoseph], and ideas from [Dieter Menne][dieter], Bill Dixon, [Christopher Gandrud][gandrud], Barret Schloerke and GitHub users knokknok, akrawitz, Justina (Juste) and stefanherzog.
 
 # References
 
@@ -424,3 +441,4 @@ I would like to thank code contributions and ideas from [Zachary M. Jones][zacha
 [julien]: http://www.cornebise.com/julien/
 [dieter]: http://www.menne-biomed.de/
 [maxjoseph]: http://mbjoseph.github.io/about/
+[gandrud]: http://christophergandrud.blogspot.com
