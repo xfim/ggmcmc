@@ -2,6 +2,7 @@
 #'
 #' Traceplot with the time series of the chains.
 #'
+#' @references Fernández-i-Marín, Xavier (2016) ggmcmc: Analysis of MCMC Samples and Bayesian Inference. Journal of Statistical Software, 70(9), 1-20. doi:10.18637/jss.v070.i09
 #' @param D Data frame with the simulations.
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
 #' @param original_burnin Logical. When TRUE (the default) start the Iteration counter in the x-axis at the end of the burnin period.

@@ -1,7 +1,10 @@
 #' Dotplot of the Geweke diagnostic, the standard Z-score
 #'
 #' Dotplot of Geweke diagnostic.
-#
+#'
+#' @references Fernández-i-Marín, Xavier (2016) ggmcmc: Analysis of MCMC Samples and Bayesian Inference. Journal of Statistical Software, 70(9), 1-20. doi:10.18637/jss.v070.i09
+#' @references Geweke, J. Evaluating the accuracy of sampling-based approaches to calculating posterior moments. In _Bayesian Statistics 4_ (ed JM Bernardo, JO Berger, AP Dawid and AFM Smith). Clarendon Press, Oxford, UK.
+#'
 #' @param D data frame whith the simulations.
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc).
 #' @param frac1 Numeric, proportion of the first part of the chains selected. Defaults to 0.1.

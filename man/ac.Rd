@@ -17,11 +17,12 @@ A matrix with the autocorrelations of every chain.
 \description{
 Calculate the autocorrelation of a single chain, for a specified amount of lags.
 }
-\details{
-Internal function used by \code{\link{ggs_autocorrelation}}.
-}
 \examples{
 # Calculate the autocorrelation of a simple vector
 ac(cumsum(rnorm(10))/10, nLags=4)
+}
+\references{
+Fernández-i-Marín, Xavier (2016) ggmcmc: Analysis of MCMC Samples and Bayesian Inference. Journal of Statistical Software, 70(9), 1-20. doi:10.18637/jss.v070.i09
+Internal function used by \code{\link{ggs_autocorrelation}}.
 }
 

@@ -2,6 +2,7 @@
 #'
 #' Calculate the autocorrelation of a single chain, for a specified amount of lags.
 #'
+#' @references Fernández-i-Marín, Xavier (2016) ggmcmc: Analysis of MCMC Samples and Bayesian Inference. Journal of Statistical Software, 70(9), 1-20. doi:10.18637/jss.v070.i09
 #' Internal function used by \code{\link{ggs_autocorrelation}}.
 #'
 #' @param x Vector with a chain of simulated values.

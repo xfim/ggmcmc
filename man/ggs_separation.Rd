@@ -22,13 +22,17 @@ ggs_separation(D, outcome, minimalist = FALSE, show_labels = FALSE,
 A \code{ggplot} object
 }
 \description{
-Separation plot for models with binary response variables
+Plot a separation plot with the results of the model against a binary response variable.
 }
 \examples{
 data(binary)
 ggs_separation(ggs(s.binary, family="mu"), outcome=y.binary)
 }
 \references{
+Fernández-i-Marín, Xavier (2016) ggmcmc: Analysis of MCMC Samples and Bayesian Inference. Journal of Statistical Software, 70(9), 1-20. doi:10.18637/jss.v070.i09
+
+Greenhill B, Ward MD and Sacks A (2011). The separation plot: A New Visual Method for Evaluating the Fit of Binary Models. _American Journal of Political Science_, 55(4), 991-1002, doi:10.1111/j.1540-5907.2011.00525.x.
+
 Greenhill, Ward and Sacks (2011): The separation plot: a new visual method for evaluating the fit of binary models. American Journal of Political Science, vol 55, number 4, pg 991-1002.
 }
 

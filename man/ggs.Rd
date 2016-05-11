@@ -37,4 +37,7 @@ S <- ggs(s)        # s is a coda object
 # Get samples from 'beta' parameters only
 S <- ggs(s, family = "beta")
 }
+\references{
+Fernández-i-Marín, Xavier (2016) ggmcmc: Analysis of MCMC Samples and Bayesian Inference. Journal of Statistical Software, 70(9), 1-20. doi:10.18637/jss.v070.i09
+}
 

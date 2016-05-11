@@ -1,5 +1,9 @@
 #' Separation plot for models with binary response variables
 #'
+#' Plot a separation plot with the results of the model against a binary response variable.
+#'
+#' @references Fernández-i-Marín, Xavier (2016) ggmcmc: Analysis of MCMC Samples and Bayesian Inference. Journal of Statistical Software, 70(9), 1-20. doi:10.18637/jss.v070.i09
+#' @references Greenhill B, Ward MD and Sacks A (2011). The separation plot: A New Visual Method for Evaluating the Fit of Binary Models. _American Journal of Political Science_, 55(4), 991-1002, doi:10.1111/j.1540-5907.2011.00525.x.
 #' @param D Data frame whith the simulations. Notice that only the fitted / expected posterior outcomes are needed, and so either the previous call to ggs() should have limited the family of parameters to only pass the fitted / expected values. See the example below.
 #' @param outcome vector (or matrix or array) containing the observed outcome variable. Currently only a vector is supported.
 #' @param minimalist logical, FALSE by default. It returns a minimalistic version of the figure with the bare minimum elements, suitable for being used inline as suggested by Greenhill, Ward and Sacks citing Tufte.
