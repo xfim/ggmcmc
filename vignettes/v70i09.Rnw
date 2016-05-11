@@ -2,7 +2,7 @@
 %\VignetteEngine{knitr::knitr}
 %\VignetteEncoding{UTF-8}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% HEADER
-\documentclass[article]{jss}
+\documentclass[nojss]{jss}
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
@@ -33,6 +33,7 @@
 \Abstract{
 \pkg{ggmcmc} is an \proglang{R} package for analyzing Markov chain Monte Carlo simulations from Bayesian inference.
   By using a well known example of hierarchical/multilevel modeling, the article reviews the potential uses and options of the package, ranging from classical convergence tests to caterpillar plots or posterior predictive checks.
+  \emph{This \proglang{R} vignette is based on the article published at the \emph{Journal of Statistical Software}~\citep{xfim:2016:jss}.}
 }
 \Keywords{\pkg{ggmcmc}, MCMC, Bayesian inference}
 \Plainkeywords{ggmcmc, MCMC, Bayesian inference}
@@ -43,7 +44,8 @@
 \Submitdate{2013-07-05}
 \Acceptdate{2015-06-01}
 \Acceptdate{2015-06-01}
-\DOI{10.18637/jss.v070.i09}
+%\DOI{10.18637/jss.v070.i09}
+
 \Address{
   \aut \\
   ESADE Business School\\
@@ -57,6 +59,8 @@
 \begin{document}
 
 <<setup, include=FALSE, cache=FALSE>>=
+library(knitr)
+library(Cairo)
 options(prompt = "R> ", continue = "+  ", width = 60, useFancyQuotes = FALSE)
 options(replace.assign=TRUE, width=70)
 opts_chunk$set(fig.path='figure/plot-', fig.align='center', fig.show='hold', pdf=FALSE, dev='cairo_pdf', par=TRUE, out.width='.50\\textwidth', prompt=TRUE, warning=FALSE)
@@ -147,12 +151,6 @@ This is the object that will be employed in the first part of the article.
 
 <<message=FALSE, warning=FALSE, eval=FALSE>>=
 library("ggmcmc")
-data("radon")
-s.radon.short <- radon$s.radon.short
-@
-<<load_development_package, include=FALSE, echo=FALSE, message=FALSE, warning=FALSE>>=
-library("devtools")
-load_all("~/est/packages/ggmcmc")
 data("radon")
 s.radon.short <- radon$s.radon.short
 @
@@ -404,6 +402,11 @@ But using the \code{par_labels} argument is only done through the \code{ggs()} c
 \section{Caterpillar plots}
 \label{s:caterpillar}
 <<caterpillar, out.width='\\textwidth', fig.width=12, fig.height=8, fig.pos='t!', results='asis', fig.cap='Caterpillar plot for the varying intercepts. Dots represent medians, and thick and thin lines represent  90 and the 95\\% of the Highest Posterior Density regions, respectively. left) Plain caterpillar plot with labels of the parameters, showing Clay and Lake as the counties with highest and lowest $\\alpha$ intercept, respectively; right) Caterpillar plot against continuous values (uranium levels) using the argument \\code{par\\_labels}, suggesting a tendency of higher $\\alpha$ intercepts with increasing uranium levels.', echo=FALSE>>=
+L.radon.intercepts <- data.frame(
+  Parameter = paste("alpha[", radon$counties$id.county, "]", sep = ""),
+  Label = radon$counties$County)
+S.full <- ggs(radon$s.radon,
+  par_labels = L.radon.intercepts, family = "^alpha")
 f1 <- ggs_caterpillar(S.full)
 Z <- data.frame(
   Parameter = paste("alpha[", radon$counties$id.county, "]", sep = ""),
@@ -607,7 +610,7 @@ Finally, we have briefly introduced potential extensions to the package by combi
 
 
 \section*{Acknowledgments}
-I would like to thank code contributions and ideas from Zachary M. Jones (\url{http://www.zmjones.com/}, Julien Cornebise (\url{http://www.cornebise.com/julien/}), and ideas from Dieter Menne (\url{http://www.menne-biomed.de/}), Bill Dixon, Christopher Gandrud (\url{http://christophergandrud.blogspot.com}), Maxwell B. Joseph (\url{http://mbjoseph.github.io/about/}), Barret Schloerke and GitHub users knokknok, akrawitz, Justina (Juste) and stefanherzog.
+I would like to thank code contributions and ideas from Zachary M. Jones (\url{http://www.zmjones.com/}), Julien Cornebise (\url{http://www.cornebise.com/julien/}), and ideas from Dieter Menne (\url{http://www.menne-biomed.de/}), Bill Dixon, Christopher Gandrud (\url{http://christophergandrud.blogspot.com}), Maxwell B. Joseph (\url{http://mbjoseph.github.io/about/}), Barret Schloerke and GitHub users knokknok, akrawitz, Justina (Juste) and stefanherzog.
 
 \bibliography{v70i09}
 
