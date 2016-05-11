@@ -2,7 +2,7 @@
 # Hadley does not seem to like it: http://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
 if (base::getRversion() >= "2.15.1") {
   utils::globalVariables(c(
-    "Parameter", "Chain", "value", "Iteration", "ParameterOriginal",  # from ggs object
+    "Parameter", "Chain", "value", "Iteration", "ParameterOriginal", "Label",  # from ggs object
     "nIterations", # for ggs object attributes
     "wa", "Rhat", # from ggs_Rhat
     "Lag", "Autocorrelation", # from ggs_autocorrelation
@@ -23,6 +23,7 @@ if (base::getRversion() >= "2.15.1") {
     "pdf", "dev.off", # from grDevices, for ggmcmc()
     "count", # for ggs_histogram(), for ggs_ppmean(), for ggs_ppsd()
     "id", # for ggs_separation()
-    "read.table" # from utils, for ggs()
+    "read.table", # from utils, for ggs()
+    "browseURL" # from utils, for ggmcmc()
   ))
 }

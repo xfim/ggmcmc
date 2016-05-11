@@ -158,7 +158,7 @@ ggmcmc <- function(D, file = "ggmcmc-output.pdf", family = NA, plot = NULL,
     # Call rmarkdown to generate the report
     sink()
     rmarkdown::render(file.rendered)
-    browseURL(file)
+    utils::browseURL(file)
 
     ## Close the files and clean the intermediate files
     file.remove(file.rendered)
