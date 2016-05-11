@@ -1,7 +1,20 @@
-bibentry("misc",
-   title = "{ggmcmc}: Tools for Analyzing MCMC Simulations from Bayesian Inference",
-   author = person("Xavier Fernández i Marín"),
-   url    = "http://xavier-fim.net/packages/ggmcmc",
+bibentry(bibtype = "Article",
+  title        = "{ggmcmc}: Analysis of {MCMC} Samples and {B}ayesian Inference",
+  author       = person(given = "Xavier",
+                        family = "Fern{\\'a}ndez-i-Mar{\\'i}n",
+                        email = "xavier.fernandez3@esade.edu"),
+  journal      = "Journal of Statistical Software",
+  year         = "2016",
+  volume       = "70",
+  number       = "9",
+  pages        = "1--20",
+  doi          = "10.18637/jss.v070.i09",
 
-   mheader = "To cite ggmcmc in publications please use:"
+  header       = "To cite ggmcmc in publications use:",
+  textVersion  =
+  paste("Xavier Fernández i Marín (2016).",
+        "ggmcmc: Analysis of MCMC Samples and Bayesian Inference.",
+        "Journal of Statistical Software, 70(9), 1-20.",
+        "doi:10.18637/jss.v070.i09")
 )
+
