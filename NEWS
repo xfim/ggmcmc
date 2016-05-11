@@ -1,3 +1,38 @@
+Version 1.0
+------------------------------
+
+MAJOR CHANGES
+
+  - Version 1.0 comes with the publication of the article at the Journal of
+  Statistical Software.
+
+  - ggmcmc() can produce reports in HTML format, when a file in HTML extension
+  is given as argument. The figures can be in PNG or SVG formats.
+
+  - 'stanreg' and 'brmsfit' objects from packages 'rstanarm' and 'brms',
+  respectively, are supported by ggs().
+
+  - Improved documentation (HTML vignette) with the latest improvements (greek
+  letters, rstararm/brms packages supported by ggs(), HTML report, acknowledgments).
+
+
+MINOR CHANGES
+
+  - Normalize plural for all figure titles.
+
+  - Warning messages from joins are not shows to the user.
+
+  - stanfit objects correctly treat Parameter names.
+
+  - Internal improvement of the function that does the custom sort of the
+  parameter names, as well as their labels.
+
+  - References to the JSS article have been incorporated in all functions that
+  generate plots.
+
+  - Improved documentation (JSS vignette) to accommodate last editorial changes.
+
+
 Version 0.8
 ------------------------------
 
@@ -67,7 +102,7 @@ Version 0.7.1
 ------------------------------
 
 MINOR CHANGES
-  
+
   - Minor changes to pass CRAN checks.
 
 
@@ -176,10 +211,10 @@ Version 0.5
 
 MAJOR CHANGES
 
-- ggmcmc() now allows the argument "plot" to 
+- ggmcmc() now allows the argument "plot" to select only some plots.
 
 - ggs_Rhat() now has scaling between 1 and 1.5 by default, so that perspective
-  on real convergence is present. 
+  on real convergence is present.
 
 - ggs_geweke() includes anargument shadow_limit to highlight the -2+2 range
 
