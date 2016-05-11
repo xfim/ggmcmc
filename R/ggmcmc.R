@@ -26,21 +26,26 @@ ggmcmc <- function(D, file = "ggmcmc-output.pdf", family = NA, plot = NULL,
     D <- get_family(D, family=family)
   }
 
-  # Decide whether a PDF or html output is desired
-  file.extension.position <- regexpr("\\.([[:alnum:]]+)$", file)
-  file.extension <- tolower(substr(file, file.extension.position + 1, nchar(file)))
-  file.name <- substr(file, 1, file.extension.position - 1)
-  file.rendered <- paste(file.name, "Rmd", sep = ".")
-  output.pdf <- ifelse(file.extension == "pdf", TRUE, FALSE)
-  output.html <- ifelse(file.extension == "html", TRUE, FALSE)
+  if (!is.null(file)) {
+    # Decide whether a PDF or html output is desired
+    file.extension.position <- regexpr("\\.([[:alnum:]]+)$", file)
+    file.extension <- tolower(substr(file, file.extension.position + 1, nchar(file)))
+    file.name <- substr(file, 1, file.extension.position - 1)
+    file.rendered <- paste(file.name, "Rmd", sep = ".")
+    output.pdf <- ifelse(file.extension == "pdf", TRUE, FALSE)
+    output.html <- ifelse(file.extension == "html", TRUE, FALSE)
 
-  if (!output.pdf & !output.html) {
-    cat("File extension not known")
-    stop()
-  }
-  if (!(dev_type_html == "png" | dev_type_html == "svg")) {
-    cat("Device type is not known")
-    stop()
+    if (!output.pdf & !output.html) {
+      cat("File extension not known")
+      stop()
+    }
+    if (!(dev_type_html == "png" | dev_type_html == "svg")) {
+      cat("Device type is not known")
+      stop()
+    }
+  } else {
+    output.html <- FALSE
+    output.pdf <- FALSE
   }
 
   t0 <- proc.time()
@@ -170,7 +175,7 @@ ggmcmc <- function(D, file = "ggmcmc-output.pdf", family = NA, plot = NULL,
     }
   }
 
-  if (output.pdf) {
+  if (output.pdf | is.null(file)) {
     # Get the number of parameters
     n.param <- length(unique(D$Parameter))
 
