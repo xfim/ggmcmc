@@ -56,7 +56,7 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
     dcm <- NULL
     for (i in 1:length(D)) { # iterate over list elements
       # Get model labels, by default the description attribute of the ggs object
-      model.label <- attributes(D[[i]]$description)[i]
+      model.label <- attributes(D[[i]])$description
       # But prevalence is for the names of the named list, not for labels or for the description
       if (length(model_labels)==length(D)) model.label <- model_labels[i]  # get model labels from labels
       if (length(names(D)!=0)) model.label <- names(D)[i]                   # get model labels from named list
