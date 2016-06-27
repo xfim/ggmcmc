@@ -37,6 +37,8 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
   if (class(S)=="stanfit") {
     # Extract chain by chain
     nChains <- S@sim$chains
+    nThin <- S@sim$thin
+    mDescription <- S@model_name
     D <- NULL
     for (l in 1:nChains) {
       sdf <- as.data.frame(S@sim$samples[[l]])
@@ -49,9 +51,9 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
     }
     if (!inc_warmup) {
       if (original.object.class == "stanfit") {
-        D <- dplyr::filter(D, Iteration > S@sim$warmup)
+        D <- dplyr::filter(D, Iteration > (S@sim$warmup / nThin))
+        D$Iteration <- D$Iteration - (S@sim$warmup / nThin)
       }
-      D$Iteration <- D$Iteration - S@sim$warmup
       nBurnin <- S@sim$warmup
     } else {
       nBurnin <- 0
@@ -61,8 +63,6 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_wa
       D <- dplyr::filter(D, Parameter!="lp__") # delete lp__
       D$Parameter <- factor(D$Parameter, levels=custom.sort(D$Parameter))
     }
-    nThin <- S@sim$thin
-    mDescription <- S@model_name
     processed <- TRUE
     D <- dplyr::tbl_df(D)
   }
