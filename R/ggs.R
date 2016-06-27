@@ -21,7 +21,7 @@
 #'
 #' # Get samples from 'beta' parameters only
 #' S <- ggs(s, family = "beta")
-ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, inc_warmup=FALSE, stan_include_auxiliar=FALSE) {
+ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, sort=TRUE, inc_warmup=FALSE, stan_include_auxiliar=FALSE) {
   processed <- FALSE # set by default that there has not been any processed samples
   #
   # Manage stanfit obcjets
