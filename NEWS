@@ -1,3 +1,24 @@
+Version 1.1
+------------------------------
+
+MAJOR CHANGES
+
+  - New argument ('sort') in ggs() that allows to control whether the custom
+  sort of variables in family names first and numerical values later is passed
+  (default) or the original order of parameter names is kept.
+
+
+MINOR CHANGES
+
+  - New stan/rstan versions treat warmup differently and this is solved.
+
+  - Solved a bug in ggs_caterpillar() when a list is passed.
+
+  - par_labels argument in ggs() now allows also a tbl_df (in addition to a
+      data frame).
+
+
+
 Version 1.0
 ------------------------------
 
@@ -68,7 +89,7 @@ MINOR CHANGES
   more accurate to reality.
 
 
-Version 0.7.2
+Version 0.7.3
 ------------------------------
 
 MINOR CHANGES
