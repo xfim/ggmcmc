@@ -178,7 +178,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, sort=T
       D <- get_family(D, family=family)
     }
     # Change the names of the parameters if par_labels argument has been passed
-    if (class(par_labels)=="data.frame") {
+    if (class(par_labels) %in% c("data.frame", "tbl_df")) {
       if (length(which(c("Parameter", "Label") %in% names(par_labels))) == 2) {
         aD <- attributes(D)
         levels(D$Parameter)[which(levels(D$Parameter) %in% par_labels$Parameter)] <-
@@ -230,7 +230,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, sort=T
       }
     } else {
       if (!is.na(par_labels)) {
-        stop("par_labels must be a data frame.")
+        stop("par_labels must be a data frame or a tbl_df.")
       }
     }
     # Once everything is ready, return the processed object
