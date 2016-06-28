@@ -11,6 +11,7 @@
 #' @export
 #' @importFrom GGally ggpairs
 #' @examples
+#'\dontrun{
 #' library(GGally)
 #' data(linear)
 #'
@@ -33,6 +34,7 @@
 #' ggs_pairs(ggs(s),
 #'   upper=list(continuous = wrap("density", color = "black")),
 #'   lower=list(continuous = wrap("points", alpha = 0.2, shape = 1)))
+#'}
 ggs_pairs <- function(D, family=NA, greek=FALSE, ...) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {
