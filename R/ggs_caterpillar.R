@@ -4,11 +4,16 @@
 #'
 #' @references Fernández-i-Marín, Xavier (2016) ggmcmc: Analysis of MCMC Samples and Bayesian Inference. Journal of Statistical Software, 70(9), 1-20. doi:10.18637/jss.v070.i09
 #' @param D Data frame whith the simulations or list of data frame with simulations. If a list of data frames with simulations is passed, the names of the models are the names of the objects in the list.
-#' @param X data frame with two columns, Parameter and the value for the x location. Parameter must be a character vector with the same names that the parameters in the D object. 
-#' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc). 
+#' @param X data frame with two columns, Parameter and the value for the x location. Parameter must be a character vector with the same names that the parameters in the D object.
+#' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc).
 #' @param thick_ci Vector of length 2 with the quantiles of the thick band for the credible interval
 #' @param thin_ci Vector of length 2 with the quantiles of the thin band for the credible interval
+#' @param thick_size Width of thick band
+#' @param thin_size Width of thin band
+#' @param point_size Size of median point
 #' @param line Numerical value indicating a concrete position, usually used to mark where zero is. By default do not plot any line.
+#' @param linetype Type of line for indicating a concrete position.
+#' @param linesize Width of line for indicating a concrete position.
 #' @param horizontal Logical. When TRUE (the default), the plot has horizontal lines. When FALSE, the plot is reversed to show vertical lines. Horizontal lines are more appropriate for categorical caterpillar plots, because the x-axis is the only dimension that matters. But for caterpillar plots against another variable, the vertical position is more appropriate.
 #' @param model_labels Vector of strings that matches the number of models in the list. It is only used in case of multiple models and when the list of ggs objects given at \code{D} is not named. Otherwise, the names in the list are used.
 #' @param greek Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.
@@ -18,10 +23,12 @@
 #' data(linear)
 #' ggs_caterpillar(ggs(s))
 #' ggs_caterpillar(list(A=ggs(s), B=ggs(s))) # silly example duplicating the same model
-ggs_caterpillar <- function(D, family=NA, X=NA, 
+ggs_caterpillar <- function(D, family=NA, X=NA,
   thick_ci=c(0.05, 0.95), thin_ci=c(0.025, 0.975),
-  line=NA, horizontal=TRUE, model_labels=NULL, greek=FALSE) {
-  
+  thick_size = 1.5, thin_size = 0.5, point_size = 3,
+  line=NA, linetype = "dashed", linesize = 0.5,
+  horizontal=TRUE, model_labels=NULL, greek=FALSE) {
+
   # Manage subsetting a family of parameters
   if (!is.na(family)) {
     D <- get_family(D, family=family)
@@ -49,7 +56,7 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
   # http://stackoverflow.com/questions/6955128/object-not-found-error-with-ddply-inside-a-function
   # One of the solutions, not elegant, is to assign qs globally (as well as
   # locally  for further commands in this function
- 
+
   # Multiple models or a single model
   if (!is.data.frame(D)) { # D is a list, and so multiple models are passed
     multi <- TRUE # used later in plot call
@@ -75,28 +82,28 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
   # Plot, depending on continuous or categorical x
   #
   if (!x.present) {
-    f <- ggplot(dcm, aes(x=median, y=reorder(Parameter, median))) + geom_point(size=3) +
-      geom_segment(aes(x=Low, xend=High, yend=reorder(Parameter, median)), size=1.5) +
-      geom_segment(aes(x=low, xend=high, yend=reorder(Parameter, median)), size=0.5) +
+    f <- ggplot(dcm, aes(x=median, y=reorder(Parameter, median))) + geom_point(size=point_size) +
+      geom_segment(aes(x=Low, xend=High, yend=reorder(Parameter, median)), size=thick_size) +
+      geom_segment(aes(x=low, xend=high, yend=reorder(Parameter, median)), size=thin_size) +
       xlab("HPD") + ylab("Parameter")
     if (greek) {
       f <- f + scale_y_discrete(labels = parse(text = as.character(dcm$Parameter[order(dcm$median)])))
     }
   } else {
     dcm <- merge(dcm, X)
-    f <- ggplot(dcm, aes_string(x="median", y=x.name)) + geom_point(size=3) +
-      geom_segment(aes_string(x="Low", xend="High", yend=x.name), size=1.5) +
-      geom_segment(aes_string(x="low", xend="high", yend=x.name), size=0.5) +
+    f <- ggplot(dcm, aes_string(x="median", y=x.name)) + geom_point(size=point_size) +
+      geom_segment(aes_string(x="Low", xend="High", yend=x.name), size=thick_size) +
+      geom_segment(aes_string(x="low", xend="high", yend=x.name), size=thin_size) +
       xlab("HPD") + ylab(x.name)
   }
 
   # Manage horizontal or vertical plot
   if (horizontal == FALSE) {
-    f <- f + coord_flip() 
+    f <- f + coord_flip()
   }
 
   # Manage multiple models
-  if (multi==TRUE & horizontal==TRUE) 
+  if (multi==TRUE & horizontal==TRUE)
     f <- f + facet_grid(Model ~ ., scales="free", space="free")
   if (multi==TRUE & horizontal==FALSE)
     f <- f + facet_grid(. ~ Model, scales="free", space="free")
@@ -106,11 +113,11 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
     f <- f + theme(legend.position="none", axis.text.x=element_text(size=7, hjust=1, angle=90))
   } else {
     f <- f + theme(legend.position="none", axis.text.x=element_text(size=7, hjust=1))
-  } 
+  }
 
   # Add a line to remark a specific point
   if (!is.na(line)) {
-    f <- f + geom_vline(xintercept=line, linetype="dashed")
+    f <- f + geom_vline(xintercept=line, linetype=linetype, size = linesize)
   }
   return(f)
 }
