@@ -82,7 +82,19 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
   # Plot, depending on continuous or categorical x
   #
   if (!x.present) {
-    f <- ggplot(dcm, aes(x=median, y=reorder(Parameter, median))) + geom_point(size=point_size) +
+    f <- ggplot(dcm, aes(x=median, y=reorder(Parameter, median)))
+  } else {
+    dcm <- merge(dcm, X)
+    f <- ggplot(dcm, aes_string(x="median", y=x.name))
+  }
+
+    # Add a line to remark a specific point
+  if (!is.na(line)) {
+    f <- f + geom_vline(xintercept=line, linetype=linetype, size = linesize)
+  }
+
+  if (!x.present) {
+    f <- f + geom_point(size=point_size) +
       geom_segment(aes(x=Low, xend=High, yend=reorder(Parameter, median)), size=thick_size) +
       geom_segment(aes(x=low, xend=high, yend=reorder(Parameter, median)), size=thin_size) +
       xlab("HPD") + ylab("Parameter")
@@ -90,8 +102,7 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
       f <- f + scale_y_discrete(labels = parse(text = as.character(dcm$Parameter[order(dcm$median)])))
     }
   } else {
-    dcm <- merge(dcm, X)
-    f <- ggplot(dcm, aes_string(x="median", y=x.name)) + geom_point(size=point_size) +
+    f <- f  + geom_point(size=point_size) +
       geom_segment(aes_string(x="Low", xend="High", yend=x.name), size=thick_size) +
       geom_segment(aes_string(x="low", xend="high", yend=x.name), size=thin_size) +
       xlab("HPD") + ylab(x.name)
@@ -115,9 +126,5 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
     f <- f + theme(legend.position="none", axis.text.x=element_text(size=7, hjust=1))
   }
 
-  # Add a line to remark a specific point
-  if (!is.na(line)) {
-    f <- f + geom_vline(xintercept=line, linetype=linetype, size = linesize)
-  }
   return(f)
 }
