@@ -1,4 +1,4 @@
-Package: jgmcmc
+Package: ggmcmc
 Title: Tools for Analyzing MCMC Simulations from Bayesian Inference
 Description: Tools for assessing and diagnosing convergence of
     Markov Chain Monte Carlo simulations, as well as for graphically display
