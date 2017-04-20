@@ -25,6 +25,73 @@ get_family <- function(D, family=NA) {
   return(D=D.sub)
 }
 
+#' Extract parameters of a mcmc family and add information about row/col
+#'
+#' @param data tbl dataset
+#' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc).
+#' @param rowname If family have square brackets, name of what represents the rows. Also used for vectors.
+#' @param colname If family have square brackets, name of what represent the columns
+#' @param row name index added as prefix to rows factors
+#' @param col name index added as prefix to cols factors
+#' @param fixed logical. If TRUE, pattern (in family) is a string to be matched as is. Overrides all conflicting arguments.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_family_mcmc <- function(data, family,
+                            rowname = "row", colname = "col",
+                            row = "row", col = "col",
+                            fixed = FALSE) {
+  
+  if (!is.character(family) | length(family) != 1) {
+    stop("family must be a character vector with a single element")
+  }
+  
+  g.data <- data %>%
+    tidyr::extract(col = Parameter,
+            into = c("Family"),
+            regex = "([[:alnum:]\\.\\_]+)\\[*",
+            remove = FALSE) %>%
+    dplyr::filter(grepl(family, Family, fixed = fixed)) %>%
+    dplyr::select(-Family)
+
+  # Vector
+  if (grepl("[", g.data$Parameter[1], fixed = TRUE) &
+      !grepl(",", g.data$Parameter[1], fixed = TRUE)) {
+    g.data <- tidyr::extract(data = g.data,
+            col = Parameter,
+            into = c("rown"),
+            regex = "\\[([[:alnum:]])\\]",
+            remove = FALSE) %>%
+      dplyr::mutate(rowname = paste0(row, rown)) %>%
+      dplyr::mutate_(.dots = setNames("rowname", rowname)) %>%
+      dplyr::select(-rowname, -rown)
+  }
+  # Row & col names
+  if (grepl("[", g.data$Parameter[1], fixed = TRUE) &
+      grepl(",", g.data$Parameter[1], fixed = TRUE)) {
+    g.data <- tidyr::extract(data = g.data,
+                      col = Parameter,
+                      into = c("rown", "coln"),
+                      regex = "\\[([[:alnum:]]+),([[:alnum:]]+)\\]",
+                      remove = FALSE) %>%
+      dplyr::mutate(rowname = paste0(row, rown),
+             colname = paste0(col, coln)) %>%
+      dplyr::mutate_(.dots = setNames("colname", colname)) %>%
+      dplyr::mutate_(.dots = setNames("rowname", rowname)) %>%
+      dplyr::select(-colname, -rowname, -coln, -rown)
+  }
+  # Probably there's a cleaner way to do it
+  attr(g.data, "nChains") <- attributes(data)$nChains
+  attr(g.data, "nParameters") <- length(unique(g.data$Parameter))
+  attr(g.data, "nIterations") <- attributes(data)$nIterations
+  attr(g.data, "nBurnin") <- attributes(data)$nBurnin
+  attr(g.data, "nThin") <- attributes(data)$nThin
+  attr(g.data, "description") <- attributes(data)$description
+  return(g.data)
+}
+
 #' Spectral Density Estimate at Zero Frequency.
 #'
 #' Compute the Spectral Density Estimate at Zero Frequency for a given chain.
