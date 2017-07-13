@@ -76,7 +76,6 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
   # Plot, depending on continuous or categorical x
   #
   if (!x.present) {
-    print(str(dcm))
     if (sort) {
       f <- ggplot(dcm, aes(x=median, y=reorder(Parameter, median), yend=reorder(Parameter, median))) + geom_point(size=3) +
         geom_segment(aes(x=Low, xend=High), size=1.5) +
