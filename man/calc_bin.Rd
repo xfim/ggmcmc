@@ -20,3 +20,4 @@ Compute the minimal elements to recreate a histogram manually by defining the to
 \details{
 Internal function to compute the minimal elements to recreate a histogram manually by defining the total number of bins, used by \code{\link{ggs_histogram}} \code{\link{ggs_ppmean}} and \code{\link{ggs_ppsd}}.
 }
+

@@ -35,3 +35,4 @@ Gelman, Carlin, Stern and Rubin (2003) Bayesian Data Analysis. 2nd edition. Chap
 
 Gelman, A and Rubin, DB (1992) Inference from iterative simulation using multiple sequences, _Statistical Science_, *7*, 457-511.
 }
+

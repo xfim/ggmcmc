@@ -23,3 +23,4 @@ Receiver-Operator Characteristic (ROC) plot for models with binary outcomes
 data(binary)
 ggs_rocplot(ggs(s.binary, family="mu"), outcome=y.binary)
 }
+

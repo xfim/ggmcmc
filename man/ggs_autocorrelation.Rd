@@ -25,3 +25,4 @@ Plot an autocorrelation matrix.
 data(linear)
 ggs_autocorrelation(ggs(s))
 }
+

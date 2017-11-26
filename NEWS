@@ -1,9 +1,3 @@
-MINOR CHANGES
-
-  - ggs_caterpillar allows user control over the line width of the thick and
-    thin lines, the point size for indicating the median, and the linetype and
-    width of the reference line (concrete position).
-
 Version 1.1
 ------------------------------
 

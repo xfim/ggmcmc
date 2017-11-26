@@ -22,3 +22,4 @@ Generate a factor with levels of unequal length.
 \details{
 Internal function to generate a factor with levels of unequal length, used by \code{\link{ggs_histogram}}.
 }
+

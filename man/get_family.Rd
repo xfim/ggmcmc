@@ -17,3 +17,4 @@ D Data frame that is a subset of the given D dataset.
 \description{
 Internal function used by the graphical functions to get only some of the parameters that follow a given regular expression.
 }
+

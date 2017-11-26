@@ -5,9 +5,8 @@
 \title{Caterpillar plot with thick and thin CI}
 \usage{
 ggs_caterpillar(D, family = NA, X = NA, thick_ci = c(0.05, 0.95),
-  thin_ci = c(0.025, 0.975), thick_size = 1.5, thin_size = 0.5,
-  point_size = 3, line = NA, linetype = "dashed", linesize = 0.5,
-  horizontal = TRUE, model_labels = NULL, greek = FALSE)
+  thin_ci = c(0.025, 0.975), line = NA, horizontal = TRUE,
+  model_labels = NULL, greek = FALSE)
 }
 \arguments{
 \item{D}{Data frame whith the simulations or list of data frame with simulations. If a list of data frames with simulations is passed, the names of the models are the names of the objects in the list.}
@@ -20,17 +19,7 @@ ggs_caterpillar(D, family = NA, X = NA, thick_ci = c(0.05, 0.95),
 
 \item{thin_ci}{Vector of length 2 with the quantiles of the thin band for the credible interval}
 
-\item{thick_size}{Width of thick band}
-
-\item{thin_size}{Width of thin band}
-
-\item{point_size}{Size of median point}
-
 \item{line}{Numerical value indicating a concrete position, usually used to mark where zero is. By default do not plot any line.}
-
-\item{linetype}{Type of line for indicating a concrete position.}
-
-\item{linesize}{Width of line for indicating a concrete position.}
 
 \item{horizontal}{Logical. When TRUE (the default), the plot has horizontal lines. When FALSE, the plot is reversed to show vertical lines. Horizontal lines are more appropriate for categorical caterpillar plots, because the x-axis is the only dimension that matters. But for caterpillar plots against another variable, the vertical position is more appropriate.}
 
@@ -52,3 +41,4 @@ ggs_caterpillar(list(A=ggs(s), B=ggs(s))) # silly example duplicating the same m
 \references{
 Fernández-i-Marín, Xavier (2016) ggmcmc: Analysis of MCMC Samples and Bayesian Inference. Journal of Statistical Software, 70(9), 1-20. doi:10.18637/jss.v070.i09
 }
+

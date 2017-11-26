@@ -15,3 +15,4 @@ D data frame with the chain arranged
 \description{
 Auxiliary function that extracts information from a single chain.
 }
+

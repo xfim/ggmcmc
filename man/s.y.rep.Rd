@@ -12,3 +12,4 @@ s.y.rep
 A coda object containing simulated values from the posterior predictive distribution of the outcome of a linear regression with fake data (y ~ N(mu, sigma); mu = beta[1] + beta[2] * X; y.rep ~ N(mu, sigma); where y.rep is a replicated outcome, originally missing data). The purpose of the dataset is only to show the possibilities of the ggmcmc package.
 }
 \keyword{datasets}
+
