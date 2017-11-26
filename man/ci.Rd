@@ -23,4 +23,3 @@ Generate a data frame with the limits of two credible intervals. Function used b
 data(linear)
 ci(ggs(s))
 }
-

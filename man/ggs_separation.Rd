@@ -35,4 +35,3 @@ Greenhill B, Ward MD and Sacks A (2011). The separation plot: A New Visual Metho
 
 Greenhill, Ward and Sacks (2011): The separation plot: a new visual method for evaluating the fit of binary models. American Journal of Political Science, vol 55, number 4, pg 991-1002.
 }
-

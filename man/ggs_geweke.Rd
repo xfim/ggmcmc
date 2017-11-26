@@ -35,4 +35,3 @@ Fernández-i-Marín, Xavier (2016) ggmcmc: Analysis of MCMC Samples and Bayesian
 
 Geweke, J. Evaluating the accuracy of sampling-based approaches to calculating posterior moments. In _Bayesian Statistics 4_ (ed JM Bernardo, JO Berger, AP Dawid and AFM Smith). Clarendon Press, Oxford, UK.
 }
-

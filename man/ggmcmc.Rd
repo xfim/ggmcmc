@@ -3,6 +3,8 @@
 \docType{package}
 \name{ggmcmc}
 \alias{ggmcmc}
+\alias{ggmcmc}
+\alias{ggmcmc-package}
 \alias{ggmcmc-package}
 \title{Wrapper function that creates a single pdf file with all plots that ggmcmc can produce.}
 \usage{
@@ -50,4 +52,3 @@ ggmcmc(ggs(s))  # Directly from a coda object
 \references{
 \url{http://xavier-fim.net/packages/ggmcmc}.
 }
-
