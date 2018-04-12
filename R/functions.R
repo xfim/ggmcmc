@@ -36,7 +36,8 @@ get_family <- function(D, family=NA) {
 #' @export
 sde0f <- function(x) {
   # In case of series not varying, set v0 to 0
-  if (length(unique(x))>1) {
+  # if (length(unique(x))>1) {
+  if (0 != var(if (is.factor(x)) as.integer(x) else x)) {    
     m.ar <- ar(x)
     v0 <- m.ar$var.pred / (1-sum(m.ar$ar))^2
   } else {
