@@ -116,7 +116,7 @@ ci <- function (D, thick_ci=c(0.05, 0.95), thin_ci=c(0.025, 0.975)) {
     dplyr::select(Parameter, low, Low, median, High, high)
   # Recover the rest of the variables that can come with the par_labels
   if (dim(D)[2] > 4) {
-    X <- suppressWarnings(dplyr::left_join(X, unique(dplyr::select(D, -Iteration, -Chain, -value)), by="Parameter"))
+    X <- suppressWarnings(dplyr::left_join(X, dplyr::distinct(dplyr::select(D, -Iteration, -Chain, -value)), by="Parameter"))
   }
   return(X)
 }
