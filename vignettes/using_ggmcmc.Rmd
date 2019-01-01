@@ -97,7 +97,7 @@ In addition to `JAGS` output mentioned above, `ggs()` is capable to automaticall
 
 * **`JAGS`** which produces objects of class `mcmc.list` [@jags].
 * **`MCMCpack`** which produces objects of class `mcmc` [@mcmcpack].
-* **`rstan`**, **`rstanarm`** and **`brms`** which produce, respectively, objects of classes `stanfit` [@stan], `stanreg` [@stanreg] and `brmsfit` [@brms].
+* **`rstan`**, **`rstanarm`** and **`brms`** which produce, respectively, objects of classes `stanfit` [@stan], `stanreg` [@stanarm] and `brmsfit` [@brms].
 * **`Stan` running alone** when `Stan` runs from the command line it produces csv files [@stan].
 
 
