@@ -6,7 +6,7 @@
 \usage{
 ggs_caterpillar(D, family = NA, X = NA, thick_ci = c(0.05, 0.95),
   thin_ci = c(0.025, 0.975), line = NA, horizontal = TRUE,
-  model_labels = NULL, greek = FALSE)
+  model_labels = NULL, greek = FALSE, sort = TRUE)
 }
 \arguments{
 \item{D}{Data frame whith the simulations or list of data frame with simulations. If a list of data frames with simulations is passed, the names of the models are the names of the objects in the list.}
@@ -26,6 +26,8 @@ ggs_caterpillar(D, family = NA, X = NA, thick_ci = c(0.05, 0.95),
 \item{model_labels}{Vector of strings that matches the number of models in the list. It is only used in case of multiple models and when the list of ggs objects given at \code{D} is not named. Otherwise, the names in the list are used.}
 
 \item{greek}{Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.}
+
+\item{sort}{Logical value indicating whether, in a horizontal display, y-axis labels must be sorted (the default) or not.}
 }
 \value{
 A \code{ggplot} object.
@@ -41,4 +43,3 @@ ggs_caterpillar(list(A=ggs(s), B=ggs(s))) # silly example duplicating the same m
 \references{
 Fernández-i-Marín, Xavier (2016) ggmcmc: Analysis of MCMC Samples and Bayesian Inference. Journal of Statistical Software, 70(9), 1-20. doi:10.18637/jss.v070.i09
 }
-

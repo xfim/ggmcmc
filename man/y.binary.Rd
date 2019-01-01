@@ -12,4 +12,3 @@ y.binary
 A numeric vector containing the observed values (y) of the outcome of a logistic regression with fake data (y ~ dbern(mu); logit(mu) = theta[1] + theta[2] * X). The purpose of the dataset is only to show the possibilities of the ggmcmc package.
 }
 \keyword{datasets}
-

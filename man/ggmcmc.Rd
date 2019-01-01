@@ -7,8 +7,8 @@
 \title{Wrapper function that creates a single pdf file with all plots that ggmcmc can produce.}
 \usage{
 ggmcmc(D, file = "ggmcmc-output.pdf", family = NA, plot = NULL,
-  param_page = 5, width = 7, height = 10, simplify_traceplot = NULL,
-  dev_type_html = "png", ...)
+  param_page = 5, width = 7, height = 10,
+  simplify_traceplot = NULL, dev_type_html = "png", ...)
 }
 \arguments{
 \item{D}{Data frame whith the simulations, previously arranged using \code{\link{ggs}}}
@@ -50,4 +50,3 @@ ggmcmc(ggs(s))  # Directly from a coda object
 \references{
 \url{http://xavier-fim.net/packages/ggmcmc}.
 }
-

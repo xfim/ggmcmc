@@ -149,7 +149,7 @@ The radon measurement ($y_{i}$) is explained by varying intercepts ($\alpha_{j}$
 \code{s.radon.short} contains only 4 parameters for pedagogical purposes: $\alpha[1:2]$ and $\beta[1:2]$, but the chains have not been thinned.
 This is the object that will be employed in the first part of the article.
 
-<<message=FALSE, warning=FALSE, eval=FALSE>>=
+<<message=FALSE, warning=FALSE, eval=TRUE>>=
 library("ggmcmc")
 data("radon")
 s.radon.short <- radon$s.radon.short

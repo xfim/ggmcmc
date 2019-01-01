@@ -4,7 +4,8 @@
 \alias{ggs_crosscorrelation}
 \title{Plot the Cross-correlation between-chains}
 \usage{
-ggs_crosscorrelation(D, family = NA, absolute_scale = TRUE, greek = FALSE)
+ggs_crosscorrelation(D, family = NA, absolute_scale = TRUE,
+  greek = FALSE)
 }
 \arguments{
 \item{D}{Data frame whith the simulations.}
@@ -28,4 +29,3 @@ ggs_crosscorrelation(ggs(s))
 \references{
 Fernández-i-Marín, Xavier (2016) ggmcmc: Analysis of MCMC Samples and Bayesian Inference. Journal of Statistical Software, 70(9), 1-20. doi:10.18637/jss.v070.i09
 }
-

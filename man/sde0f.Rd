@@ -18,4 +18,3 @@ Compute the Spectral Density Estimate at Zero Frequency for a given chain.
 \details{
 Internal function to compute the Spectral Density Estimate at Zero Frequency for a given chain used by \code{\link{ggs_geweke}}.
 }
-

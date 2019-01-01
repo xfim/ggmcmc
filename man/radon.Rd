@@ -12,4 +12,3 @@ radon
 A list containing the following elements: \code{counties} a data frame with the county label, ids and radon level; \code{id.county} a vector identifying counties in the data; \code{y} the outcome variable; \code{s.radon} a coda object with simulated values from the posterior distribution of all parameters, with few iterations for each one; \code{s.radon.yhat} a coda object containing simulated values from the posterior predictive distribution; and \code{s.radon.short} a coda object with simulated values from the posterior distribution of few parameters, with reasonable chain length. The purpose of the object is only to show the possibilities of the ggmcmc package.
 }
 \keyword{datasets}
-
