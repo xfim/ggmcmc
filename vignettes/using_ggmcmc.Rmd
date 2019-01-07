@@ -16,15 +16,6 @@ vignette: >
 library(ggmcmc)
 ```
 
-```{r ggplot2_style, echo=FALSE, message=FALSE, warning=FALSE}
-library(ggthemes)
-library(extrafont)
-loadfonts(quiet=TRUE)
-theme_set(theme_grey(base_size=12, base_family="Source Sans Pro"))
-```
-
-There is a pdf version of [Using the ggmcmc package][pdf].
-
 \marginnote{This document refers to ggmcmc version `r packageVersion("ggmcmc")`.}
 
 
@@ -392,16 +383,6 @@ The combination of `ggmcmc` with the package `ggthemes` allows using pre-specifi
 
 In addition to `ggthemes`, `ggmcmc` can also work well with `gridExtra`, a package that allows combining several `ggplot` objects in a single layout.
 
-```{r combination_aesthetics, fig.width=12, fig.height=4, fig.cap='Combination of the aestheticaly-driven options that complement \`ggplot2`: \`ggthemes` and \`gridExtra`.', message=FALSE}
-library(gridExtra)
-library(ggthemes)
-f1 <- ggs_traceplot(ggs(s, family="^beta\\[[1234]\\]")) + 
-  theme_fivethirtyeight()
-f2 <- ggs_density(ggs(s, family="^beta\\[[1234]\\]")) + 
-  theme_solarized(light=TRUE)
-grid.arrange(f1, f2, ncol=2, nrow=1)
-```
-
 Another facility is to extend `ggs_caterpillar()` using facets with variables passed through `par_labels`, or adding other variables to the aesthetics.
 The following figure shows a caterpillar plot of the intercepts, with facets on the North/South location and using a color scale to emphasize the uranium level by county.
 ```{r extension_facets_aes, fig.width=12, fig.height=8, fig.cap='Caterpillar plot of the varying intercepts faceted by North/South location and using county\'s uranium level as color indicator.', warning=FALSE}
@@ -436,7 +417,6 @@ I would like to thank code contributions and ideas from [Zachary M. Jones][zacha
 <!-- Links -->
 
 [github]: https://github.com/xfim/ggmcmc
-[pdf]: ./using_ggmcmc.pdf "Using the ggmcmc package"
 [zachary]: http://www.zmjones.com/
 [julien]: http://www.cornebise.com/julien/
 [dieter]: http://www.menne-biomed.de/
