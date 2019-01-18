@@ -14,8 +14,8 @@
 #' @export
 #' @return D A data frame tbl with the data arranged and ready to be used by the rest of the \code{ggmcmc} functions. The data frame has four columns, namely: Iteration, Chain, Parameter and value, and six attributes: nChains, nParameters, nIterations, nBurnin, nThin and description. A data frame tbl is a wrapper to a local data frame, behaves like a data frame and its advantage is related to printing, which is compact. For more details, see \code{tbl_df()} in package \code{dplyr}.
 #' @examples
-#' # Assign 'D' to be a data frame suitable for \code{ggmcmc} functions from
-#' # a coda object called S
+#' # Assign 'S' to be a data frame suitable for \code{ggmcmc} functions from
+#' # a coda object called s
 #' data(linear)
 #' S <- ggs(s)        # s is a coda object
 #'
