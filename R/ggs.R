@@ -102,6 +102,10 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, sort=T
   # Manage mcmc.list and mcmc objects
   #
   if (class(S)=="mcmc.list" | class(S)=="mcmc" | processed) {  # JAGS typical output or MCMCpack (or previously processed stan samples)
+    if (!is.na(family)) {
+      location.family <- grep(family, dimnames(S[[1]])[[2]])
+      S <- S[,location.family, drop = FALSE]
+    }
     if (!processed) { # only in JAGS or MCMCpack, using coda
       lS <- length(S)
       D <- NULL
