@@ -103,7 +103,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, sort=T
   #
   if (class(S)=="mcmc.list" | class(S)=="mcmc" | processed) {  # JAGS typical output or MCMCpack (or previously processed stan samples)
     if (!is.na(family)) {
-      require(coda)
+      requireNamespace("coda")
       location.family <- grep(family, dimnames(S[[1]])[[2]])
       S <- S[,location.family, drop = FALSE]
     }
