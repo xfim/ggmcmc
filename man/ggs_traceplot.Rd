@@ -5,7 +5,8 @@
 \title{Traceplot of the chains}
 \usage{
 ggs_traceplot(D, family = NA, original_burnin = TRUE,
-  original_thin = TRUE, simplify = NULL, greek = FALSE)
+  original_thin = TRUE, simplify = NULL, hpd = FALSE,
+  greek = FALSE)
 }
 \arguments{
 \item{D}{Data frame with the simulations.}
@@ -17,6 +18,8 @@ ggs_traceplot(D, family = NA, original_burnin = TRUE,
 \item{original_thin}{Logical. When TRUE (the default) take into account the thinning interval in the x-axis.}
 
 \item{simplify}{Numerical. A percentage of iterations to keep in the time series. It is an option intended only for the purpose of saving time and resources when doing traceplots. It is not a thin operation, because it is not regular. It must be used with care.}
+
+\item{hpd}{Logical indicating whether HPD intervals (using the defaults from ci()) must be added to the plot. It is FALSE by default.}
 
 \item{greek}{Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.}
 }

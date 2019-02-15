@@ -32,8 +32,8 @@ D A data frame tbl with the data arranged and ready to be used by the rest of th
 This function manages MCMC samples from different sources (JAGS, MCMCpack, STAN -both via rstan and via csv files-) and converts them into a data frame tbl. The resulting data frame has four columns (Iteration, Chain, Parameter, value) and six attributes (nChains, nParameters, nIterations, nBurnin, nThin and description). The ggs object returned is then used as the input of the ggs_* functions to actually plot the different convergence diagnostics.
 }
 \examples{
-# Assign 'D' to be a data frame suitable for \\code{ggmcmc} functions from
-# a coda object called S
+# Assign 'S' to be a data frame suitable for \\code{ggmcmc} functions from
+# a coda object called s
 data(linear)
 S <- ggs(s)        # s is a coda object
 
