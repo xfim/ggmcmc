@@ -43,7 +43,7 @@ ggs_separation <- function(D, outcome, minimalist = FALSE, show_labels = FALSE, 
       fill = "red", alpha = 0.5)
   f <- f + geom_line()
   if (uncertainty_band) {
-    f <- f + geom_ribbon(aes(y=median, ymin =low, ymax=high), alpha = 0.25)
+    f <- f + geom_ribbon(aes(ymin =low, ymax=high), alpha = 0.25)
   }
   f <- f + xlab("")
   f <- f + theme(legend.position = "none", axis.text.x=element_blank())
