@@ -1,3 +1,35 @@
+Version 1.2
+------------------------------
+
+MAJOR CHANGES
+
+  - Substantial performance improvement involving the treatment of families.
+
+  - More control of aesthetics for ggs_caterpillar(). Thanks to Jonathan
+  Gilligan.
+
+  - Add HDP bands in ggs_density() and ggs_traceplot() with the argument (hdp =
+  TRUE).
+
+
+MINOR CHANGES
+
+  - Fixed a bug in sde0f when density is 0 or very close. Thanks to Brian Stock.
+
+  - Vignettes (JSS and using ggmcmc) have been adapted to new requirements of
+  R-development.
+
+  - Minor bibliography issues solved in the vignettes.
+
+  - Minor documentation issue with original s object being refered as D.
+
+  - Using ggmcmc vignette improved with examples of how to combine ggs() objects
+  with ggplot2 functions. Specifically, with facet_wrap() to accommodate several
+  figures in a single display.
+
+
+
+
 Version 1.1
 ------------------------------
 
