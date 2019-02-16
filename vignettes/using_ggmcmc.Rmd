@@ -414,7 +414,7 @@ ggs_caterpillar(ggs(radon$s.radon, par_labels=L.radon, family="^alpha")) +
 Another option is, for instance, when the display is not enough to accommodate all
 parameters, to use `facet_wrap()` to accommodate several parameters
 in a faceted way, not only vertically (as is the `ggmcmc` default).
-```{r facets, fig.width = 10, fig.height = 10, fig.cap = 'Density plots of the varying intercepts faceted in a grid by columns.'}
+```{r facets, fig.width = 10, fig.height = 14, fig.cap = 'Density plots of the varying intercepts faceted in a grid by columns.'}
 ggs_density(ggs(radon$s.radon, par_labels=L.radon, family="^alpha"),
             hpd = TRUE) +
   facet_wrap(~ Parameter, ncol = 6)
