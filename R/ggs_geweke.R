@@ -29,33 +29,31 @@ ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE, gr
     stop("Fractions are not valid.")
   }
   # Take subsequences of the chains
-  window.1 <- 1:trunc(attributes(D)$nIterations * frac1)
-  window.2 <- trunc(attributes(D)$nIterations * frac2):attributes(D)$nIterations
+  window.1 <- 1:trunc(attributes(D)$nIterations * frac1) # This is the correct way to get the first part of the sample
+  #window.1 <- 1:(trunc(attributes(D)$nIterations * frac1) + 1) # This line is not correct, but geweke.diag() does it this way
+                                                                # and therefore I leave it here for comparison
+  window.2 <- (trunc(attributes(D)$nIterations * frac2) + 1) :attributes(D)$nIterations
   D.geweke.first <- dplyr::mutate(dplyr::filter(D, Iteration <= max(window.1)), part="first")
-  D.geweke.last <- dplyr::mutate(dplyr::filter(D, Iteration <= max(window.2)), part="last")
+  D.geweke.last <- dplyr::mutate(dplyr::filter(D, Iteration >= min(window.2)), part="last")
   D.geweke <- dplyr::bind_rows(D.geweke.first, D.geweke.last)
   # Compute means, spectral densities and N's
   D.geweke <- D.geweke %>%
     dplyr::group_by (Parameter, Chain, part) %>%
     dplyr::summarize(m=mean(value), sde0f=sde0f(value), n=n())
-  # Cast the dataframe in pieces to have the data arranged by parameter, chain
-  # and first and last
+  # Calculate separately the means and variances
   M <- D.geweke %>%
     dplyr::select(-sde0f, -n) %>%
+    dplyr::ungroup()
+  V <- D.geweke %>%
     dplyr::ungroup() %>%
-    tidyr::spread(part, m)
-  N <- D.geweke %>%
-    dplyr::select(-sde0f, -m) %>%
-    dplyr::ungroup() %>%
-    tidyr::spread(part, n)
-  SDE0F <- D.geweke %>%
-    dplyr::select(-m, -n) %>%
-    dplyr::ungroup() %>%
-    tidyr::spread(part, sde0f)
-  # Reorganize the z scores
-  Z <- data.frame(Parameter=M$Parameter, Chain=M$Chain,
-    z= (M$first - M$last) /
-      sqrt( (SDE0F$first/N$first) + (SDE0F$last/N$last) ) )
+    dplyr::mutate(v = sde0f / n) %>%
+    dplyr::select(-m, -n, -sde0f)
+  # Calculate the z scores
+  Z <- left_join(M, V) %>%
+    gather(statistic, value, -Parameter, -Chain, -part) %>%
+    unite(st.part, part, statistic, sep = ".") %>%
+    spread(st.part, value) %>%
+    mutate(z = (first.m - last.m) / sqrt(first.v + last.v))
   # Check that there are no Inf values, otherwise raise a message and continue
   # having converted it into NA
   Zinf <- which(is.infinite(Z$z))
