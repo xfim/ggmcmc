@@ -34,7 +34,7 @@ ggs_traceplot <- function(D, family = NA,
       attr(D, "nThin") <- aD$nThin
       attr(D, "description") <- aD$description
     } else {
-      print("It is not possible to guess the simplification percentage to apply.")
+      stop("It is not possible to guess the simplification percentage to apply.")
     }
   }
   # Plot

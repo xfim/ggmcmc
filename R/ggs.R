@@ -167,7 +167,7 @@ ggs <- function(S, family=NA, description=NA, burnin=TRUE, par_labels=NA, sort=T
       attr(D, "description") <- description
     } else {
       if (!is.na(description)) { # if it is not a character string and not NA, show an informative message
-        print("description is not a text string. The name of the imported object is used instead.")
+        message("description is not a text string. The name of the imported object is used instead.")
       }
       if (exists("mDescription")) { # In case of stan model names
         attr(D, "description") <- mDescription
