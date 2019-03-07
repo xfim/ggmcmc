@@ -4,7 +4,8 @@
 \alias{ggs_Rhat}
 \title{Dotplot of Potential Scale Reduction Factor (Rhat)}
 \usage{
-ggs_Rhat(D, family = NA, scaling = 1.5, greek = FALSE)
+ggs_Rhat(D, family = NA, scaling = 1.5, greek = FALSE,
+  version_rhat = "BDA2")
 }
 \arguments{
 \item{D}{Data frame whith the simulations}
@@ -14,12 +15,14 @@ ggs_Rhat(D, family = NA, scaling = 1.5, greek = FALSE)
 \item{scaling}{Value of the upper limit for the x-axis. By default, it is 1.5, to help contextualization of the convergence. When 0 or NA, the axis are not scaled.}
 
 \item{greek}{Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.}
+
+\item{version_rhat}{Character variable with the name of the version of the potential scale reduction factor to use. Defaults to "BDA2", which refers to the second version of "bayesian Data Analysis (Gelman, Carlin, Stein and Rubin). The other available version is "BG98", which refers to Brooks & Gelman (1998) and is the one used in the "coda" package.}
 }
 \value{
 A \code{ggplot} object.
 }
 \description{
-Plot a dotplot of Potential Scale Reduction Factor (Rhat), proposed by Gelman and Rubin (1992). The version from the second edition of Bayesian Data Analysis (Gelman, Carlin, Stein and Rubin) is used.
+Plot a dotplot of Potential Scale Reduction Factor (Rhat), proposed by Gelman and Rubin (1992). The version from the second edition of Bayesian Data Analysis (Gelman, Carlin, Stein and Rubin) is used, but the version used in the package "coda" can also be used (Brooks & Gelman 1998).
 }
 \details{
 Notice that at least two chains are required.
@@ -34,4 +37,6 @@ Fernández-i-Marín, Xavier (2016) ggmcmc: Analysis of MCMC Samples and Bayesian
 Gelman, Carlin, Stern and Rubin (2003) Bayesian Data Analysis. 2nd edition. Chapman & Hall/CRC, Boca Raton.
 
 Gelman, A and Rubin, DB (1992) Inference from iterative simulation using multiple sequences, _Statistical Science_, *7*, 457-511.
+
+Brooks, S. P., and Gelman, A. (1998). General methods for monitoring convergence of iterative simulations. _Journal of computational and graphical statistics_, 7(4), 434-455.
 }
