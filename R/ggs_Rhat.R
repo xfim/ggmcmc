@@ -82,7 +82,7 @@ ggs_Rhat <- function(D, family = NA, scaling = 1.5, greek = FALSE, version_rhat 
       tidyr::spread(Chain, Xbar.sq)
     var1 <- var(t(var11[,-1]), t(var12[,-1]))
     var21 <- var11
-    var22 <<- Xbar %>%
+    var22 <- Xbar %>%
       tidyr::spread(Chain, Xbar)
     var2 <- var(t(var21[,-1]), t(var22[,-1]))
     cov.WB <- (attributes(D)$nIterations / attributes(D)$nChains) * diag(var1 - 2 * muhat * var2)
