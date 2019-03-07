@@ -427,7 +427,7 @@ The development of `ggmcmc` (track changes, propose improvements, report bugs) c
 
 
 # Acknowledgements
-I would like to thank code contributions and ideas from [Zachary M. Jones][zachary], [Julien Cornebise][julien], [Max Joseph][maxjoseph], and ideas from [Dieter Menne][dieter], Bill Dixon, [Christopher Gandrud][gandrud], Barret Schloerke and GitHub users knokknok, akrawitz, Justina (Juste), stefanherzog, [Brain Stock][brianstock] and [Jonas Kristoffer Lindeløv][lindeloev].
+I would like to thank code contributions and ideas from [Zachary M. Jones][zachary], [Julien Cornebise][julien], [Max Joseph][maxjoseph], and ideas from [Dieter Menne][dieter], Bill Dixon, [Christopher Gandrud][gandrud], Barret Schloerke and GitHub users knokknok, akrawitz, Justina (Juste), stefanherzog, [Brain Stock][brianstock], [Jonas Kristoffer Lindeløv][lindeloev], [Jakob Fiksel][jfiksel] and [Sébastien Rochette][statnmap].
 
 # References
 
@@ -441,3 +441,5 @@ I would like to thank code contributions and ideas from [Zachary M. Jones][zacha
 [gandrud]: http://christophergandrud.blogspot.com
 [brianstock]: https://github.com/brianstock
 [lindeloev]: http://lindeloev.net/
+[jfiksel]: https://github.com/jfiksel
+[statnmap]: https://statnmap.com/
