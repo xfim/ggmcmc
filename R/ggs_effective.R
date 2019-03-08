@@ -1,11 +1,11 @@
 #' Dotplot of the effective number of independent draws
 #'
-#' Plot a dotplot of the effective number of independent draws. The version from the second edition of Bayesian Data Analysis (Gelman, Carlin, Stein and Rubin) is used.
+#' Plot a dotplot of the effective number of independent draws. The version from the third edition of Bayesian Data Analysis (Gelman, Carlin, Stein, Dunson, Vehtari and Rubin) is used.
 #'
 #' Notice that at least two chains are required.
 #'
 #' @references Fernández-i-Marín, Xavier (2016) ggmcmc: Analysis of MCMC Samples and Bayesian Inference. Journal of Statistical Software, 70(9), 1-20. doi:10.18637/jss.v070.i09
-#' @references Gelman, Carlin, Stern and Rubin (2003) Bayesian Data Analysis. 2nd edition. Chapman & Hall/CRC, Boca Raton.
+#' @references Gelman, Carlin, Stern, Dunson, Vehtari and Rubin (2014) Bayesian Data Analysis. 3rd edition. Chapman & Hall/CRC, Boca Raton.
 #' @param D Data frame whith the simulations
 #' @param family Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc).
 #' @param greek Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.

@@ -9,7 +9,7 @@
 #' @references \url{http://xavier-fim.net/packages/ggmcmc}.
 #' @import ggplot2
 #' @importFrom tidyr spread gather
-#' @importFrom dplyr tbl_df data_frame select filter mutate arrange group_by ungroup summarize bind_rows left_join inner_join do sample_frac %>%
+#' @importFrom dplyr tbl_df data_frame select filter mutate arrange group_by ungroup summarize bind_rows left_join inner_join do sample_frac lag lead %>%
 #' @docType package
 #' @name ggmcmc
 #' @aliases ggmcmc ggmcmc-package

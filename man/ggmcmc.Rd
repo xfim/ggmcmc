@@ -17,7 +17,7 @@ ggmcmc(D, file = "ggmcmc-output.pdf", family = NA, plot = NULL,
 
 \item{family}{Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc).}
 
-\item{plot}{character vector containing the names of the desired plots. By default (NULL), \code{ggmcmc()} plots \code{ggs_histogram()}, \code{ggs_density()}, \code{ggs_traceplot()}, \code{ggs_running()}, \code{ggs_compare_partial()}, \code{ggs_autocorrelation()}, \code{ggs_crosscorrelation()}, \code{ggs_Rhat()}, \code{ggs_geweke()} and \code{ggs_caterpillar()}.}
+\item{plot}{character vector containing the names of the desired plots. By default (NULL), \code{ggmcmc()} plots \code{ggs_histogram()}, \code{ggs_density()}, \code{ggs_traceplot()}, \code{ggs_running()}, \code{ggs_compare_partial()}, \code{ggs_autocorrelation()}, \code{ggs_crosscorrelation()}, \code{ggs_Rhat()}, \code{ggs_effective()}, \code{ggs_geweke()} and \code{ggs_caterpillar()}.}
 
 \item{param_page}{Numerical, number of parameters to plot for each page. Defaults to 5.}
 

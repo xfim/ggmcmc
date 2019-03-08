@@ -42,12 +42,14 @@ Collate:
     'help.R'
     'functions.R'
     'ggs_Rhat.R'
+    'ggs_effective.R'
     'ggs_geweke.R'
     'ggs_caterpillar.R'
     'ggs_separation.R'
     'globals.R'
     'ggs_ppmean.R'
     'ggs_ppsd.R'
+    'ggs_pcp.R'
     'ggs_rocplot.R'
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr

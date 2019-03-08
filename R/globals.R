@@ -24,6 +24,12 @@ if (base::getRversion() >= "2.15.1") {
     "count", # for ggs_histogram(), for ggs_ppmean(), for ggs_ppsd()
     "id", # for ggs_separation()
     "read.table", # from utils, for ggs()
+    "df.adj", "df.V", "first.m", "first.v", "last.m", "last.v",
+    "Percent correctly predicted", "Rhat2.estimate", "Rhat.random",
+    "statistic", "st.part", "unite", "var22", "var.V", "Xbar.sq", # for ggs_geweke and ggs_Rhat
+    "Correct", "Percent", "correctly", "predicted",
+    "diff.sq", "nEffective", "now.negative", "phat", "psum", "psum.negative", "sum.diff.sq",
+    "sum.phat", "variogram", # from ggs_effective()
     "browseURL" # from utils, for ggmcmc()
   ))
 }
