@@ -30,6 +30,7 @@ if (base::getRversion() >= "2.15.1") {
     "Correct", "Percent", "correctly", "predicted",
     "diff.sq", "nEffective", "now.negative", "phat", "psum", "psum.negative", "sum.diff.sq",
     "sum.phat", "variogram", # from ggs_effective()
+    "second.half", # from ggs(), splitting
     "browseURL" # from utils, for ggmcmc()
   ))
 }
