@@ -11,6 +11,7 @@
 #' @param line Numerical value indicating a concrete position, usually used to mark where zero is. By default do not plot any line.
 #' @param horizontal Logical. When TRUE (the default), the plot has horizontal lines. When FALSE, the plot is reversed to show vertical lines. Horizontal lines are more appropriate for categorical caterpillar plots, because the x-axis is the only dimension that matters. But for caterpillar plots against another variable, the vertical position is more appropriate.
 #' @param model_labels Vector of strings that matches the number of models in the list. It is only used in case of multiple models and when the list of ggs objects given at \code{D} is not named. Otherwise, the names in the list are used.
+#' @param label Character value with the name of the variable that contains the labels displayed in the plot. Defaults to "Label".
 #' @param greek Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.
 #' @param sort Logical value indicating whether, in a horizontal display, y-axis labels must be sorted (the default) or not.
 #' @return A \code{ggplot} object.
@@ -21,7 +22,7 @@
 #' ggs_caterpillar(list(A=ggs(s), B=ggs(s))) # silly example duplicating the same model
 ggs_caterpillar <- function(D, family=NA, X=NA, 
   thick_ci=c(0.05, 0.95), thin_ci=c(0.025, 0.975),
-  line=NA, horizontal=TRUE, model_labels=NULL, greek=FALSE, sort=TRUE) {
+  line=NA, horizontal=TRUE, model_labels=NULL, label = Label, greek=FALSE, sort=TRUE) {
   
   # Manage subsetting a family of parameters
   if (!is.na(family)) {
@@ -76,6 +77,12 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
   # Plot, depending on continuous or categorical x
   #
   if (!x.present) {
+    # Change the Labels used if needed
+    if (!is.null(label)) {
+      print(dcm)
+      dcm$Parameter <- data.frame(dcm)[,label]
+      print(dcm)
+    }
     if (sort) {
       f <- ggplot(dcm, aes(x=median, y=reorder(Parameter, median), yend=reorder(Parameter, median))) + geom_point(size=3) +
         geom_segment(aes(x=Low, xend=High), size=1.5) +
