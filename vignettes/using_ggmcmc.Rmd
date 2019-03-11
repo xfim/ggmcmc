@@ -88,7 +88,7 @@ In addition to `JAGS` output mentioned above, `ggs()` is capable to automaticall
 
 * **`JAGS`** which produces objects of class `mcmc.list` [@jags].
 * **`MCMCpack`** which produces objects of class `mcmc` [@mcmcpack].
-* **`rstan`**, **`rstanarm`** and **`brms`** which produce, respectively, objects of classes `stanfit` [@stan], `stanreg` [@stanarm] and `brmsfit` [@brms].
+* **`rstan`**, **`rstanarm`** and **`brms`** which produce, respectively, objects of classes `stanfit` [@stan], `stanreg` [@rstanarm] and `brmsfit` [@brms].
 * **`Stan` running alone** when `Stan` runs from the command line it produces csv files [@stan].
 
 
@@ -203,6 +203,8 @@ ggs_Rhat(S) + xlab("R_hat")
 
 The Potential Scale Reduction Factor ($\hat{R}$)[@gelman:bayesian:2003] relies on different chains for the same parameter, by comparing the between-chain variation with the within-chain variation.
 It is expected to be close to 1.
+The argument `version_Rhat` allows to use the default "BDA2" version
+([@gelman:bayesian:2003]) or the "BG98" version used in the coda package.
 
 ## Geweke Diagnostics
 ```{r geweke, fig.cap='Geweke diagnostic (ggs\\_geweke())', fig.height=4, fig.width=6, fig.margin=TRUE}
@@ -358,6 +360,16 @@ The argument `minimalist` (FALSE by default) allows get a minimal Tufte style in
 ```{r, separation_minimalist, fig.width=4, fig.height=1, fig.cap='Separation plot (minimalist version).', fig.margin=TRUE}
 ggs_separation(S.binary, outcome=y.binary, minimalist = TRUE)
 ```
+
+## Percent of correctly predicted
+
+The distribution of the percentage of correctly predicted cases can be obtained
+using the `ggs_pcp()` function:
+```{r, pcp, fig.width=6, fig.height=5, fig.cap='Distribution of the percentage of cases correctly predicted.'}
+ggs_pcp(S.binary, outcome=y.binary)
+```
+
+
 
 # Paired plots
 The package `ggally` provides an easy way to extend `ggmcmc` through the
