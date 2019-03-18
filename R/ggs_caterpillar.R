@@ -79,9 +79,7 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
   if (!x.present) {
     # Change the Labels used if needed
     if (!is.null(label)) {
-      print(dcm)
       dcm$Parameter <- data.frame(dcm)[,label]
-      print(dcm)
     }
     if (sort) {
       f <- ggplot(dcm, aes(x=median, y=reorder(Parameter, median), yend=reorder(Parameter, median))) + geom_point(size=3) +
