@@ -127,7 +127,7 @@ ci <- function (D, thick_ci=c(0.05, 0.95), thin_ci=c(0.025, 0.975)) {
 #' Generate a data frame with at least columns for Parameter and Labels. This function is intended to work as a shortcut for the matching data frame necessary to pass the argument "par_labels" to ggs() calls for transforming the parameter names.
 #'
 #' @param parameter.name A character vector of length one with the name of the variable (family) without subscripts. Usually, it refers to a Greek letter.
-#' @param match A named list with the variable labels and the values of the factor corresponding to the dimension they map to.
+#' @param match A named list with the variable labels and the values of the factor corresponding to the dimension they map to. The order of the list matters, as ggmcmc assumes that the first dimension corresponds to the first element in the list, and so on.
 #' @param subscripts An optional character with the letters that correspond to each of the dimensions of the family of parameters. By default it uses not very informative names "dim.1", "dim.2", etc... It usually corresponds to the "i", "j", ... subscripts in classical textbooks, but is recommended to be closer to the subscripts given in the sampling software.
 #' @return A data frame tbl with the Parameter names and its match with meaningful variable Labels. Also the intermediate variables are passed to make it easier to work with the samples using meaningful variable names.
 #' @export
