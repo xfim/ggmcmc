@@ -250,11 +250,16 @@ The simplest use is to get a sense of the distribution of the parameters, using 
 The function produces caterpillar plots of the highest posterior densities of the parameters.
 By default, `ggs_caterpillar()` produces thick lines at the 90\% highest posterior density (HPD) region and thin lines at the 95\% HPD.
 
-The following code creates a data set with the matches between the parameter names for the intercepts (`alpha[1]:alpha[85]`) and their substantial meaning (labels for counties) and then it passes this data frame as an argument to the `ggs()` function that converts the original samples in `JAGS` into a proper object ready for being used by all `ggs_*()` functions.
+In this case, in order to create a matching data frame for parameters and
+labels, `ggmcmc` contains a function that performs this function, and is
+specially suitable when multi-dimensional parameters are used. This is the case
+of hierarchical/multilevel models and parameters that contain subscripts by _i_ (observations), _j_ (groups), _t_ (time), etc... 
+`plab()` needs two arguments. The first one is the name of the parameter, which
+in this case is `alpha`. The second argument is a named list containing all the
+values that refer to the subscripts of the parameter.
+The following use of `plab()` creates a data set with the matches between the parameter names for the intercepts (`alpha[1]:alpha[85]`) and their substantial meaning (labels for counties) and then it passes this data frame as an argument to the `ggs()` function that converts the original samples in `JAGS` into a proper object ready for being used by all `ggs_*()` functions.
 ```{r caterpillar_preparation, warning=FALSE}
-L.radon.intercepts <- data.frame(
-  Parameter=paste("alpha[", radon$counties$id.county, "]", sep=""),
-  Label=radon$counties$County)
+L.radon.intercepts <- plab("alpha", list(County = radon$counties$County))
 head(L.radon.intercepts)
 S.full <- ggs(radon$s.radon, par_labels=L.radon.intercepts, family="^alpha")
 ```
@@ -405,22 +410,23 @@ potential that `ggplot2` offers.
 One facility is to extend `ggs_caterpillar()` using facets with variables passed through `par_labels`, or adding other variables to the aesthetics.
 The following figure shows a caterpillar plot of the intercepts, with facets on the North/South location and using a color scale to emphasize the uranium level by county.
 ```{r extension_facets_aes, fig.width=12, fig.height=8, fig.cap='Caterpillar plot of the varying intercepts faceted by North/South location and using county\'s uranium level as color indicator.', warning=FALSE}
-ci.median <- ci(ggs(radon$s.radon, family="^alpha|^beta")) %>%
+ci.median <- ci(ggs(radon$s.radon, family = "^alpha|^beta")) %>%
   select(Parameter, median)
 
-L.radon <- data.frame(
-  Parameter=c(
-    paste("alpha[", radon$counties$id.county, "]", sep=""),
-    paste("beta[", radon$counties$id.county, "]", sep="")),
-  Label=rep(radon$counties$County, 2),
-  Uranium=rep(radon$counties$uranium, 2),
-  Location=rep(radon$counties$ns.location, 2),
-  Coefficient=gl(2, length(radon$counties$id.county), 
-    labels=c("Intercept", "Slope")))
+L.radon <- bind_rows(
+   plab("alpha", list(County = radon$counties$County)) %>%
+     mutate(Coefficient = "Intercept"),
+   plab("beta", list(County = radon$counties$County)) %>%
+     mutate(Coefficient = "Slope")) %>%
+  left_join(radon$counties) %>%
+  rename(Uranium = uranium) %>%
+  rename(Location = ns.location)
 
-ggs_caterpillar(ggs(radon$s.radon, par_labels=L.radon, family="^alpha")) +
-  facet_wrap(~ Location, scales="free") +
-  aes(color=Uranium)
+head(L.radon)
+
+ggs_caterpillar(ggs(radon$s.radon, par_labels = L.radon, family = "^alpha")) +
+  facet_wrap(~ Location, scales = "free") +
+  aes(color = Uranium)
 ```
 
 Another option is, for instance, when the display is not enough to accommodate all
