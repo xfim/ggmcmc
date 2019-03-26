@@ -37,7 +37,7 @@ get_family <- function(D, family=NA) {
 sde0f <- function(x) {
   # In case of series not varying, set v0 to 0
   # if (length(unique(x))>1) {
-  if (0 != var(if (is.factor(x)) as.integer(x) else x)) {    
+  if (0 != var(if (is.factor(x)) as.integer(x) else x)) {
     m.ar <- ar(x)
     v0 <- m.ar$var.pred / (1-sum(m.ar$ar))^2
   } else {
@@ -120,4 +120,68 @@ ci <- function (D, thick_ci=c(0.05, 0.95), thin_ci=c(0.025, 0.975)) {
     X <- suppressWarnings(dplyr::left_join(X, dplyr::distinct(dplyr::select(D, -Iteration, -Chain, -value)), by="Parameter"))
   }
   return(X)
+}
+
+#' Generate a data frame suitable for matching parameter names with their labels
+#'
+#' Generate a data frame with at least columns for Parameter and Labels. This function is intended to work as a shortcut for the matching data frame necessary to pass the argument "par_labels" to ggs() calls for transforming the parameter names.
+#'
+#' @param parameter.name A character vector of length one with the name of the variable (family) without subscripts. Usually, it refers to a Greek letter.
+#' @param match A named list with the variable labels and the values of the factor corresponding to the dimension they map to.
+#' @param subscripts An optional character with the letters that correspond to each of the dimensions of the family of parameters. By default it uses not very informative names "dim.1", "dim.2", etc... It usually corresponds to the "i", "j", ... subscripts in classical textbooks, but is recommended to be closer to the subscripts given in the sampling software.
+#' @return A data frame tbl with the Parameter names and its match with meaningful variable Labels. Also the intermediate variables are passed to make it easier to work with the samples using meaningful variable names.
+#' @export
+#' @examples
+#' data(radon)
+#' L.radon <- plab("alpha", match = list(County = radon$counties$County))
+#' # Generates a data frame suitable for matching with the generated samples
+#' # through the "par_labels" function:
+#' ggs_caterpillar(ggs(radon$s.radon, par_labels = L.radon, family = "^alpha"))
+plab <- function (parameter.name, match, subscripts = NULL) {
+  # If no subscripts are passed, use generic ones
+  if (is.null(subscripts)) {
+    ss <- paste("dim", 1:length(match), sep = ".")
+  } else {
+    ss <- subscripts
+  }
+  # Generate the texts to be evaluated
+  # There must be a more efficient way to do this, I am sure
+  # Divide the text between the expand grid, the parameter, the variables and the labels
+  eg.text <- "expand.grid("
+  par.text <- paste0("Parameter = paste('", parameter.name, "[', ")
+  var.text <- ""
+  if (length(match) > 1) {
+    lab.text <- "Label = paste("
+  } else {
+    lab.text <- "Label = "
+  }
+  for (m in 1:length(match)) {
+    if (m > 1) {
+      eg.text <- paste0(eg.text, ", ")
+      par.text <- paste0(par.text, ", ',', ")
+      lab.text <- paste0(lab.text, ", ")
+    }
+    eg.text <- paste0(eg.text, ss[m], " = 1:", length(match[[m]]))
+    par.text <- paste0(par.text, ss[m])
+    var.text <- paste0(var.text, " %>% dplyr::mutate(", names(match)[m], " = factor(", ss[m], ", label = ", match[m], "))")
+    lab.text <- paste0(lab.text, names(match)[m])
+  }
+  eg.text <- paste0(eg.text, ")")
+  par.text <- paste0(par.text, ", ']', sep = '')")
+  if (length(match) > 1) {
+    lab.text <- paste0(lab.text, ", sep = ' : ')")
+  }
+
+  # Paste the final text together
+  full.text <- eg.text
+  full.text <- paste0(full.text, " %>% dplyr::mutate(", par.text, ")")
+  full.text <- paste0(full.text, var.text)
+  full.text <- paste0(full.text, " %>% dplyr::mutate(", lab.text, ")")
+  full.text <- paste0(full.text, " %>% dplyr::tbl_df()")
+  full.text <- paste0(full.text, " %>% dplyr::mutate(Parameter = factor(Parameter))")
+  full.text <- paste0(full.text, " %>% dplyr::mutate(Label = factor(Label))")
+
+  # Evaluate the text and generate the data frame
+  PL <- eval(parse(text = full.text))
+  return(PL)
 }

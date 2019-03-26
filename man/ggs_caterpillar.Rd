@@ -6,7 +6,7 @@
 \usage{
 ggs_caterpillar(D, family = NA, X = NA, thick_ci = c(0.05, 0.95),
   thin_ci = c(0.025, 0.975), line = NA, horizontal = TRUE,
-  model_labels = NULL, greek = FALSE, sort = TRUE)
+  model_labels = NULL, label = NULL, greek = FALSE, sort = TRUE)
 }
 \arguments{
 \item{D}{Data frame whith the simulations or list of data frame with simulations. If a list of data frames with simulations is passed, the names of the models are the names of the objects in the list.}
@@ -24,6 +24,8 @@ ggs_caterpillar(D, family = NA, X = NA, thick_ci = c(0.05, 0.95),
 \item{horizontal}{Logical. When TRUE (the default), the plot has horizontal lines. When FALSE, the plot is reversed to show vertical lines. Horizontal lines are more appropriate for categorical caterpillar plots, because the x-axis is the only dimension that matters. But for caterpillar plots against another variable, the vertical position is more appropriate.}
 
 \item{model_labels}{Vector of strings that matches the number of models in the list. It is only used in case of multiple models and when the list of ggs objects given at \code{D} is not named. Otherwise, the names in the list are used.}
+
+\item{label}{Character value with the name of the variable that contains the labels displayed in the plot. Defaults to NULL, which corresponds to using the Parameter name or the Label in case par_labels is used in the ggs() object.}
 
 \item{greek}{Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.}
 
