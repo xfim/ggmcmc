@@ -187,7 +187,7 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
       D <- get_family(D, family=family)
     }
     # Change the names of the parameters if par_labels argument has been passed
-    if (length(which(class(par_labels) %in% c("data.frame", "tbl_df"))) > 1) {
+    if (length(which(class(par_labels) %in% c("data.frame", "tbl_df"))) >= 1) {
       if (length(which(c("Parameter", "Label") %in% names(par_labels))) == 2) {
         aD <- attributes(D)
         levels(D$Parameter)[which(levels(D$Parameter) %in% par_labels$Parameter)] <-
