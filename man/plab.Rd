@@ -9,7 +9,7 @@ plab(parameter.name, match, subscripts = NULL)
 \arguments{
 \item{parameter.name}{A character vector of length one with the name of the variable (family) without subscripts. Usually, it refers to a Greek letter.}
 
-\item{match}{A named list with the variable labels and the values of the factor corresponding to the dimension they map to.}
+\item{match}{A named list with the variable labels and the values of the factor corresponding to the dimension they map to. The order of the list matters, as ggmcmc assumes that the first dimension corresponds to the first element in the list, and so on.}
 
 \item{subscripts}{An optional character with the letters that correspond to each of the dimensions of the family of parameters. By default it uses not very informative names "dim.1", "dim.2", etc... It usually corresponds to the "i", "j", ... subscripts in classical textbooks, but is recommended to be closer to the subscripts given in the sampling software.}
 }
