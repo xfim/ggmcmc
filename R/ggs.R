@@ -108,8 +108,14 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
   if (class(S)=="mcmc.list" | class(S)=="mcmc" | processed) {  # JAGS typical output or MCMCpack (or previously processed stan samples)
     if (!is.na(family)) {
       requireNamespace("coda")
-      location.family <- grep(family, dimnames(S[[1]])[[2]])
-      S <- S[,location.family, drop = FALSE]
+      if (!processed) {
+        location.family <- grep(family, dimnames(S[[1]])[[2]])
+        S <- S[,location.family, drop = FALSE]
+      } else { # for already processed samples, use dplyr()'s own filter based on grepl
+        D <- D %>%
+          filter(grepl(family, Parameter)) %>%
+          mutate(Parameter = as.factor(as.character(Parameter)))
+      }
     }
     if (!processed) { # only in JAGS or MCMCpack, using coda
       lS <- length(S)
