@@ -47,7 +47,7 @@ ggs_effective <- function(D, family = NA, greek = FALSE) {
   # Merge BW and compute the weighted average (wa, var.hat+) and the nEffective
   BW <- BW %>%
     dplyr::mutate(
-      wa= ((W * (attributes(D)$nIterations - 1)) / attributes(D)$nIterations ) +
+      wa = ((W * (attributes(D)$nIterations - 1)) / attributes(D)$nIterations ) +
         (B / attributes(D)$nIterations))
   # Calculate the variogram
   VG <- D %>%
@@ -79,7 +79,7 @@ ggs_effective <- function(D, family = NA, greek = FALSE) {
     dplyr::summarize(sum.phat = sum(phat))
   NE <- sum.Phat %>%
     dplyr::group_by(Parameter) %>%
-    dplyr::summarize(nEffective = attributes(D)$nIterations * attributes(D)$nChains / (1 + 2 * sum.phat))
+    dplyr::summarize(nEffective = (attributes(D)$nIterations * attributes(D)$nChains) / (1 + 2 * sum.phat))
 
   # For parameters that do not vary, nEffective is Nan. Move it to NA
   NE$nEffective[is.nan(NE$nEffective)] <- NA
