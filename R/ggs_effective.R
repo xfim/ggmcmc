@@ -61,7 +61,7 @@ ggs_effective <- function(D, family = NA, greek = FALSE) {
     dplyr::mutate(variogram = (1 / (attributes(D)$nChains * (attributes(D)$nIterations - Iteration)) * sum.diff.sq))
   # Correlations
   Phat <- VG %>%
-    dplyr::inner_join(dplyr::select(BW, Parameter, wa)) %>%
+    dplyr::inner_join(dplyr::select(BW, Parameter, wa), by = "Parameter") %>%
     dplyr::mutate(phat = (1 - (variogram / (2 * wa)))) %>%
     dplyr::ungroup()
   # Restrict phat to first lag where ac is negative
