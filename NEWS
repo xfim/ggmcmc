@@ -1,3 +1,48 @@
+Version 1.3
+------------------------------
+
+MAJOR CHANGES
+
+  - A new function ggs_pcp() displays the percent of correctly predicted outcomes
+  in a binary model.
+
+  - ggs_Rhat() now allows to select the Rhat specification. The "BG98" is the
+  one used by the coda package, but the default is still the "BDA2". Check the
+  documentation for more details.
+
+  - A new function ggs_effective() displays the number of effective independent
+  draws.
+
+  - A new function plab() is included to help creating matching data frames for
+  parameters and labels.
+
+  - Following "Bayesian Data Analysis", v3 ggs() introduces the possibility of
+  splitting the sequences into two chains. The new argument "splitting" is
+  however FALSE by default.
+
+  - ggs_caterpillar() now includes a new argument "label" that allows to specify
+  the variable to be displayed in the labels, hence facilitating the combination
+  with facet_*().
+
+
+MINOR CHANGES
+
+  - Adjust vertical size of facetted figure.
+
+  - Improved way to calculate the Geweke diagnostic.
+
+  - More informative error messages.
+
+  - Updated list of contributors.
+
+  - Improved documentation in the main github page.
+
+  - Bug solving the management of families using stan.
+
+
+
+
+
 Version 1.2
 ------------------------------
 
