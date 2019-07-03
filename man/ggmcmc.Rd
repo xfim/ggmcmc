@@ -44,8 +44,10 @@ results against observed variables.
 Notice that caterpillar plots are only created when there are multiple parameters within the same family. A family of parameters is considered to be all parameters that have the same name (usually the same greek letter) but different number within square brackets (such as alpha[1], alpha[2], ...).
 }
 \examples{
+\dontrun{
 data(linear)
 ggmcmc(ggs(s))  # Directly from a coda object
+}
 }
 \references{
 \url{http://xavier-fim.net/packages/ggmcmc}.
