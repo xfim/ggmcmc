@@ -16,8 +16,10 @@
 #' @param ... Other options passed to the pdf device.
 #' @export
 #' @examples
+#'\dontrun{
 #' data(linear)
 #' ggmcmc(ggs(s))  # Directly from a coda object
+#'}
 ggmcmc <- function(D, file = "ggmcmc-output.pdf", family = NA, plot = NULL,
   param_page = 5, width = 7, height = 10, simplify_traceplot = NULL,
   dev_type_html = "png", ...) {
