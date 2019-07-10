@@ -1,6 +1,6 @@
 #' Dotplot of the effective number of independent draws
 #'
-#' Plot a dotplot of the effective number of independent draws. The version from the third edition of Bayesian Data Analysis (Gelman, Carlin, Stein, Dunson, Vehtari and Rubin) is used.
+#' Dotplot of the effective number of independent draws. The version used is from the third edition of Bayesian Data Analysis (Gelman, Carlin, Stein, Dunson, Vehtari and Rubin).
 #'
 #' Notice that at least two chains are required.
 #'
