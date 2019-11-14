@@ -4,9 +4,15 @@
 \alias{ggs_traceplot}
 \title{Traceplot of the chains}
 \usage{
-ggs_traceplot(D, family = NA, original_burnin = TRUE,
-  original_thin = TRUE, simplify = NULL, hpd = FALSE,
-  greek = FALSE)
+ggs_traceplot(
+  D,
+  family = NA,
+  original_burnin = TRUE,
+  original_thin = TRUE,
+  simplify = NULL,
+  hpd = FALSE,
+  greek = FALSE
+)
 }
 \arguments{
 \item{D}{Data frame with the simulations.}

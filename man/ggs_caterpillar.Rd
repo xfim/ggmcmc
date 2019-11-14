@@ -4,9 +4,19 @@
 \alias{ggs_caterpillar}
 \title{Caterpillar plot with thick and thin CI}
 \usage{
-ggs_caterpillar(D, family = NA, X = NA, thick_ci = c(0.05, 0.95),
-  thin_ci = c(0.025, 0.975), line = NA, horizontal = TRUE,
-  model_labels = NULL, label = NULL, greek = FALSE, sort = TRUE)
+ggs_caterpillar(
+  D,
+  family = NA,
+  X = NA,
+  thick_ci = c(0.05, 0.95),
+  thin_ci = c(0.025, 0.975),
+  line = NA,
+  horizontal = TRUE,
+  model_labels = NULL,
+  label = NULL,
+  greek = FALSE,
+  sort = TRUE
+)
 }
 \arguments{
 \item{D}{Data frame whith the simulations or list of data frame with simulations. If a list of data frames with simulations is passed, the names of the models are the names of the objects in the list.}

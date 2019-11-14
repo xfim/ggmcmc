@@ -4,8 +4,7 @@
 \alias{ggs_compare_partial}
 \title{Density plots comparing the distribution of the whole chain with only its last part.}
 \usage{
-ggs_compare_partial(D, family = NA, partial = 0.1, rug = FALSE,
-  greek = FALSE)
+ggs_compare_partial(D, family = NA, partial = 0.1, rug = FALSE, greek = FALSE)
 }
 \arguments{
 \item{D}{Data frame whith the simulations}

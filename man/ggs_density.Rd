@@ -4,8 +4,7 @@
 \alias{ggs_density}
 \title{Density plots of the chains}
 \usage{
-ggs_density(D, family = NA, rug = FALSE, hpd = FALSE,
-  greek = FALSE)
+ggs_density(D, family = NA, rug = FALSE, hpd = FALSE, greek = FALSE)
 }
 \arguments{
 \item{D}{Data frame whith the simulations.}

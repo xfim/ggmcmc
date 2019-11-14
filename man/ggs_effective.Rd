@@ -4,7 +4,13 @@
 \alias{ggs_effective}
 \title{Dotplot of the effective number of independent draws}
 \usage{
-ggs_effective(D, family = NA, greek = FALSE)
+ggs_effective(
+  D,
+  family = NA,
+  greek = FALSE,
+  version_effective = "spectral",
+  proportion = TRUE
+)
 }
 \arguments{
 \item{D}{Data frame whith the simulations}
@@ -12,12 +18,16 @@ ggs_effective(D, family = NA, greek = FALSE)
 \item{family}{Name of the family of parameters to plot, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc).}
 
 \item{greek}{Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.}
+
+\item{version_effective}{Character variable with the name of the version of the calculation to use. Defaults to "spectral", which refers to the simple version estimating the spectral density at frequency zero used in the "coda" package. An alternative version "BDA3" is provided, which refers to the third edition of Bayesian Data Analysis (Gelman, Carlin, Stern, Dunson, Vehtari and Rubin).}
+
+\item{proportion}{Logical value whether to return the proportion of effective independent draws over the total (the default) or the number.}
 }
 \value{
 A \code{ggplot} object.
 }
 \description{
-Plot a dotplot of the effective number of independent draws. The version from the third edition of Bayesian Data Analysis (Gelman, Carlin, Stein, Dunson, Vehtari and Rubin) is used.
+Dotplot of the effective number of independent draws. The default version is the sample size adjusted for autocorrelation. An alternative from the third edition of Bayesian Data Analysis (Gelman, Carlin, Stern, Dunson, Vehtari and Rubin) is provided.
 }
 \details{
 Notice that at least two chains are required.

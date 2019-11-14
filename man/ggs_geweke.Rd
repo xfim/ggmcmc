@@ -4,8 +4,14 @@
 \alias{ggs_geweke}
 \title{Dotplot of the Geweke diagnostic, the standard Z-score}
 \usage{
-ggs_geweke(D, family = NA, frac1 = 0.1, frac2 = 0.5,
-  shadow_limit = TRUE, greek = FALSE)
+ggs_geweke(
+  D,
+  family = NA,
+  frac1 = 0.1,
+  frac2 = 0.5,
+  shadow_limit = TRUE,
+  greek = FALSE
+)
 }
 \arguments{
 \item{D}{data frame whith the simulations.}

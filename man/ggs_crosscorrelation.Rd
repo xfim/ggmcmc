@@ -4,8 +4,7 @@
 \alias{ggs_crosscorrelation}
 \title{Plot the Cross-correlation between-chains}
 \usage{
-ggs_crosscorrelation(D, family = NA, absolute_scale = TRUE,
-  greek = FALSE)
+ggs_crosscorrelation(D, family = NA, absolute_scale = TRUE, greek = FALSE)
 }
 \arguments{
 \item{D}{Data frame whith the simulations.}

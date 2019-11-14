@@ -4,8 +4,13 @@
 \alias{ggs_running}
 \title{Running means of the chains}
 \usage{
-ggs_running(D, family = NA, original_burnin = TRUE,
-  original_thin = TRUE, greek = FALSE)
+ggs_running(
+  D,
+  family = NA,
+  original_burnin = TRUE,
+  original_thin = TRUE,
+  greek = FALSE
+)
 }
 \arguments{
 \item{D}{Data frame whith the simulations.}

@@ -4,8 +4,13 @@
 \alias{ggs_separation}
 \title{Separation plot for models with binary response variables}
 \usage{
-ggs_separation(D, outcome, minimalist = FALSE, show_labels = FALSE,
-  uncertainty_band = TRUE)
+ggs_separation(
+  D,
+  outcome,
+  minimalist = FALSE,
+  show_labels = FALSE,
+  uncertainty_band = TRUE
+)
 }
 \arguments{
 \item{D}{Data frame whith the simulations. Notice that only the fitted / expected posterior outcomes are needed, and so either the previous call to ggs() should have limited the family of parameters to only pass the fitted / expected values. See the example below.}

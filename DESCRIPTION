@@ -51,5 +51,5 @@ Collate:
     'ggs_ppsd.R'
     'ggs_pcp.R'
     'ggs_rocplot.R'
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.0
 VignetteBuilder: knitr
