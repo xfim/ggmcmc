@@ -49,11 +49,11 @@ ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE, gr
     dplyr::mutate(v = sde0f / n) %>%
     dplyr::select(-m, -n, -sde0f)
   # Calculate the z scores
-  Z <- left_join(M, V) %>%
-    gather(statistic, value, -Parameter, -Chain, -part) %>%
-    unite(st.part, part, statistic, sep = ".") %>%
-    spread(st.part, value) %>%
-    mutate(z = (first.m - last.m) / sqrt(first.v + last.v))
+  Z <- dplyr::left_join(M, V, by = c("Parameter", "Chain", "part")) %>%
+    tidyr::gather(statistic, value, -Parameter, -Chain, -part) %>%
+    tidyr::unite(st.part, part, statistic, sep = ".") %>%
+    tidyr::spread(st.part, value) %>%
+    dplyr::mutate(z = (first.m - last.m) / sqrt(first.v + last.v))
   # Check that there are no Inf values, otherwise raise a message and continue
   # having converted it into NA
   Zinf <- which(is.infinite(Z$z))
