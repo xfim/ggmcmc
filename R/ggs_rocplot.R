@@ -45,7 +45,7 @@ ggs_rocplot <- function(D, outcome, fully_bayesian=FALSE) {
   roc.df <- dplyr::bind_cols(roc.df, roc_calc(dplyr::select(roc.df, value, Observed)))
   # Sort it to be sure that the figure is plotted nicely
   roc.df <- dplyr::tbl_df(roc.df) %>%
-    dplyr::filter(Sensitivity, Specificity)
+    dplyr::arrange(Sensitivity, Specificity)
   # Plot differently if it's a fully Bayesian figure or not
   if (fully_bayesian) {
     # Start plotting
