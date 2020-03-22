@@ -4,7 +4,9 @@
 \name{s.y.rep}
 \alias{s.y.rep}
 \title{Simulations of the posterior predictive distribution of a simple linear regression with fake data.}
-\format{A coda object containing posterior distributions of the posterior predictive distribution of a linear regression with fake data.}
+\format{
+A coda object containing posterior distributions of the posterior predictive distribution of a linear regression with fake data.
+}
 \usage{
 s.y.rep
 }

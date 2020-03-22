@@ -14,6 +14,8 @@ ggs_caterpillar(
   horizontal = TRUE,
   model_labels = NULL,
   label = NULL,
+  comparison = NULL,
+  comparison_separation = 0.2,
   greek = FALSE,
   sort = TRUE
 )
@@ -36,6 +38,10 @@ ggs_caterpillar(
 \item{model_labels}{Vector of strings that matches the number of models in the list. It is only used in case of multiple models and when the list of ggs objects given at \code{D} is not named. Otherwise, the names in the list are used.}
 
 \item{label}{Character value with the name of the variable that contains the labels displayed in the plot. Defaults to NULL, which corresponds to using the Parameter name or the Label in case par_labels is used in the ggs() object.}
+
+\item{comparison}{Character value with the name of the variable that contains the focus of the comparison. Defaults to NULL, which corresponds to no comparison. It is not expected to be used together with X, or in horizontal setup.}
+
+\item{comparison_separation}{Numerical value with the separation between the dodged parameters. Defaults to 0.2.}
 
 \item{greek}{Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.}
 

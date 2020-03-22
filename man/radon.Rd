@@ -4,7 +4,9 @@
 \name{radon}
 \alias{radon}
 \title{Simulations of the parameters of a hierarchical model using the radon example in Gelman & Hill (2007).}
-\format{A list containing several elements to show the possibilities af ggmcmc.}
+\format{
+A list containing several elements to show the possibilities af ggmcmc.
+}
 \usage{
 radon
 }

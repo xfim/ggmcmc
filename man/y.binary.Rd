@@ -4,7 +4,9 @@
 \name{y.binary}
 \alias{y.binary}
 \title{Values for the observed outcome of a binary logistic regression with fake data.}
-\format{A numeric vector containing the observed values of the outcome in the linear regression with fake data.}
+\format{
+A numeric vector containing the observed values of the outcome in the linear regression with fake data.
+}
 \usage{
 y.binary
 }

@@ -4,7 +4,9 @@
 \name{s.binary}
 \alias{s.binary}
 \title{Simulations of the parameters of a simple linear regression with fake data.}
-\format{A coda object containing posterior distributions of the intercept (theta[1]) and slope (theta[2]) of a logistic regression with fake data, and of the fitted / expected values (mu).}
+\format{
+A coda object containing posterior distributions of the intercept (theta[1]) and slope (theta[2]) of a logistic regression with fake data, and of the fitted / expected values (mu).
+}
 \usage{
 s.binary
 }

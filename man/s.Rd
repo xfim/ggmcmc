@@ -4,7 +4,9 @@
 \name{s}
 \alias{s}
 \title{Simulations of the parameters of a simple linear regression with fake data.}
-\format{A coda object containing posterior distributions of the intercept, slope and residual of a linear regression with fake data.}
+\format{
+A coda object containing posterior distributions of the intercept, slope and residual of a linear regression with fake data.
+}
 \usage{
 s
 }
