@@ -152,16 +152,26 @@ ggmcmc <- function(D, file = "ggmcmc-output.pdf", family = NA, plot = NULL,
       # Caterpillar plots are only plotted for each of the repeated parameters
       cat("\n# Caterpillar plots\n")
 
-      # get the names of the parameters without their number (parameter family)
-      Parameter.family <- gsub("\\[.+\\]", "", D$Parameter)
-
+      # Get the names of the parameters without their number (parameter family).
       # Count how many members each family of parameters has, and only plot where
-      # there is more than one parameter
-      n.family.members <- apply(ifelse(table(D$Parameter, Parameter.family) > 0, 1, 0), 2, sum)
+      #   there is more than one parameter.
+      # If par_labels has been passed, then use the original name.
+      if ("ParameterOriginal" %in% names(D)) {
+        Parameter.family <- gsub("\\[.+\\]", "", D$ParameterOriginal)
+        n.family.members <- apply(ifelse(table(D$ParameterOriginal, Parameter.family) > 0, 1, 0), 2, sum)
+      } else {
+        Parameter.family <- gsub("\\[.+\\]", "", D$Parameter)
+        n.family.members <- apply(ifelse(table(D$Parameter, Parameter.family) > 0, 1, 0), 2, sum)
+      }
+
       for (f in unique(Parameter.family)) {
         if (n.family.members[f] > 1) {
           cat(paste("\n## ", f, "\n", sep = ""))
-          cat(paste("```{r caterpillar_", f, ", echo = FALSE, fig.height = ", (2 + 0.2 * n.family.members[f]), "}\nggs_caterpillar(D, family='^", f, "\\\\[', horizontal = TRUE) + labs(title=f)\n```\n\n", sep = ""))
+          if ("ParameterOriginal" %in% names(D)) {
+            cat(paste("```{r caterpillar_", f, ", echo = FALSE, fig.height = ", (2 + 0.2 * n.family.members[f]), "}\nggs_caterpillar(filter(D, grepl('^", f, "\\\\[', ParameterOriginal)), horizontal = TRUE) + labs(title=f)\n```\n\n", sep = ""))
+          } else {
+            cat(paste("```{r caterpillar_", f, ", echo = FALSE, fig.height = ", (2 + 0.2 * n.family.members[f]), "}\nggs_caterpillar(D, family='^", f, "\\\\[', horizontal = TRUE) + labs(title=f)\n```\n\n", sep = ""))
+          }
         }
       }
     }
@@ -351,15 +361,25 @@ ggmcmc <- function(D, file = "ggmcmc-output.pdf", family = NA, plot = NULL,
       # Caterpillar plots are only plotted for each of the repeated parameters
       cat("Plotting caterpillar plot\n")
 
-      # get the names of the parameters without their number (parameter family)
-      Parameter.family <- gsub("\\[.+\\]", "", D$Parameter)
-
+      # Get the names of the parameters without their number (parameter family).
       # Count how many members each family of parameters has, and only plot where
-      # there is more than one parameter
-      n.family.members <- apply(ifelse(table(D$Parameter, Parameter.family) > 0, 1, 0), 2, sum)
+      #   there is more than one parameter.
+      # If par_labels has been passed, then use the original name.
+      if ("ParameterOriginal" %in% names(D)) {
+        Parameter.family <- gsub("\\[.+\\]", "", D$ParameterOriginal)
+        n.family.members <- apply(ifelse(table(D$ParameterOriginal, Parameter.family) > 0, 1, 0), 2, sum)
+      } else {
+        Parameter.family <- gsub("\\[.+\\]", "", D$Parameter)
+        n.family.members <- apply(ifelse(table(D$Parameter, Parameter.family) > 0, 1, 0), 2, sum)
+      }
+
       for (f in unique(Parameter.family)) {
         if (n.family.members[f] > 1) {
-          print(ggs_caterpillar(D, family=paste("^", f, "\\[", sep=""), horizontal=TRUE) + labs(title=f))
+          if ("ParameterOriginal" %in% names(D)) {
+            print(ggs_caterpillar(filter(D, grepl(paste("^", f, "\\[", sep = ""), ParameterOriginal)), horizontal=TRUE) + labs(title=f))
+          } else {
+            print(ggs_caterpillar(D, family=paste("^", f, "\\[", sep=""), horizontal=TRUE) + labs(title=f))
+          }
         }
       }
     }
