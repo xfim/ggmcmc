@@ -197,7 +197,7 @@ ggmcmc <- function(D, file = "ggmcmc-output.pdf", family = NA, plot = NULL,
 
     ## Open the pdf device
     if (!is.null(file)) {
-      pdf(file, width=width, height=height)
+      pdf(file, width=width, height=height, ...)
     }
 
     # When there are fewer parameters to plot than the number of requested
