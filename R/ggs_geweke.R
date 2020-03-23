@@ -11,12 +11,13 @@
 #' @param frac2 Numeric, proportion of the last part of the chains selected. Defaults to 0.5.
 #' @param shadow_limit, logical. When TRUE (the default), a shadowed area between -2 and +2 is drawn.
 #' @param greek Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.
+#' @param plot Logical value indicating whether the plot must be returned (the default) or a tidy dataframe with the results of the Geweke diagnostics per Parameter and Chain.
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
 #' data(linear)
 #' ggs_geweke(ggs(s))
-ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE, greek=FALSE) {
+ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE, greek=FALSE, plot=TRUE) {
   # Manage subsetting a family of parameters
   if (!is.na(family)) {
     D <- get_family(D, family=family)
@@ -69,21 +70,25 @@ ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE, gr
   rz <- range(Z$z, na.rm=TRUE)
   rz[1] <- ifelse(rz[1] < -2.5, rz[1], -2.5)
   rz[2] <- ifelse(rz[2] > 2.5, rz[2], 2.5)
-  # Plot
-  f <- ggplot(Z, aes(x=z, y=Parameter, colour=as.factor(Chain))) +
-    geom_point() + xlim(rz) + ggtitle("Geweke Diagnostics")
-  # Apply shadow of extreme values
-  if (!is.na(shadow_limit)) {
-    gw <- data.frame(x=c(-2, 2, 2, -2), y=c(rep(0, 2), rep(attributes(D)$nParameters+1, 2)), g='A')
-    f <- f + geom_polygon(data=gw, aes(x=x, y=y, group=g, colour="black", linetype=NA),
-      alpha=0.2, show.legend=FALSE)
+  # Plot or return calculations
+  if (plot) {
+    f <- ggplot(Z, aes(x=z, y=Parameter, colour=as.factor(Chain))) +
+      geom_point() + xlim(rz) + ggtitle("Geweke Diagnostics")
+    # Apply shadow of extreme values
+    if (!is.na(shadow_limit)) {
+      gw <- data.frame(x=c(-2, 2, 2, -2), y=c(rep(0, 2), rep(attributes(D)$nParameters+1, 2)), g='A')
+      f <- f + geom_polygon(data=gw, aes(x=x, y=y, group=g, colour="black", linetype=NA),
+        alpha=0.2, show.legend=FALSE)
+    }
+    # Correct legend
+    f <- f +
+      scale_colour_discrete(name="Chain",
+        breaks=as.factor(unique(Z$Chain)), labels=as.factor(unique(Z$Chain)))
+    if (greek) {
+      f <- f + scale_y_discrete(labels = parse(text = levels(Z$Parameter)))
+    }
+    return(f)
+  } else {
+    return(dplyr::select(Z, Parameter, Chain, z))
   }
-  # Correct legend
-  f <- f +
-    scale_colour_discrete(name="Chain",
-      breaks=as.factor(unique(Z$Chain)), labels=as.factor(unique(Z$Chain)))
-  if (greek) {
-    f <- f + scale_y_discrete(labels = parse(text = levels(Z$Parameter)))
-  }
-  return(f)
 }

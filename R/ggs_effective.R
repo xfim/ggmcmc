@@ -11,13 +11,15 @@
 #' @param greek Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.
 #' @param version_effective Character variable with the name of the version of the calculation to use. Defaults to "spectral", which refers to the simple version estimating the spectral density at frequency zero used in the "coda" package. An alternative version "BDA3" is provided, which refers to the third edition of Bayesian Data Analysis (Gelman, Carlin, Stern, Dunson, Vehtari and Rubin).
 #' @param proportion Logical value whether to return the proportion of effective independent draws over the total (the default) or the number.
+#' @param plot Logical value indicating whether the plot must be returned (the default) or a tidy dataframe with the effective number of samples per Parameter.
 #' @return A \code{ggplot} object.
 #' @export
 #' @examples
 #' data(linear)
 #' ggs_effective(ggs(s))
 ggs_effective <- function(D, family = NA, greek = FALSE,
-                          version_effective = "spectral", proportion = TRUE) {
+                          version_effective = "spectral", proportion = TRUE,
+                          plot = TRUE) {
   if (attributes(D)$nChains<2) {
     stop("At least two chains are required")
   }
@@ -107,16 +109,20 @@ ggs_effective <- function(D, family = NA, greek = FALSE,
     t.lab <- "Number of effective independent draws"
   }
 
-  # Plot
-  f <- ggplot(NE, aes(x=Effective, y=reorder(Parameter, Effective))) +
-    geom_point() +
-    ylab("Parameter") +
-    ggtitle(t.lab)
-  if (proportion) {
-    f <- f + expand_limits(x = c(0, 1))
+  # Plot or return calculations
+  if (plot) {
+    f <- ggplot(NE, aes(x=Effective, y=reorder(Parameter, Effective))) +
+      geom_point() +
+      ylab("Parameter") +
+      ggtitle(t.lab)
+    if (proportion) {
+      f <- f + expand_limits(x = c(0, 1))
+    }
+    if (greek) {
+      f <- f + scale_y_discrete(labels = parse(text = as.character(E$Parameter)))
+    }
+    return(f)
+  } else {
+    return(dplyr::select(NE, Parameter, Effective))
   }
-  if (greek) {
-    f <- f + scale_y_discrete(labels = parse(text = as.character(E$Parameter)))
-  }
-  return(f)
 }
