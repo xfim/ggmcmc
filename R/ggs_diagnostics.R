@@ -37,6 +37,7 @@ ggs_diagnostics <- function(D, family = NA, version_rhat = "BDA2", version_effec
         tidyr::gather(Diagnostic, value, -Parameter)) %>%
     dplyr::bind_rows(
       ggmcmc::ggs_effective(D, version_effective = version_effective, proportion = proportion, plot = FALSE) %>%
-        tidyr::gather(Diagnostic, value, -Parameter))
+        tidyr::gather(Diagnostic, value, -Parameter)) %>%
+    dplyr::mutate(Diagnostic = as.factor(Diagnostic))
   return(R)
 }
