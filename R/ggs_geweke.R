@@ -12,7 +12,7 @@
 #' @param shadow_limit, logical. When TRUE (the default), a shadowed area between -2 and +2 is drawn.
 #' @param greek Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.
 #' @param plot Logical value indicating whether the plot must be returned (the default) or a tidy dataframe with the results of the Geweke diagnostics per Parameter and Chain.
-#' @return A \code{ggplot} object.
+#' @return A \code{ggplot} object, or a \code{tidy} data frame.
 #' @export
 #' @examples
 #' data(linear)

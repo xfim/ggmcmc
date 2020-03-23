@@ -12,7 +12,7 @@
 #' @param version_effective Character variable with the name of the version of the calculation to use. Defaults to "spectral", which refers to the simple version estimating the spectral density at frequency zero used in the "coda" package. An alternative version "BDA3" is provided, which refers to the third edition of Bayesian Data Analysis (Gelman, Carlin, Stern, Dunson, Vehtari and Rubin).
 #' @param proportion Logical value whether to return the proportion of effective independent draws over the total (the default) or the number.
 #' @param plot Logical value indicating whether the plot must be returned (the default) or a tidy dataframe with the effective number of samples per Parameter.
-#' @return A \code{ggplot} object.
+#' @return A \code{ggplot} object, or a \code{tidy} data frame.
 #' @export
 #' @examples
 #' data(linear)
