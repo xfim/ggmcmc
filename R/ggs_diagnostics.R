@@ -13,11 +13,14 @@
 #'
 #' @param D Data frame whith the simulations
 #' @param family Name of the family of parameters to return, as given by a character vector or a regular expression. A family of parameters is considered to be any group of parameters with the same name but different numerical value between square brackets (as beta[1], beta[2], etc).
-#' @param version_rhat Character variable with the name of the version of the potential scale reduction factor to use. Defaults to "BDA2", which refers to the second version of "bayesian Data Analysis (Gelman, Carlin, Stern and Rubin). The other available version is "BG98", which refers to Brooks & Gelman (1998) and is the one used in the "coda" package.
+#' @param version_rhat Character variable with the name of the version of the potential scale reduction factor to use. Defaults to "BDA2", which refers to the second version of _Bayesian Data Analysis_ (Gelman, Carlin, Stern and Rubin). The other available version is "BG98", which refers to Brooks & Gelman (1998) and is the one used in the "coda" package.
 #' @param version_effective Character variable with the name of the version of the calculation to use. Defaults to "spectral", which refers to the simple version estimating the spectral density at frequency zero used in the "coda" package. An alternative version "BDA3" is provided, which refers to the third edition of Bayesian Data Analysis (Gelman, Carlin, Stern, Dunson, Vehtari and Rubin).
 #' @param proportion Logical value whether to return the proportion of effective independent draws over the total (the default) or the number.
+#' @include ggs_geweke.R
+#' @include ggs_Rhat.R
+#' @include ggs_effective.R
+#' @seealso \code{\link{ggs_geweke}}, \code{\link{ggs_Rhat}} and \code{\link{ggs_effective}} for their respective options.
 #' @return A \code{tidy} dataframe. 
-#' @seealso [ggs_geweke()], [ggs_Rhat()] and [ggs_effective()] for their respective options.
 #' @export
 #' @examples
 #' data(linear)
