@@ -5,7 +5,7 @@ Description: Tools for assessing and diagnosing convergence of
     results from full MCMC analysis. The package also facilitates the graphical
     interpretation of models by providing flexible functions to plot the
     results against observed variables.
-Version: 1.3
+Version: 1.4
 Authors@R: person("Xavier", "Fernández i Marín", email = "xavier.fim@gmail.com", role = c("aut", "cre"))
 Depends:
     dplyr (>= 0.5.0),
@@ -16,6 +16,7 @@ Imports:
 Suggests:
     coda,
     rstan (>= 2.10.1),
+    nimble,
     knitr,
     rmarkdown,
     ggthemes,
@@ -27,28 +28,29 @@ URL: http://xavier-fim.net/packages/ggmcmc, https://github.com/xfim/ggmcmc
 BugReports: https://github.com/xfim/ggmcmc/issues
 Encoding: UTF-8
 Collate:
+    'data.R'
+    'functions.R'
     'ggmcmc.R'
     'ggs.R'
+    'ggs_Rhat.R'
     'ggs_autocorrelation.R'
+    'ggs_caterpillar.R'
     'ggs_compare_partial.R'
     'ggs_crosscorrelation.R'
     'ggs_density.R'
-    'ggs_histogram.R'
-    'ggs_running.R'
-    'ggs_traceplot.R'
-    'ggs_pairs.R'
-    'data.R'
-    'help.R'
-    'functions.R'
-    'ggs_Rhat.R'
     'ggs_effective.R'
     'ggs_geweke.R'
-    'ggs_caterpillar.R'
-    'ggs_separation.R'
-    'globals.R'
+    'ggs_diagnostics.R'
+    'ggs_histogram.R'
+    'ggs_pairs.R'
+    'ggs_pcp.R'
     'ggs_ppmean.R'
     'ggs_ppsd.R'
-    'ggs_pcp.R'
     'ggs_rocplot.R'
+    'ggs_running.R'
+    'ggs_separation.R'
+    'ggs_traceplot.R'
+    'globals.R'
+    'help.R'
 RoxygenNote: 7.1.0
 VignetteBuilder: knitr
