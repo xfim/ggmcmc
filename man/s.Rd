@@ -8,7 +8,7 @@
 A coda object containing posterior distributions of the intercept, slope and residual of a linear regression with fake data.
 }
 \usage{
-s
+data(s)
 }
 \description{
 A coda object containing simulated values from the posterior distribution of the intercept, slope and residual of a linear regression with fake data (y = beta[1] + beta[2] * X + sigma). The purpose of the dataset is only to show the possibilities of the ggmcmc package.

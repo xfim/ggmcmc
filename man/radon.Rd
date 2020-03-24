@@ -3,14 +3,33 @@
 \docType{data}
 \name{radon}
 \alias{radon}
-\title{Simulations of the parameters of a hierarchical model using the radon example in Gelman & Hill (2007).}
+\title{Simulations of the parameters of a hierarchical model}
 \format{
-A list containing several elements to show the possibilities af ggmcmc.
+A list containing several elements (data and outputs of the analysis):
+\describe{
+  \item{counties}{A data frame with the country label, ids and radon level.}
+  \item{id.county}{A vector identifying counties in the data.}
+  \item{y}{The outcome variable.}
+  \item{s.radon}{A coda object with simulated values from the posterior distribution of all parameters, with few iterations for each one.}
+  \item{s.radon.yhat}{A coda object containing simulated values from the posterior predictive distribution.}
+  \item{s.radon.short}{A coda object with simulated values from the posterior distribution of few parameters, with reasonable chain length.}
+}
+}
+\source{
+\url{http://www.stat.columbia.edu/~gelman/arm/examples/radon/}
 }
 \usage{
-radon
+data(radon)
 }
 \description{
-A list containing the following elements: \code{counties} a data frame with the county label, ids and radon level; \code{id.county} a vector identifying counties in the data; \code{y} the outcome variable; \code{s.radon} a coda object with simulated values from the posterior distribution of all parameters, with few iterations for each one; \code{s.radon.yhat} a coda object containing simulated values from the posterior predictive distribution; and \code{s.radon.short} a coda object with simulated values from the posterior distribution of few parameters, with reasonable chain length. The purpose of the object is only to show the possibilities of the ggmcmc package.
+Using the radon example in Gelman & Hill (2007), the list contains several elements to show the possibilities of ggmcmc for applied Bayesian Hierarchical/multilevel analysis.
+}
+\examples{
+data(radon)
+names(radon)
+# Generate a data frame suitable for matching with the generated samples
+# through the "par_labels" function:
+L.radon <- plab("alpha", match = list(County = radon$counties$County))
+
 }
 \keyword{datasets}

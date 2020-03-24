@@ -10,7 +10,8 @@ ggs_geweke(
   frac1 = 0.1,
   frac2 = 0.5,
   shadow_limit = TRUE,
-  greek = FALSE
+  greek = FALSE,
+  plot = TRUE
 )
 }
 \arguments{
@@ -25,9 +26,11 @@ ggs_geweke(
 \item{shadow_limit, }{logical. When TRUE (the default), a shadowed area between -2 and +2 is drawn.}
 
 \item{greek}{Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.}
+
+\item{plot}{Logical value indicating whether the plot must be returned (the default) or a tidy dataframe with the results of the Geweke diagnostics per Parameter and Chain.}
 }
 \value{
-A \code{ggplot} object.
+A \code{ggplot} object, or a \code{tidy} data frame.
 }
 \description{
 Dotplot of Geweke diagnostic.

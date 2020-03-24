@@ -39,7 +39,7 @@ ggs_caterpillar(
 
 \item{label}{Character value with the name of the variable that contains the labels displayed in the plot. Defaults to NULL, which corresponds to using the Parameter name or the Label in case par_labels is used in the ggs() object.}
 
-\item{comparison}{Character value with the name of the variable that contains the focus of the comparison. Defaults to NULL, which corresponds to no comparison. It is not expected to be used together with X, or in horizontal setup.}
+\item{comparison}{Character value with the name of the variable that contains the focus of the comparison. Defaults to NULL, which corresponds to no comparison. It is not expected to be used together with X.}
 
 \item{comparison_separation}{Numerical value with the separation between the dodged parameters. Defaults to 0.2.}
 

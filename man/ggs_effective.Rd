@@ -9,7 +9,8 @@ ggs_effective(
   family = NA,
   greek = FALSE,
   version_effective = "spectral",
-  proportion = TRUE
+  proportion = TRUE,
+  plot = TRUE
 )
 }
 \arguments{
@@ -22,9 +23,11 @@ ggs_effective(
 \item{version_effective}{Character variable with the name of the version of the calculation to use. Defaults to "spectral", which refers to the simple version estimating the spectral density at frequency zero used in the "coda" package. An alternative version "BDA3" is provided, which refers to the third edition of Bayesian Data Analysis (Gelman, Carlin, Stern, Dunson, Vehtari and Rubin).}
 
 \item{proportion}{Logical value whether to return the proportion of effective independent draws over the total (the default) or the number.}
+
+\item{plot}{Logical value indicating whether the plot must be returned (the default) or a tidy dataframe with the effective number of samples per Parameter.}
 }
 \value{
-A \code{ggplot} object.
+A \code{ggplot} object, or a \code{tidy} data frame.
 }
 \description{
 Dotplot of the effective number of independent draws. The default version is the sample size adjusted for autocorrelation. An alternative from the third edition of Bayesian Data Analysis (Gelman, Carlin, Stern, Dunson, Vehtari and Rubin) is provided.

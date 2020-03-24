@@ -4,7 +4,14 @@
 \alias{ggs_Rhat}
 \title{Dotplot of Potential Scale Reduction Factor (Rhat)}
 \usage{
-ggs_Rhat(D, family = NA, scaling = 1.5, greek = FALSE, version_rhat = "BDA2")
+ggs_Rhat(
+  D,
+  family = NA,
+  scaling = 1.5,
+  greek = FALSE,
+  version_rhat = "BDA2",
+  plot = TRUE
+)
 }
 \arguments{
 \item{D}{Data frame whith the simulations}
@@ -15,10 +22,12 @@ ggs_Rhat(D, family = NA, scaling = 1.5, greek = FALSE, version_rhat = "BDA2")
 
 \item{greek}{Logical value indicating whether parameter labels have to be parsed to get Greek letters. Defaults to false.}
 
-\item{version_rhat}{Character variable with the name of the version of the potential scale reduction factor to use. Defaults to "BDA2", which refers to the second version of "bayesian Data Analysis (Gelman, Carlin, Stern and Rubin). The other available version is "BG98", which refers to Brooks & Gelman (1998) and is the one used in the "coda" package.}
+\item{version_rhat}{Character variable with the name of the version of the potential scale reduction factor to use. Defaults to "BDA2", which refers to the second version of _Bayesian Data Analysis_ (Gelman, Carlin, Stern and Rubin). The other available version is "BG98", which refers to Brooks & Gelman (1998) and is the one used in the "coda" package.}
+
+\item{plot}{Logical value indicating whether the plot must be returned (the default) or a tidy dataframe with the results of the Rhat diagnostics per Parameter.}
 }
 \value{
-A \code{ggplot} object.
+A \code{ggplot} object, or a \code{tidy} data frame.
 }
 \description{
 Plot a dotplot of Potential Scale Reduction Factor (Rhat), proposed by Gelman and Rubin (1992). The version from the second edition of Bayesian Data Analysis (Gelman, Carlin, Stern and Rubin) is used, but the version used in the package "coda" can also be used (Brooks & Gelman 1998).

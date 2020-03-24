@@ -8,7 +8,7 @@
 A numeric vector containing the observed values of the outcome in the linear regression with fake data.
 }
 \usage{
-y
+data(y)
 }
 \description{
 A numeric vector containing the observed values of the outcome of a linear regression with fake data (y = beta[1] + beta[2] + X + sigma). The purpose of the dataset is only to show the possibilities of the ggmcmc package.
