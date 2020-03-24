@@ -1,3 +1,41 @@
+Version 1.4
+------------------------------
+
+MAJOR CHANGES
+
+  - ggs_caterpillar() makes comparisons easier. In includes a new argument
+  "comparison" that allows to specify the variable that sets the dodged 
+  parameters.
+
+  - ggs_geweke(), ggs_Rhat() and ggs_effective() have a new argument "plot" that
+  allows to return the plot (as always, and the default) but also the tidy
+  dataframe containing the calculations of the diagnostics.
+
+  - New function ggs_measures() that returns a tidy dataframe with the formal
+  diagnostics of ggs_geweke(), ggs_Rhat() and ggs_effective().
+
+  - Improvements to ggs_effective(): A new version to calculate the number of
+  effective draws is introduced, based on the steps followed by the coda package. 
+  Also the function now allows to report either the number of effective 
+  samples or its proportion.
+
+  - ggmcmc() was not correctly handling parameter names when plotting
+  caterpillar plots in functions that employ par_labels.
+
+  - Several improvements in the documentation, including the datasets.
+
+
+MINOR CHANGES
+
+  - Concrete "by" options in left_joins to avoid messages.
+
+  - Minor bug in ggs_rocplot() needed to prepare for dplyr >= 1.0.
+
+  - Include 'nimble' as a suggestion.
+
+
+
+
 Version 1.3
 ------------------------------
 
