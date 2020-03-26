@@ -33,8 +33,11 @@ ggs_ppsd <- function(D, outcome, family=NA, bins=30) {
   ppSDbw <- calc_bin(ppSD$sd, bins=bins)
   names(ppSDbw)[names(ppSDbw)=="x"] <- "Posterior predictive standard deviation"
   # Plot
-  f <- ggplot(ppSDbw, aes(x=`Posterior predictive standard deviation`, y=count, width=width)) +
-    geom_bar(stat="identity", position="identity") +
+  f <- ggplot(ppSDbw, aes(xmin = `Posterior predictive standard deviation`,
+                          xmax = `Posterior predictive standard deviation` + width,
+                          ymin = 0, ymax = count)) +
+    geom_rect() +
+    xlab("Posterior predictive mean") + ylab("count") +
     geom_vline(xintercept=sd)
   return(f)
 }
