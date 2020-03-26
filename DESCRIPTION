@@ -5,9 +5,10 @@ Description: Tools for assessing and diagnosing convergence of
     results from full MCMC analysis. The package also facilitates the graphical
     interpretation of models by providing flexible functions to plot the
     results against observed variables.
-Version: 1.4
+Version: 1.4.1
 Authors@R: person("Xavier", "Fernández i Marín", email = "xavier.fim@gmail.com", role = c("aut", "cre"))
 Depends:
+    R (>= 3.5),
     dplyr (>= 0.5.0),
     tidyr (>= 0.5.1),
     ggplot2
