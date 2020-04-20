@@ -10,6 +10,7 @@
 #' @param burnin Logical or numerical value. When logical and TRUE (the default), the number of samples in the burnin period will be taken into account, if it can be guessed by the extracting process. Otherwise, iterations will start counting from 1. If a numerical vector is given, the user then supplies the length of the burnin period.
 #' @param par_labels data frame with two colums. One named "Parameter" with the same names of the parameters of the model. Another named "Label" with the label of the parameter. When missing, the names passed to the model are used for representation. When there is no correspondence between a Parameter and a Label, the original name of the parameter is used. The order of the levels of the original Parameter does not change.
 #' @param sort Logical. When TRUE (the default), parameters are sorted first by family name and then by numerical value.
+#' @param keep_original_order Logical. When TRUE, parameters are sorted using the original order provided by the source software. Defaults to FALSE.
 #' @param splitting Logical. When TRUE, use the approach suggested by Gelman, Carlin, Stern, Dunson, Vehtari and Rubin (2014) Bayesian Data Analysis. 3rd edition. This implies splitting the sequences (original chains) in half, and treat each half as a different Chain, therefore effectively doubling the number of chains. In this case, the first half of Chain 1 is still Chain 1 , but the second half is turned into Chain 2, and the first half of Chain 2 into Chain 3, and so on. Defaults to FALSE.
 #' @param inc_warmup Logical. When dealing with stanfit objects from rstan, logical value whether the warmup samples are included. Defaults to FALSE.
 #' @param stan_include_auxiliar Logical value to include "lp__" parameter in rstan, and "lp__", "treedepth__" and "stepsize__" in stan running without rstan. Defaults to FALSE.
@@ -24,7 +25,7 @@
 #' # Get samples from 'beta' parameters only
 #' S <- ggs(s, family = "beta")
 ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA,
-                sort = TRUE, splitting = FALSE,
+                sort = TRUE, keep_original_order = FALSE, splitting = FALSE,
                 inc_warmup = FALSE, stan_include_auxiliar = FALSE) {
   processed <- FALSE # set by default that there has not been any processed samples
   #
@@ -126,6 +127,10 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
         } else { # MCMCpack
           s <- S
         }
+        # Keep a record of original names
+        if (keep_original_order) {
+          parameter.names.original.order <- dimnames(s)[[2]]
+        }
         # Process a single chain
         D <- dplyr::mutate(ggs_chain(s), Chain=1) %>%
           dplyr::select(Iteration, Chain, Parameter, value)
@@ -133,6 +138,10 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
         nBurnin <- (attributes(s)$mcpar[1])-(1*attributes(s)$mcpar[3])
         nThin <- attributes(s)$mcpar[3]
       } else {
+        # Keep a record of original names
+        if (keep_original_order) {
+          parameter.names.original.order <- dimnames(S[[1]])[[2]]
+        }
         # Process multiple chains
         for (l in 1:lS) {
           s <- S[l][[1]]
@@ -148,6 +157,9 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
         D$Parameter <- factor(D$Parameter, levels=custom.sort(D$Parameter))
       } else {
         D$Parameter <- factor(D$Parameter)
+      }
+      if (keep_original_order) {
+        D$Parameter <- factor(D$Parameter, levels = parameter.names.original.order)
       }
       D <- dplyr::arrange(D, Parameter, Chain, Iteration)
     }
