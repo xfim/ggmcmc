@@ -1,6 +1,6 @@
 #' Import MCMC samples into a ggs object than can be used by all ggs_* graphical functions.
 #'
-#' This function manages MCMC samples from different sources (JAGS, MCMCpack, STAN -both via rstan and via csv files-) and converts them into a data frame tbl. The resulting data frame has four columns (Iteration, Chain, Parameter, value) and six attributes (nChains, nParameters, nIterations, nBurnin, nThin and description). The ggs object returned is then used as the input of the ggs_* functions to actually plot the different convergence diagnostics.
+#' This function manages MCMC samples from different sources (JAGS, MCMCpack, STAN -both via rstan and via csv files-) and converts them into a data frame tibble. The resulting data frame has four columns (Iteration, Chain, Parameter, value) and six attributes (nChains, nParameters, nIterations, nBurnin, nThin and description). The ggs object returned is then used as the input of the ggs_* functions to actually plot the different convergence diagnostics.
 #'
 #' @references Fernández-i-Marín, Xavier (2016) ggmcmc: Analysis of MCMC Samples and Bayesian Inference. Journal of Statistical Software, 70(9), 1-20. doi:10.18637/jss.v070.i09
 #' @references Gelman, Carlin, Stern, Dunson, Vehtari and Rubin (2014) Bayesian Data Analysis. 3rd edition. Chapman & Hall/CRC, Boca Raton.
@@ -15,7 +15,7 @@
 #' @param inc_warmup Logical. When dealing with stanfit objects from rstan, logical value whether the warmup samples are included. Defaults to FALSE.
 #' @param stan_include_auxiliar Logical value to include "lp__" parameter in rstan, and "lp__", "treedepth__" and "stepsize__" in stan running without rstan. Defaults to FALSE.
 #' @export
-#' @return D A data frame tbl with the data arranged and ready to be used by the rest of the \code{ggmcmc} functions. The data frame has four columns, namely: Iteration, Chain, Parameter and value, and six attributes: nChains, nParameters, nIterations, nBurnin, nThin and description. A data frame tbl is a wrapper to a local data frame, behaves like a data frame and its advantage is related to printing, which is compact. For more details, see \code{tbl_df()} in package \code{dplyr}.
+#' @return D A data frame tibble with the data arranged and ready to be used by the rest of the \code{ggmcmc} functions. The data frame has four columns, namely: Iteration, Chain, Parameter and value, and six attributes: nChains, nParameters, nIterations, nBurnin, nThin and description. A data frame tibble is a wrapper to a local data frame, behaves like a data frame and its advantage is related to printing, which is compact. For more details, see \code{as_tibble()} in package \code{dplyr}.
 #' @examples
 #' # Assign 'S' to be a data frame suitable for \code{ggmcmc} functions from
 #' # a coda object called s
@@ -74,7 +74,7 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
       D$Parameter <- factor(D$Parameter)
     }
     processed <- TRUE
-    D <- dplyr::tbl_df(D)
+    D <- dplyr::as_tibble(D)
   }
   #
   # Manage csv files than contain stan samples
@@ -83,7 +83,7 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
   if (class(S)=="list") {
     D <- NULL
     for (i in 1:length(S)) {
-      samples.c <- dplyr::tbl_df(read.table(S[[i]], sep=",", header=TRUE,
+      samples.c <- dplyr::as_tibble(read.table(S[[i]], sep=",", header=TRUE,
         colClasses="numeric", check.names=FALSE))
       D <- dplyr::bind_rows(D,
         tidyr::gather(samples.c, Parameter) %>%
@@ -211,7 +211,7 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
         levels(D$Parameter)[which(levels(D$Parameter) %in% par_labels$Parameter)] <-
           as.character(par_labels$Label[
             match(levels(D$Parameter)[which(levels(D$Parameter) %in% par_labels$Parameter)], par_labels$Parameter)])
-        L <- dplyr::tbl_df(data.frame(Parameter = par_labels$Label, ParameterOriginal = par_labels$Parameter)) %>%
+        L <- dplyr::as_tibble(data.frame(Parameter = par_labels$Label, ParameterOriginal = par_labels$Parameter)) %>%
           mutate(Parameter = as.character(Parameter)) # dplyr chrashes as of 160428 development version if Parameter is factor
         D <- suppressWarnings(dplyr::left_join(D, L, by = "Parameter"))
         D <- D %>%
@@ -233,7 +233,7 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
         # Keep the rest of the variables passed if the data frame has more than Parameter and Label
         if (dim(par_labels)[2] > 2) {
           aD <- attributes(D)
-          L.noParameter <- dplyr::tbl_df(par_labels) %>%
+          L.noParameter <- dplyr::as_tibble(par_labels) %>%
             dplyr::select(-Parameter) %>%
             dplyr::mutate(Label = as.character(Label))
           D <- suppressWarnings(dplyr::left_join(D, L.noParameter, by=c("Parameter" = "Label")))
@@ -257,7 +257,7 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
       }
     } else {
       if (!is.na(par_labels)) {
-        stop("par_labels must be a data frame or a tbl_df.")
+        stop("par_labels must be a data frame or a tibble.")
       }
     }
     # Perform the splitting into chain halves
@@ -305,8 +305,8 @@ ggs_chain <- function(s) {
   D <- d %>%
     tidyr::gather(Parameter, value, -Iteration)
 
-  # Return the modified data frame as a tbl_df to be used by dplyr
-  D <- dplyr::tbl_df(D)
+  # Return the modified data frame as a tibble to be used by dplyr
+  D <- dplyr::as_tibble(D)
   return(D)
 }
 
