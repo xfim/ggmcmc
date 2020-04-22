@@ -47,6 +47,10 @@ ggs_autocorrelation <- function(D, family=NA, nLags=50, greek=FALSE) {
     nLags <- nIter
   }
 
+  # Ready for dplyr >= 1.0
+  #wc.ac <- D %>%
+  #  dplyr::group_by(Parameter, Chain) %>%
+  #  dplyr::summarize(ac(value, nLags = nLags))
   # No way to make the following use summarize(), as of dplyr 0.3
   # https://github.com/hadley/dplyr/issues/154
   # Temporary workaround using dplyr 0.2 and do()

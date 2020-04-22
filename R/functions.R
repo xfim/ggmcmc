@@ -102,6 +102,14 @@ gl_unq <- function (n, k, labels=1:n) {
 #' data(linear)
 #' ci(ggs(s))
 ci <- function (D, thick_ci=c(0.05, 0.95), thin_ci=c(0.025, 0.975)) {
+  # Ready for dplyr >= 1.0
+  #X <- D %>%
+  #  dplyr::group_by(Parameter) %>%
+  #  dplyr::summarize(qs = c("low", "Low", "median", "High", "high"),
+  #                   q = quantile(value, prob = c(thin_ci[1], thick_ci[1], 0.5, thick_ci[2], thin_ci[2]))) %>%
+  #  tidyr::spread(qs, q) %>%
+  #  dplyr::select(Parameter, low, Low, median, High, high)
+  #
   # See ggs_autocorrelation.R
   # No way to make the following use summarize(), as of dplyr 0.3
   # https://github.com/hadley/dplyr/issues/154
@@ -109,12 +117,12 @@ ci <- function (D, thick_ci=c(0.05, 0.95), thin_ci=c(0.025, 0.975)) {
   q <- data.frame(
     qs=c("low", "Low", "median", "High", "high"),
     q=c(thin_ci[1], thick_ci[1], 0.5, thick_ci[2], thin_ci[2]))
-  X <- D %>%
+  X <- suppressMessages(D %>%
     dplyr::group_by(Parameter) %>%
     dplyr::do(data.frame(qs=q$qs, q=quantile(.$value, prob=q$q))) %>%
     dplyr::ungroup() %>%
     tidyr::spread(qs, q) %>%
-    dplyr::select(Parameter, low, Low, median, High, high)
+    dplyr::select(Parameter, low, Low, median, High, high))
   # Recover the rest of the variables that can come with the par_labels
   if (dim(D)[2] > 4) {
     X <- suppressWarnings(dplyr::left_join(X, dplyr::distinct(dplyr::select(D, -Iteration, -Chain, -value)), by="Parameter"))
