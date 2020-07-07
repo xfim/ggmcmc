@@ -40,7 +40,7 @@ ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE, gr
   # Compute means, spectral densities and N's
   D.geweke <- D.geweke %>%
     dplyr::group_by (Parameter, Chain, part) %>%
-    dplyr::summarize(m=mean(value), sde0f=sde0f(value), n=n())
+    dplyr::summarize(m=mean(value), sde0f=sde0f(value), n=dplyr::n())
   # Calculate separately the means and variances
   M <- D.geweke %>%
     dplyr::select(-sde0f, -n) %>%
