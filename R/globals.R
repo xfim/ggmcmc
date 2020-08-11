@@ -33,6 +33,7 @@ if (base::getRversion() >= "2.15.1") {
     "second.half", # from ggs(), splitting
     "browseURL", # from utils, for ggmcmc()
     "E", "Effective", # in ggs_effective()
-    "Diagnostic" # in ggs_diagnostics()
+    "Diagnostic", # in ggs_diagnostics()
+    "Last iteration" # in ggs_grb()
   ))
 }
