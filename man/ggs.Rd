@@ -11,6 +11,7 @@ ggs(
   burnin = TRUE,
   par_labels = NA,
   sort = TRUE,
+  keep_original_order = FALSE,
   splitting = FALSE,
   inc_warmup = FALSE,
   stan_include_auxiliar = FALSE
@@ -29,6 +30,8 @@ ggs(
 
 \item{sort}{Logical. When TRUE (the default), parameters are sorted first by family name and then by numerical value.}
 
+\item{keep_original_order}{Logical. When TRUE, parameters are sorted using the original order provided by the source software. Defaults to FALSE.}
+
 \item{splitting}{Logical. When TRUE, use the approach suggested by Gelman, Carlin, Stern, Dunson, Vehtari and Rubin (2014) Bayesian Data Analysis. 3rd edition. This implies splitting the sequences (original chains) in half, and treat each half as a different Chain, therefore effectively doubling the number of chains. In this case, the first half of Chain 1 is still Chain 1 , but the second half is turned into Chain 2, and the first half of Chain 2 into Chain 3, and so on. Defaults to FALSE.}
 
 \item{inc_warmup}{Logical. When dealing with stanfit objects from rstan, logical value whether the warmup samples are included. Defaults to FALSE.}
@@ -36,10 +39,10 @@ ggs(
 \item{stan_include_auxiliar}{Logical value to include "lp__" parameter in rstan, and "lp__", "treedepth__" and "stepsize__" in stan running without rstan. Defaults to FALSE.}
 }
 \value{
-D A data frame tbl with the data arranged and ready to be used by the rest of the \code{ggmcmc} functions. The data frame has four columns, namely: Iteration, Chain, Parameter and value, and six attributes: nChains, nParameters, nIterations, nBurnin, nThin and description. A data frame tbl is a wrapper to a local data frame, behaves like a data frame and its advantage is related to printing, which is compact. For more details, see \code{tbl_df()} in package \code{dplyr}.
+D A data frame tibble with the data arranged and ready to be used by the rest of the \code{ggmcmc} functions. The data frame has four columns, namely: Iteration, Chain, Parameter and value, and six attributes: nChains, nParameters, nIterations, nBurnin, nThin and description. A data frame tibble is a wrapper to a local data frame, behaves like a data frame and its advantage is related to printing, which is compact. For more details, see \code{as_tibble()} in package \code{dplyr}.
 }
 \description{
-This function manages MCMC samples from different sources (JAGS, MCMCpack, STAN -both via rstan and via csv files-) and converts them into a data frame tbl. The resulting data frame has four columns (Iteration, Chain, Parameter, value) and six attributes (nChains, nParameters, nIterations, nBurnin, nThin and description). The ggs object returned is then used as the input of the ggs_* functions to actually plot the different convergence diagnostics.
+This function manages MCMC samples from different sources (JAGS, MCMCpack, STAN -both via rstan and via csv files-) and converts them into a data frame tibble. The resulting data frame has four columns (Iteration, Chain, Parameter, value) and six attributes (nChains, nParameters, nIterations, nBurnin, nThin and description). The ggs object returned is then used as the input of the ggs_* functions to actually plot the different convergence diagnostics.
 }
 \examples{
 # Assign 'S' to be a data frame suitable for \code{ggmcmc} functions from
