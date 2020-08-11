@@ -1,3 +1,34 @@
+Version 1.5.0
+------------------------------
+
+MAJOR CHANGES
+
+  - New function ggs_grb() to plot the shrinkage of Potential Scale Reduction
+  Factor (Rhat) over batches of parameters.
+
+  - New argument "keep_original_order" to ggs() that forces to keep the
+  parameters in the order they are originally provided.
+
+
+MINOR CHANGES
+
+  - Ready for dplyr-1.0.
+
+  - New simplified way to draw histograms manually in ggs_histogram(),
+  ggs_ppmean() and ggs_ppsd().
+
+
+
+Version 1.4.1
+------------------------------
+
+MINOR CHANGES
+
+  - Improvements in the documentation of datasets provided by the package.
+
+
+
+
 Version 1.4
 ------------------------------
 

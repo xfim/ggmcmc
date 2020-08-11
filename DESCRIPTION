@@ -5,18 +5,18 @@ Description: Tools for assessing and diagnosing convergence of
     results from full MCMC analysis. The package also facilitates the graphical
     interpretation of models by providing flexible functions to plot the
     results against observed variables.
-Version: 1.4.1
-Authors@R: person("Xavier", "Fernández i Marín", email = "xavier.fim@gmail.com", role = c("aut", "cre"))
+Version: 1.5.0
+Authors@R: person("Xavier", "Fernández i Marín", email = "xavier.fim@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9522-8870"))
 Depends:
     R (>= 3.5),
-    dplyr (>= 0.5.0),
-    tidyr (>= 0.5.1),
+    dplyr (>= 1.0.0),
+    tidyr (>= 1.1.0),
     ggplot2
 Imports:
     GGally (>= 1.1.0)
 Suggests:
     coda,
-    rstan (>= 2.10.1),
+    rstan (>= 2.17.1),
     nimble,
     knitr,
     rmarkdown,
@@ -42,6 +42,7 @@ Collate:
     'ggs_effective.R'
     'ggs_geweke.R'
     'ggs_diagnostics.R'
+    'ggs_grb.R'
     'ggs_histogram.R'
     'ggs_pairs.R'
     'ggs_pcp.R'
@@ -53,5 +54,5 @@ Collate:
     'ggs_traceplot.R'
     'globals.R'
     'help.R'
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr
