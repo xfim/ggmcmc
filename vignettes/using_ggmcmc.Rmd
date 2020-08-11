@@ -445,19 +445,20 @@ The development of `ggmcmc` (track changes, propose improvements, report bugs) c
 
 
 # Acknowledgements
-I would like to thank code contributions and ideas from [Zachary M. Jones][zachary], [Julien Cornebise][julien], [Max Joseph][maxjoseph], and ideas from [Dieter Menne][dieter], Bill Dixon, [Christopher Gandrud][gandrud], Barret Schloerke and GitHub users knokknok, akrawitz, Justina (Juste), stefanherzog, [Brain Stock][brianstock], [Jonas Kristoffer Lindeløv][lindeloev], [Jakob Fiksel][jfiksel] and [Sébastien Rochette][statnmap].
+I would like to thank code contributions and ideas from [Zachary M. Jones][zachary], [Julien Cornebise][julien], [Max Joseph][maxjoseph], and ideas from [Dieter Menne][dieter], Bill Dixon, [Christopher Gandrud][gandrud], Barret Schloerke and GitHub users knokknok, akrawitz, Justina (Juste), stefanherzog, [Brian Stock][brianstock], [Jonas Kristoffer Lindeløv][lindeloev], [Jakob Fiksel][jfiksel], [Sébastien Rochette][statnmap] and [Stéphane Guillou][stragu].
 
 # References
 
 <!-- Links -->
 
 [github]: https://github.com/xfim/ggmcmc
-[zachary]: http://www.zmjones.com/
-[julien]: http://www.cornebise.com/julien/
-[dieter]: http://www.menne-biomed.de/
-[maxjoseph]: http://mbjoseph.github.io
+[zachary]: http://zmjones.com/
+[julien]: https://cornebise.com/julien/
+[dieter]: https://www.menne-biomed.de/
+[maxjoseph]: https://mbjoseph.github.io/
 [gandrud]: http://christophergandrud.blogspot.com
 [brianstock]: https://github.com/brianstock
-[lindeloev]: http://lindeloev.net/
+[lindeloev]: https://lindeloev.net/
 [jfiksel]: https://github.com/jfiksel
 [statnmap]: https://statnmap.com/
+[stragu]: https://github.com/stragu

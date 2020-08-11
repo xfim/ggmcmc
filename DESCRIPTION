@@ -4,7 +4,9 @@ Description: Tools for assessing and diagnosing convergence of
     Markov Chain Monte Carlo simulations, as well as for graphically display
     results from full MCMC analysis. The package also facilitates the graphical
     interpretation of models by providing flexible functions to plot the
-    results against observed variables.
+    results against observed variables, and functions to work with
+    hierarchical/multilevel batches of parameters
+    (Fernández-i-Marín, 2016 <doi:10.18637/jss.v070.i09>).
 Version: 1.5.0
 Authors@R: person("Xavier", "Fernández i Marín", email = "xavier.fim@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9522-8870"))
 Depends:
@@ -25,8 +27,8 @@ Suggests:
     Cairo,
     extrafont
 License: GPL-2
-URL: http://xavier-fim.net/packages/ggmcmc, https://github.com/xfim/ggmcmc
-BugReports: https://github.com/xfim/ggmcmc/issues
+URL: http://xavier-fim.net/packages/ggmcmc/, https://github.com/xfim/ggmcmc/
+BugReports: https://github.com/xfim/ggmcmc/issues/
 Encoding: UTF-8
 Collate:
     'data.R'

@@ -7,6 +7,6 @@ To install or update, run:
 install.packages("ggmcmc", dependencies=TRUE)
 ```
 
-Check the main page with [resources for ggmcmc](http://xavier-fim.net/packages/ggmcmc).
+Check the main page with [resources for ggmcmc](http://xavier-fim.net/packages/ggmcmc/).
 
-Report bugs, request improvements, ask questions or provide ideas at the [issues page](http://github.com/xfim/ggmcmc/issues).
+Report bugs, request improvements, ask questions or provide ideas at the [issues page](https://github.com/xfim/ggmcmc/issues/).
