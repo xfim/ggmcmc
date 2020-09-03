@@ -6,7 +6,7 @@
 #' interpretation of models by providing flexible functions to plot the
 #' results against observed variables.
 #'
-#' @references \url{http://xavier-fim.net/packages/ggmcmc}.
+#' @references \url{http://xavier-fim.net/packages/ggmcmc/}.
 #' @import ggplot2
 #' @importFrom tidyr spread gather
 #' @importFrom dplyr as_tibble data_frame select filter mutate arrange group_by ungroup summarize bind_rows left_join inner_join do sample_frac lag lead %>%

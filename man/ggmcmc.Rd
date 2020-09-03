@@ -59,5 +59,5 @@ ggmcmc(ggs(s))  # Directly from a coda object
 }
 }
 \references{
-\url{http://xavier-fim.net/packages/ggmcmc}.
+\url{http://xavier-fim.net/packages/ggmcmc/}.
 }
