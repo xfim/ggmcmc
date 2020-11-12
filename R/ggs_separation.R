@@ -28,7 +28,7 @@ ggs_separation <- function(D, outcome, minimalist = FALSE, show_labels = FALSE, 
     dplyr::ungroup() %>%
     tidyr::spread(qs, q)
   # Sort the observations by predicted value
-  S <- dplyr::inner_join(S, dplyr::data_frame(Observed=outcome, Parameter=unique(D$Parameter)), by="Parameter") %>%
+  S <- dplyr::inner_join(S, dplyr::tibble(Observed=outcome, Parameter=unique(D$Parameter)), by="Parameter") %>%
     dplyr::arrange(median) %>%
     dplyr::mutate(id=1:dim(S)[1])
   # Calculate expected number of events

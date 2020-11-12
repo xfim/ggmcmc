@@ -24,7 +24,7 @@ ggs_pcp <- function(D, outcome, threshold = "observed", bins = 30) {
     threshold <- threshold
   }
   # Calculate the percent correctly predicted
-  S <- dplyr::inner_join(D, dplyr::data_frame(Observed=outcome, Parameter=unique(D$Parameter)), by="Parameter") %>%
+  S <- dplyr::inner_join(D, dplyr::tibble(Observed=outcome, Parameter=unique(D$Parameter)), by="Parameter") %>%
     dplyr::mutate(Correct = ifelse( (value < threshold & Observed == 0) | # 0 predicted and 0 observed
                              (value > threshold & Observed == 1), # 1 predicted and 1 observed
                               TRUE, FALSE)) %>%
