@@ -7,7 +7,7 @@ Description: Tools for assessing and diagnosing convergence of
     results against observed variables, and functions to work with
     hierarchical/multilevel batches of parameters
     (Fernández-i-Marín, 2016 <doi:10.18637/jss.v070.i09>).
-Version: 1.5.0
+Version: 1.5.1.1
 Authors@R: person("Xavier", "Fernández i Marín", email = "xavier.fim@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9522-8870"))
 Depends:
     R (>= 3.5),
@@ -18,8 +18,6 @@ Imports:
     GGally (>= 1.1.0)
 Suggests:
     coda,
-    rstan (>= 2.17.1),
-    nimble,
     knitr,
     rmarkdown,
     ggthemes,
