@@ -63,7 +63,7 @@ library(knitr)
 library(Cairo)
 options(prompt = "R> ", continue = "+  ", width = 60, useFancyQuotes = FALSE)
 options(replace.assign=TRUE, width=70)
-opts_chunk$set(fig.path='figure/plot-', fig.align='center', fig.show='hold', pdf=FALSE, dev='cairo_pdf', par=TRUE, out.width='.50\\textwidth', prompt=TRUE, warning=FALSE)
+opts_chunk$set(fig.path='figure/plot-', fig.align='center', fig.show='hold', pdf=FALSE, dev='pdf', par=TRUE, out.width='.50\\textwidth', prompt=TRUE, warning=FALSE)
 knit_hooks$set(par=function(before, options, envir) {
   if (before && options$fig.show!='none') {
     par(mar=c(4,4,.1,.1), cex.lab=.95, cex.axis=.9,mgp=c(2,.7,0), tcl=-.3)
