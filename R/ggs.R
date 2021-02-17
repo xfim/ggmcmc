@@ -114,8 +114,8 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
         S <- S[,location.family, drop = FALSE]
       } else { # for already processed samples, use dplyr()'s own filter based on grepl
         D <- D %>%
-          filter(grepl(family, Parameter)) %>%
-          mutate(Parameter = as.factor(as.character(Parameter)))
+          dplyr::filter(grepl(family, Parameter)) %>%
+          dplyr::mutate(Parameter = as.factor(as.character(Parameter)))
       }
     }
     if (!processed) { # only in JAGS or MCMCpack, using coda
