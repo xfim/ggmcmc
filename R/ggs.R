@@ -106,7 +106,7 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
   #
   # Manage mcmc.list and mcmc objects
   #
-  if (class(S)=="mcmc.list" | class(S)=="mcmc" | processed) {  # JAGS typical output or MCMCpack (or previously processed stan samples)
+  if (length(which(class(S) %in% "mcmc.list")) > 0 | class(S)=="mcmc" | processed) {  # JAGS typical output or MCMCpack (or previously processed stan samples)
     if (!is.na(family)) {
       requireNamespace("coda")
       if (!processed) {
