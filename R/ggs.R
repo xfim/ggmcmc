@@ -32,15 +32,15 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
   # Manage stanfit obcjets
   # Manage stan output first because it is firstly converted into an mcmc.list
   #
-  original.object.class <- class(S)[1]
-  if (length(class(S)) > 1 & class(S)[1] == "stanreg") {
+  
+  if (inherits(S,"stanreg")) {
     S <- S$stanfit
     # From now on, the original object with multiple classes only has one class
   }
-  if (class(S)== "brmsfit") {
+  if (inherits(S,"brmsfit")) {
     S <- S$fit
   }
-  if (class(S)=="stanfit") {
+  if (inherits(S,"stanfit")) {
     # Extract chain by chain
     nChains <- S@sim$chains
     nThin <- S@sim$thin
@@ -56,7 +56,7 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
       D <- dplyr::bind_rows(D, s)
     }
     if (!inc_warmup) {
-      if (original.object.class == "stanfit") {
+      if (inherits(S,"stanfit")) {
         D <- dplyr::filter(D, Iteration > (S@sim$warmup / nThin))
         D$Iteration <- D$Iteration - (S@sim$warmup / nThin)
       }
@@ -80,7 +80,7 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
   # Manage csv files than contain stan samples
   # Also converted first to an mcmc.list
   #
-  if (class(S)=="list") {
+  if (inherits(S,"list")) {
     D <- NULL
     for (i in 1:length(S)) {
       samples.c <- dplyr::as_tibble(read.table(S[[i]], sep=",", header=TRUE,
@@ -106,7 +106,7 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
   #
   # Manage mcmc.list and mcmc objects
   #
-  if (length(which(class(S) %in% "mcmc.list")) > 0 | class(S)=="mcmc" | processed) {  # JAGS typical output or MCMCpack (or previously processed stan samples)
+  if ( inherits(S,"mcmc.list")  | inherits(S,"mcmc") | processed) {  # JAGS typical output or MCMCpack (or previously processed stan samples)
     if (!is.na(family)) {
       requireNamespace("coda")
       if (!processed) {
@@ -121,8 +121,8 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
     if (!processed) { # only in JAGS or MCMCpack, using coda
       lS <- length(S)
       D <- NULL
-      if (lS == 1 | class(S)=="mcmc") { # Single chain or MCMCpack
-        if (lS == 1 & class(S)=="mcmc.list") { # single chain
+      if (lS == 1 | inherits(S,"mcmc")) { # Single chain or MCMCpack
+        if (lS == 1 & inherits(S,"mcmc.list")) { # single chain
           s <- S[[1]]
         } else { # MCMCpack
           s <- S
