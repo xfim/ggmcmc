@@ -80,12 +80,12 @@ calc_bin <- function(x, bins=bins) {
 #' @param labels optional vector of labels
 #' @return A factor
 #' @export
-gl_unq <- function (n, k, labels=1:n) {
+gl_unq <- function (n, k, labels=seq_len(n)) {
   x <- NULL
-  for (i in 1:n) {
+  for (i in seq_len(n)) {
     x <- append(x, rep(i, length.out=k[i]))
   }
-  x <- factor(x, levels=1:n, labels=labels)
+  x <- factor(x, levels=seq_len(n), labels=labels)
   return(x)
 }
 
@@ -148,7 +148,7 @@ ci <- function (D, thick_ci=c(0.05, 0.95), thin_ci=c(0.025, 0.975)) {
 plab <- function (parameter.name, match, subscripts = NULL) {
   # If no subscripts are passed, use generic ones
   if (is.null(subscripts)) {
-    ss <- paste("dim", 1:length(match), sep = ".")
+    ss <- paste("dim", seq_len(length(match)), sep = ".")
   } else {
     ss <- subscripts
   }
@@ -163,7 +163,7 @@ plab <- function (parameter.name, match, subscripts = NULL) {
   } else {
     lab.text <- "Label = "
   }
-  for (m in 1:length(match)) {
+  for (m in seq_len(length(match))) {
     if (m > 1) {
       eg.text <- paste0(eg.text, ", ")
       par.text <- paste0(par.text, ", ',', ")

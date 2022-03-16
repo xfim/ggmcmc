@@ -39,9 +39,9 @@ ggs_compare_partial <- function(D, family=NA, partial=0.1, rug=FALSE, greek=FALS
   } else if (attributes(D)$nChains <= 1 & greek) {
     f <- f + facet_wrap(~ Parameter, ncol=1, scales="free", labeller = label_parsed)
   } else if (attributes(D)$nChains > 1 & !greek) {
-    f <- f + facet_wrap(Parameter ~ Chain, ncol=attributes(D)$nChains, scales=c("free"))
+    f <- f + facet_wrap(Parameter ~ Chain, ncol=attributes(D)$nChains, scales="free")
   } else {
-    f <- f + facet_wrap(Parameter ~ Chain, ncol=attributes(D)$nChains, scales=c("free"), labeller = label_parsed)
+    f <- f + facet_wrap(Parameter ~ Chain, ncol=attributes(D)$nChains, scales="free", labeller = label_parsed)
   }
   f <- f +
     scale_colour_manual(name="Chain length", values=c("black", "aquamarine3")) +

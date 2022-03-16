@@ -46,10 +46,10 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
     nThin <- S@sim$thin
     mDescription <- S@model_name
     D <- NULL
-    for (l in 1:nChains) {
+    for (l in seq_len(nChains)) {
       sdf <- as.data.frame(S@sim$samples[[l]])
       names(sdf) <- names(S@sim$samples[[l]])
-      sdf$Iteration <- 1:dim(sdf)[1]
+      sdf$Iteration <- seq_len(dim(sdf)[1])
       s <- tidyr::gather(sdf, Parameter, value, -Iteration) %>%
         dplyr::mutate(Chain = l) %>%
         dplyr::select(Iteration, Chain, Parameter, value)
@@ -82,12 +82,12 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
   #
   if (inherits(S,"list")) {
     D <- NULL
-    for (i in 1:length(S)) {
+    for (i in seq_len(length(S))) {
       samples.c <- dplyr::as_tibble(read.table(S[[i]], sep=",", header=TRUE,
         colClasses="numeric", check.names=FALSE))
       D <- dplyr::bind_rows(D,
         tidyr::gather(samples.c, Parameter) %>%
-        dplyr::mutate(Iteration=rep(1:(dim(samples.c)[1]), dim(samples.c)[2]), Chain=i) %>%
+        dplyr::mutate(Iteration=rep(seq_len(dim(samples.c)[1]), dim(samples.c)[2]), Chain=i) %>%
         dplyr::select(Iteration, Chain, Parameter, value))
     }
     # Exclude, by default, lp parameter and other auxiliar ones
@@ -143,7 +143,7 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
           parameter.names.original.order <- dimnames(S[[1]])[[2]]
         }
         # Process multiple chains
-        for (l in 1:lS) {
+        for (l in seq_len(lS)) {
           s <- S[l][[1]]
           D <- dplyr::bind_rows(D, dplyr::mutate(ggs_chain(s), Chain=l))
         }
@@ -298,7 +298,7 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
 ggs_chain <- function(s) {
   # Get the number of samples and the vector of iterations
   n.samples <- dim(s)[1]
-  iter <- 1:n.samples
+  iter <- seq_len(n.samples)
 
   # Prepare the dataframe
   d <- data.frame(Iteration=iter, as.matrix(unclass(s)), check.names=FALSE)

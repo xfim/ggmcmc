@@ -30,7 +30,7 @@ ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE, gr
     stop("Fractions are not valid.")
   }
   # Take subsequences of the chains
-  window.1 <- 1:trunc(attributes(D)$nIterations * frac1) # This is the correct way to get the first part of the sample
+  window.1 <- seq_len(trunc(attributes(D)$nIterations * frac1)) # This is the correct way to get the first part of the sample
   #window.1 <- 1:(trunc(attributes(D)$nIterations * frac1) + 1) # This line is not correct, but geweke.diag() does it this way
                                                                 # and therefore I leave it here for comparison
   window.2 <- (trunc(attributes(D)$nIterations * frac2) + 1) :attributes(D)$nIterations
@@ -59,7 +59,7 @@ ggs_geweke <- function(D, family=NA, frac1=0.1, frac2=0.5, shadow_limit=TRUE, gr
   # having converted it into NA
   Zinf <- which(is.infinite(Z$z))
   if (length(Zinf) > 0) {
-    for (nas in 1:length(Zinf)) {
+    for (nas in seq_len(length(Zinf))) {
       warning(paste(
         "Infinite value in the z score for Parameter ", Z$Parameter[Zinf[nas]],
         ", Chain ", Z$Chain[Zinf[nas]], ".", sep=""))
