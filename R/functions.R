@@ -171,7 +171,11 @@ plab <- function (parameter.name, match, subscripts = NULL) {
     }
     eg.text <- paste0(eg.text, ss[m], " = 1:", length(match[[m]]))
     par.text <- paste0(par.text, ss[m])
-    var.text <- paste0(var.text, " %>% dplyr::mutate(", names(match)[m], " = factor(", ss[m], ", label = ", match[m], "))")
+    if (length(unlist(match[m])) > 1) {
+      var.text <- paste0(var.text, " %>% dplyr::mutate(", names(match)[m], " = factor(", ss[m], ", labels = ", match[m], "))")
+    } else {
+      var.text <- paste0(var.text, " %>% dplyr::mutate(", names(match)[m], " = factor(", ss[m], ", labels = '", match[m], "'))")
+    }
     lab.text <- paste0(lab.text, names(match)[m])
   }
   eg.text <- paste0(eg.text, ")")
@@ -179,7 +183,6 @@ plab <- function (parameter.name, match, subscripts = NULL) {
   if (length(match) > 1) {
     lab.text <- paste0(lab.text, ", sep = ' : ')")
   }
-
   # Paste the final text together
   full.text <- eg.text
   full.text <- paste0(full.text, " %>% dplyr::mutate(", par.text, ")")
@@ -188,7 +191,6 @@ plab <- function (parameter.name, match, subscripts = NULL) {
   full.text <- paste0(full.text, " %>% dplyr::as_tibble()")
   full.text <- paste0(full.text, " %>% dplyr::mutate(Parameter = factor(Parameter))")
   full.text <- paste0(full.text, " %>% dplyr::mutate(Label = factor(Label))")
-
   # Evaluate the text and generate the data frame
   PL <- eval(parse(text = full.text))
   return(PL)
