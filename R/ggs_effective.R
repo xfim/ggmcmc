@@ -30,7 +30,7 @@ ggs_effective <- function(D, family = NA, greek = FALSE,
   if (version_effective == "spectral") {
     NE <- D %>%
       dplyr::group_by(Parameter) %>%
-      dplyr::summarize(Effective = n() * var(value) / sde0f(value))
+      dplyr::summarize(Effective = dplyr::n() * var(value) / sde0f(value))
   } else if (version_effective == "BDA3") {
     # The computations follow BDA, pg 298-299, and the notation tries to be
     # consistent with it
