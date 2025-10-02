@@ -106,7 +106,7 @@ NULL
 #' @docType data
 #' @keywords datasets
 #' @usage data(radon)
-#' @source \url{http://www.stat.columbia.edu/~gelman/arm/examples/radon/}
+#' @source Gelman & Hill
 #' @format A list containing several elements (data and outputs of the analysis):
 #' \describe{
 #'   \item{counties}{A data frame with the country label, ids and radon level.}
