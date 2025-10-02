@@ -16,7 +16,7 @@ A list containing several elements (data and outputs of the analysis):
 }
 }
 \source{
-\url{http://www.stat.columbia.edu/~gelman/arm/examples/radon/}
+Gelman & Hill
 }
 \usage{
 data(radon)

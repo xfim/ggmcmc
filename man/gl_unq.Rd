@@ -4,7 +4,7 @@
 \alias{gl_unq}
 \title{Generate a factor with unequal number of repetitions.}
 \usage{
-gl_unq(n, k, labels = 1:n)
+gl_unq(n, k, labels = seq_len(n))
 }
 \arguments{
 \item{n}{number of levels}
