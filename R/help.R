@@ -10,7 +10,9 @@
 #' @import ggplot2
 #' @importFrom tidyr spread gather
 #' @importFrom dplyr as_tibble tibble select filter mutate arrange group_by ungroup summarize bind_rows left_join inner_join do sample_frac lag lead %>%
-#' @docType package
+#' @importFrom GGally ggpairs
+#' @importFrom MASS kde2d
+#_PACKAGE"
 #' @name ggmcmc
 #' @aliases ggmcmc ggmcmc-package
 NULL

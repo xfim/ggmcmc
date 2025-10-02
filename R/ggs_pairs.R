@@ -52,11 +52,11 @@ ggs_pairs <- function(D, family=NA, greek=FALSE, ...) {
   par_cols <- !(bracket_names %in% c("Iteration", "Chain"))
   # Plot
   if (!greek) {
-    f <- ggpairs(D_wide,
+    f <- GGally::ggpairs(D_wide,
       columnLabels = bracket_names[par_cols],
       columns = which(par_cols), ...)
   } else {
-    f <- ggpairs(D_wide,
+    f <- GGally::ggpairs(D_wide,
       columnLabels = parse(text = bracket_names[par_cols]),
       columns = which(par_cols), ...)
   }
