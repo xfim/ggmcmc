@@ -32,7 +32,7 @@ ggs_caterpillar <- function(D, family=NA, X=NA,
   }
   # Manage adding a X dataframe, and check potential errors in X
   x.present <- FALSE
-  if (class(X)=="data.frame") {
+  if (inherits(X, "data.frame")) {
     # check number of observations
     if (dim(X)[1] != attributes(D)$nParameters) {
       stop("X has a different number of observations than the number of parameters to plot.")
