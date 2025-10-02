@@ -216,7 +216,7 @@ ggs <- function(S, family = NA, description = NA, burnin = TRUE, par_labels = NA
         D <- suppressWarnings(dplyr::left_join(D, L, by = "Parameter"))
         D <- D %>%
           dplyr::select(Iteration, Chain, Parameter, value, ParameterOriginal)
-        if (class(D$Parameter) == "character") {
+        if (inherits(D$Parameter, "character")) {
           if (sort) {
             D$Parameter <- factor(D$Parameter, levels=custom.sort(D$Parameter))
           } else {
